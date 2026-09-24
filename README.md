@@ -35,3 +35,7 @@ CLOUDFLARE_ACCOUNT_ID=7629d3d823c90f09e6b0f8b01d04462f npx wrangler pages deploy
 ```
 
 Live site: https://copilot-models.pon-ai.com — publication is public. The custom domain is a CNAME in the `pon-ai.com` zone pointing at the Pages project; the `copilot-model-observatory.pages.dev` production URL serves the latest `main` deployment and each deployment also gets a unique preview URL. Commit the working tree before deploying: source control and deployment archives must correspond to the same commit. The legacy `.openai/hosting.json` remains for the previous hosting target and is not used by Wrangler.
+
+## License
+
+MIT — see [LICENSE].

@@ -62,7 +62,7 @@ export function expandCatalog(benchmarks, sources, models) {
       '102 tasks · Opt@1',
       'https://livecodebench.github.io/gso.html',
       'Single-attempt estimate of tasks achieving at least 95% of human speedup while passing correctness tests.',
-      'OpenHands only; Opt@10 is excluded. Conflicting GPT-5.4 entries are retained in details but excluded from scoring.',
+      'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry; the earlier unlabeled GPT-5.4 duplicate is resolved as two reasoning settings and the xHigh run feeds the lens.',
     ],
     [
       'completion',
@@ -149,17 +149,17 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-4o', 0, '2025-05-30'],
   ])
     add(name, 'optimization', value, 'OpenHands · Opt@1', date)
+  add('GPT-5.4', 'optimization', 31.4, 'OpenHands · Opt@1 · xHigh', '2026-03-10')
   get('GPT-5.4').notes.push(
-    'GSO publishes both 31.4% and 25.5% for GPT 5.4 / OpenHands / Opt@1 on 2026-03-10. Neither is selected for the lens until the discrepancy is resolved.',
+    'GSO initially published 31.4% and 25.5% for GPT 5.4 / OpenHands / Opt@1 without reasoning-effort labels; the leaderboard now shows these are two reasoning settings (xHigh and High) on the same date. The xHigh run is used as main evidence and the High run is retained below.',
   )
-  for (const value of [31.4, 25.5])
-    get('GPT-5.4').alternatives.push({
-      benchmark: 'optimization',
-      value,
-      agent: 'OpenHands · Opt@1 · conflicting source entries, excluded from lens',
-      date: '2026-03-10',
-      source: sources.optimization,
-    })
+  get('GPT-5.4').alternatives.push({
+    benchmark: 'optimization',
+    value: 25.5,
+    agent: 'OpenHands · Opt@1 · High',
+    date: '2026-03-10',
+    source: sources.optimization,
+  })
   for (const [name, value, uncertainty, agent] of [
     ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
     ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],

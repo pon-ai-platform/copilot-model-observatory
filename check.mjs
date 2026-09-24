@@ -84,7 +84,14 @@ assert.equal(
     models.find((m) => m.name === 'GPT-5.4'),
     { optimization: 1 },
   ).value,
-  null,
+  31.4,
+)
+assert.ok(
+  models
+    .find((m) => m.name === 'GPT-5.4')
+    .alternatives.some(
+      (a) => a.benchmark === 'optimization' && a.value === 25.5 && a.agent.includes('High'),
+    ),
 )
 assert.equal(
   score(

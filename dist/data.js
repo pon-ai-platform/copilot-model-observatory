@@ -22,7 +22,7 @@ export const benchmarks = [
     description:
       'General coding: writing new code and completing existing code. Uses the LiveBench Coding category average.',
     version: 'LiveBench-2026-06-25',
-    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. This is not a repository-level feature implementation benchmark.',
+    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. This is not a repository-level feature implementation benchmark. The source page is a live leaderboard; captured rows can change without an edition bump, so re-verify values per refresh.',
   },
   {
     id: 'architecture',
@@ -146,20 +146,31 @@ export const models = rows.map(
 )
 const get = (name) => models.find((m) => m.name === name)
 for (const [name, value, setting] of [
+  ['GPT-6 Astra', 80.4, 'Max Effort'],
   ['Claude Fable 5.1', 86.4, 'Max Effort'],
   ['Claude Opus 5.5', 89.3, 'Thinking Max Effort'],
   ['Claude Fable 5', 86, 'Max Effort'],
-  ['GPT-6 Astra', 80.4, 'Max Effort'],
+  ['GPT-5.6 Luna', 82.9, 'Max Effort'],
   ['GPT-5.6 Sol', 83.9, 'Max Effort'],
+  ['Claude Opus 4.7', 82.1, 'Thinking xHigh Effort'],
   ['GPT-5.5', 82.1, 'Thinking xHigh Effort'],
+  ['Claude Opus 4.8', 81.8, 'Thinking Max Effort'],
+  ['GPT-6 Sol', 81.8, 'Max Effort'],
+  ['Claude Sonnet 5', 80.7, 'xHigh Effort'],
   ['Claude Opus 5', 81.4, 'Thinking Max Effort'],
   ['Kimi K3', 81.4, 'not specified'],
+  ['GPT-6 Luna', 79, 'Max Effort'],
+  ['Claude Sonnet 4.6', 79.3, 'Thinking Medium Effort'],
   ['Gemini 3.7 Flash', 78.9, 'High'],
-  ['Grok 4.6', 76.8, 'not specified'],
   ['GPT-5.4', 77.5, 'Thinking xHigh Effort'],
+  ['Gemini 3.5 Flash', 78.2, 'High'],
+  ['Gemini 3.6 Flash', 77.9, 'High'],
   ['GPT-5.6 Terra', 78.2, 'Max Effort'],
+  ['Grok 4.6', 76.8, 'not specified'],
+  ['Gemini 3.8 Flash', 72.5, 'High'],
   ['Grok 4.7', 77.2, 'xHigh'],
   ['GPT-5.4 nano', 70.8, 'xHigh'],
+  ['Grok 4.5', 68.6, 'not specified'],
   ['Kimi K2.7 Code', 74, 'not specified'],
   ['GPT-5.4 mini', 71.6, 'xHigh'],
 ])
@@ -292,10 +303,26 @@ for (const m of models) {
     m.notes.push('Utility model: powers background features; not a selectable model in the picker.')
   if (m.name.includes('fast mode'))
     m.notes.push('GitHub lists GA status while retaining “preview” in the model name.')
-  if (['Claude Fable 5', 'GPT-5.6 Sol'].includes(m.name))
+  if (['Claude Fable 5', 'Claude Fable 5.1', 'GPT-5.6 Sol'].includes(m.name))
     m.notes.push(
       'Scale reports elevated refusal-related failures for this model on parts of SWE Atlas; included in published scores.',
     )
   if (m.name === 'GPT-5.3-Codex') m.notes.push('Scale abbreviates this entry as “GPT 5.3 (Codex)”.')
+  for (const [retired, alt] of [
+    ['Claude Opus 4.7', 'Claude Opus 5'],
+    ['Gemini 3.5 Flash', 'Gemini 3.8 Flash'],
+    ['Gemini 3.6 Flash', 'Gemini 3.8 Flash'],
+    ['Kimi K2.7 Code', 'Kimi K3'],
+  ])
+    if (m.name === retired)
+      m.notes.push(
+        'GitHub retirement schedule: scheduled for retirement on October 2, 2026; suggested alternative is ' +
+          alt +
+          '.',
+      )
+  if (m.name === 'Claude Sonnet 4.6')
+    m.notes.push(
+      'GitHub lists retirement on September 1, 2026; the model remains available to individual subscribers on annual Copilot Pro and Pro+ plans.',
+    )
 }
 expandCatalog(benchmarks, sources, models)

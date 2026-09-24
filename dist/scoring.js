@@ -11,7 +11,7 @@ export function migratePreferences(p){
  const weights={...defaults,...p?.weights};
  if(!validWeights(weights,capabilities.map(c=>c.id)))return null;
  const selections={...defaultSelections,...p?.selections,coding:'coding',terminal:'terminal4',pro:'pro2'};
- return validSelections(selections)?{weights,selections,weighted:p?.weighted===true}:null;
+ return validSelections(selections)?{weights,selections,weighted:true}:null;
 }
 export function score(model,weights,selections=defaultSelections){
  const entries=Object.entries(weights).filter(([,w])=>Number.isFinite(w)&&w>0);
@@ -28,3 +28,4 @@ export function awards(models,weights,selections=defaultSelections){
  const winners=(rows,metric,direction)=>{const valid=rows.filter(r=>Number.isFinite(metric(r)));if(!valid.length)return [];const best=direction==='min'?Math.min(...valid.map(metric)):Math.max(...valid.map(metric));return valid.filter(r=>Math.abs(metric(r)-best)<=1e-9).map(r=>r.id);};
  return {best:winners(scored,r=>r.score,'max'),cheapest:winners(scored,r=>r.cost,'min'),value:winners(scored,r=>r.score!==null&&r.score>0&&r.cost>0?r.score/r.cost:null,'max')};
 }
+

@@ -1,14 +1,13 @@
 import {models,benchmarks,sources,checked} from './data.js';
 import {defaults,score,validWeights,awards,workloadCost,capabilities,defaultSelections,migratePreferences} from './scoring.js';
 const $=id=>document.getElementById(id), ids=capabilities.map(b=>b.id);
-const state={weights:{...defaults},selections:{...defaultSelections},weighted:false,query:'',provider:'',view:'engineering',sort:'name',ascending:true};
+const state={weights:{...defaults},selections:{...defaultSelections},weighted:true,query:'',provider:'',view:'engineering',sort:'name',ascending:true};
 try{const p=JSON.parse(localStorage.getItem('copilot-observatory-v2')||localStorage.getItem('copilot-observatory-v1'));if(p){const migrated=migratePreferences(p);if(migrated)Object.assign(state,migrated);}}catch{}
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>n===null||n===undefined?'Not listed':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:3}).format(n);
 const colors={'OpenAI':'#328375','Anthropic':'#bd775a','Google':'#487ccc','Microsoft':'#7373c2','Moonshot AI':'#766295','xAI':'#667180'};
 function save(){try{localStorage.setItem('copilot-observatory-v2',JSON.stringify({weights:state.weights,selections:state.selections,weighted:state.weighted}));}catch{$('localNote').textContent='Browser storage unavailable; preferences last for this visit.';}}
 function weightControls(){
- $('weighted').checked=state.weighted;
  $('weights').innerHTML=capabilities.map(b=>`<div class="weight"><label for="weight-${b.id}">${b.short}<output id="out-${b.id}"></output></label><input type="range" min="0" max="100" step="1" id="weight-${b.id}" value="${state.weights[b.id]}" aria-label="${b.short} weight">${b.benchmarks.length>1?`<select data-capability="${b.id}" aria-label="${b.short} benchmark">${b.benchmarks.map(id=>`<option value="${id}" ${state.selections[b.id]===id?'selected':''}>${benchmarks.find(x=>x.id===id).name}</option>`).join('')}</select>`:`<small>${benchmarks.find(x=>x.id===b.benchmarks[0]).name}</small>`}</div>`).join('');
  document.querySelectorAll('[data-capability]').forEach(el=>el.addEventListener('change',()=>{state.selections[el.dataset.capability]=el.value;save();render();}));
  ids.forEach(id=>$(`weight-${id}`).addEventListener('input',e=>{state.weights[id]=Number(e.target.value);save();render();}));
@@ -55,8 +54,7 @@ function details(id){
 for(const p of [...new Set(models.map(m=>m.provider))].sort())$('provider').add(new Option(p,p));
 weightControls();render();
 $('sourceCards').innerHTML=benchmarks.map(b=>`<article class="source-card"><a href="${sources[b.id]}" target="_blank" rel="noopener">${b.name} ↗</a><p>${b.description}</p><p class="source-coverage">${models.filter(m=>Number.isFinite(m.evidence[b.id]?.value)).length} of ${models.length} models with evidence${models.some(m=>!m.utility&&Number.isFinite(m.evidence[b.id]?.value))?'':' · no selectable-model coverage'}</p><p>${b.note}</p><small>${b.version} · checked ${checked}</small></article>`).join('');
-$('weighted').addEventListener('change',e=>{state.weighted=e.target.checked;if(!state.weighted&&state.sort==='company'){state.sort='name';state.ascending=true;}save();render();});
-$('sortLens').addEventListener('click',()=>{state.sort='company';state.ascending=false;state.weighted=true;$('weighted').checked=true;save();render();});
+$('sortLens').addEventListener('click',()=>{state.sort='company';state.ascending=false;state.weighted=true;save();render();});
 $('reset').addEventListener('click',()=>{state.weights={...defaults};state.selections={...defaultSelections};save();weightControls();render();});
 $('search').addEventListener('input',e=>{state.query=e.target.value;render();});
 $('provider').addEventListener('change',e=>{state.provider=e.target.value;render();});
@@ -71,3 +69,4 @@ if(context?.registerTool){
  register({name:'configure_company_weights',description:'Set local browser weighting preferences and reveal the exploratory company score. Does not change enterprise policy.',inputSchema:{type:'object',properties:{weights:{type:'object',properties:Object.fromEntries(ids.map(id=>[id,{type:'number',minimum:0,maximum:100}])),required:ids,additionalProperties:false}},required:['weights'],additionalProperties:false},annotations:{readOnlyHint:false},execute:input=>{if(!input||!validWeights(input.weights,ids))throw new Error('Provide all capability weights between 0 and 100.');state.weights={...input.weights};state.weighted=true;save();weightControls();render();return {weights:state.weights,scoredModels:models.filter(m=>score(m,state.weights,state.selections).value!==null).length};}});
  addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
 }
+

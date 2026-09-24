@@ -28,6 +28,10 @@ GSO contains conflicting GPT-5.4 scores for the same displayed setup/date. Both 
 
 ## Deployment
 
-`.openai/hosting.json` contains the Sites project identity and static directory. Publication is private to the owner unless explicitly changed. Source control and deployment archives must correspond to the same commit.
+Deployed to Cloudflare Pages on the Pon AI account as the `copilot-model-observatory` project:
 
-Architecture coverage currently consists of one catalog model, Claude Sonnet 4.6. Its Node F1 is not a general system-design quality score. Coding and architecture weights start at zero to preserve existing preferences; old saved six-metric profiles migrate with both new weights at zero.
+```sh
+CLOUDFLARE_ACCOUNT_ID=7629d3d823c90f09e6b0f8b01d04462f npx wrangler pages deploy dist --project-name=copilot-model-observatory --branch=main --commit-dirty=false
+```
+
+Live site: https://copilot-model-observatory.pages.dev — publication is public. The production URL serves the latest `main` deployment; each deployment also gets a unique preview URL. Commit the working tree before deploying: source control and deployment archives must correspond to the same commit. The legacy `.openai/hosting.json` remains for the previous hosting target and is not used by Wrangler.

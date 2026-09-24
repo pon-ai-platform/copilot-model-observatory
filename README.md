@@ -1,10 +1,12 @@
 # Copilot Model Observatory
 
-Single-page comparison of the named GitHub Copilot model catalog, official token prices, sourced engineering benchmark evidence and an always-visible weighted index. Plain HTML/CSS/ES modules; no build or third-party JavaScript dependencies.
+Single-page comparison of the named GitHub Copilot model catalog, official token prices, sourced engineering benchmark evidence and an always-visible weighted index. Plain HTML/CSS/ES modules; no build step and no third-party JavaScript shipped to the browser. (Prettier is a dev-only code formatter; it is not part of the deployed site.)
 
 ## Run
 
 Run `node serve.mjs` from this directory and open http://127.0.0.1:4173. Run `node check.mjs` for dataset and scoring checks. `dist/` is the complete deployable static site.
+
+`npm run format` reformats the source with Prettier and `npm run format:check` verifies formatting; both are developer conveniences and have no effect on the site.
 
 ## Data maintenance
 
@@ -29,6 +31,3 @@ GSO contains conflicting GPT-5.4 scores for the same displayed setup/date. Both 
 `.openai/hosting.json` contains the Sites project identity and static directory. Publication is private to the owner unless explicitly changed. Source control and deployment archives must correspond to the same commit.
 
 Architecture coverage currently consists of one catalog model, Claude Sonnet 4.6. Its Node F1 is not a general system-design quality score. Coding and architecture weights start at zero to preserve existing preferences; old saved six-metric profiles migrate with both new weights at zero.
-
-
-

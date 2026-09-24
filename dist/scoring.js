@@ -1,5 +1,5 @@
 export const capabilities=[
- {id:'coding',short:'General coding',benchmarks:['coding','algorithmic','libraries']},
+ {id:'coding',short:'General coding',benchmarks:['coding']},
  ...[['architecture','Architecture'],['qna','Codebase Q&A'],['tests','Test writing'],['refactor','Refactoring'],['features','Implementing features'],['security','Secure coding'],['review','Code review'],['polyglot','Multilingual editing'],['optimization','Making code faster'],['completion','Cross-file completion'],['verified','Fixing bugs']].map(([id,short])=>({id,short,benchmarks:[id]})),
  {id:'terminal',short:'Terminal tasks',benchmarks:['terminal4']},
  {id:'pro',short:'Complex code changes',benchmarks:['pro2']}
@@ -10,7 +10,7 @@ export function validSelections(s){return !!s&&capabilities.every(c=>c.benchmark
 export function migratePreferences(p){
  const weights={...defaults,...p?.weights};
  if(!validWeights(weights,capabilities.map(c=>c.id)))return null;
- const selections={...defaultSelections,...p?.selections,terminal:'terminal4',pro:'pro2'};
+ const selections={...defaultSelections,...p?.selections,coding:'coding',terminal:'terminal4',pro:'pro2'};
  return validSelections(selections)?{weights,selections,weighted:p?.weighted===true}:null;
 }
 export function score(model,weights,selections=defaultSelections){

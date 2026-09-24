@@ -3,7 +3,7 @@
 Living task document. Update it in the same commit as any data change.
 
 - **Snapshot checked:** 2026-09-24 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":27,"checks":"passed"}`
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":27,"checks":"passed"}` — 20 benchmark measures/editions
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-09-24 gap-closing pass): `{"models":35,"withEvidence":29,"defaultScored":16,"checks":"passed"}`.
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -28,9 +28,9 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | GPT-5.4                     | OpenAI      | —       | coding, qna, tests, refactor, terminal (2.1), features, pro (original) + alternatives |
 | GPT-5.4 mini                | OpenAI      | —       | coding, terminal (2.1)                                                                |
 | GPT-5.4 nano                | OpenAI      | ✅      | coding                                                                                |
-| GPT-5.5                     | OpenAI      | —       | coding, qna, tests, refactor, features, optimization, terminal4, pro2                 |
-| GPT-5.6 Luna                | OpenAI      | —       | coding, terminal4                                                                     |
-| GPT-5.6 Sol                 | OpenAI      | —       | coding, qna, tests, terminal4, pro2                                                   |
+| GPT-5.5                     | OpenAI      | —       | coding, qna, tests, refactor, features, optimization, program, terminal4, pro2        |
+| GPT-5.6 Luna                | OpenAI      | —       | coding, rebench, terminal4                                                            |
+| GPT-5.6 Sol                 | OpenAI      | —       | coding, qna, tests, rebench, program, terminal4, pro2                                 |
 | GPT-5.6 Terra               | OpenAI      | —       | coding, terminal4, pro2                                                               |
 | GPT-6 Astra                 | OpenAI      | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
 | GPT-6 Luna                  | OpenAI      | —       | coding                                                                                |
@@ -41,21 +41,21 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | Claude Haiku 4.5            | Anthropic   | —       | verified, review, pro (original)                                                      |
 | Claude Sonnet 4.6           | Anthropic   | —       | coding, architecture, qna, tests, refactor, review, terminal (2.1)                    |
 | Claude Sonnet 5             | Anthropic   | —       | coding, optimization, terminal4, pro2                                                 |
-| Claude Opus 4.7             | Anthropic   | —       | coding, features, optimization, terminal4                                             |
-| Claude Opus 4.8             | Anthropic   | —       | coding, optimization, terminal4                                                       |
+| Claude Opus 4.7             | Anthropic   | —       | coding, features, optimization, program, terminal4                                    |
+| Claude Opus 4.8             | Anthropic   | —       | coding, optimization, program, terminal4                                              |
 | Claude Opus 4.8 (fast mode) | Anthropic   | —       | coding                                                                                |
-| Claude Opus 5               | Anthropic   | —       | coding, qna, tests, optimization, terminal4, pro2                                     |
+| Claude Opus 5               | Anthropic   | —       | coding, qna, tests, optimization, rebench, program, terminal4, pro2                   |
 | Claude Opus 5.5             | Anthropic   | —       | coding                                                                                |
-| Claude Fable 5              | Anthropic   | —       | coding, qna, tests, refactor, terminal4                                               |
+| Claude Fable 5              | Anthropic   | —       | coding, qna, tests, refactor, rebench, terminal4                                      |
 | Claude Fable 5.1            | Anthropic   | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
 | Gemini 3.5 Flash            | Google      | —       | coding                                                                                |
-| Gemini 3.6 Flash            | Google      | —       | coding                                                                                |
-| Gemini 3.7 Flash            | Google      | —       | coding, terminal4                                                                     |
+| Gemini 3.6 Flash            | Google      | —       | coding, program                                                                       |
+| Gemini 3.7 Flash            | Google      | —       | coding, program, terminal4                                                            |
 | Gemini 3.8 Flash            | Google      | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
 | MAI-Code-1.1-Flash          | Microsoft   | —       | ⏳                                                                                    |
 | Kimi K2.7 Code              | Moonshot AI | —       | coding                                                                                |
 | Kimi K3                     | Moonshot AI | —       | coding, pro2                                                                          |
-| Grok 4.5                    | xAI         | —       | coding, terminal4                                                                     |
+| Grok 4.5                    | xAI         | —       | coding, rebench, terminal4                                                            |
 | Grok 4.6                    | xAI         | —       | coding, terminal4                                                                     |
 | Grok 4.7                    | xAI         | —       | coding, terminal4                                                                     |
 
@@ -77,6 +77,8 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | ✅                     | %                            | 2 models ⏳             |
 | pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                            | 2 models                |
 | pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                       | 8 models                |
+| rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI                   | 6 models                |
+| program      | ProgramBench (200 tasks · 2026-09-09)                 | Building programs     | ✅ new capability      | % resolved                   | 7 models                |
 | features     | FeatureBench (Lite · v1.0 · resolved)                 | Implementing features | ✅                     | whole-task %                 | 3 models ⏳             |
 | security     | BaxBench (no security reminder)                       | Secure coding         | ✅                     | % passing functional+exploit | 1 utility model ⏳      |
 | review       | SWE-PRBench (eval_100 · GPT-5.2 judge)                | Code review           | ✅                     | composite × 100              | 4 models (2 utility) ⏳ |
@@ -92,17 +94,9 @@ Scoring defaults: only `coding` starts at weight 100; every other capability def
 
 Ordered by value-to-effort. Each item names the blocker, not just the wish.
 
-1. **Zero-evidence model:** MAI-Code-1.1-Flash. Search LiveBench, Terminal-Bench 4.0, SWE-Bench Pro V2 and SWE Atlas for new entries. Do **not** backfill from a different model version.
-2. **Fast mode:** the LiveBench 81.8 result for Opus 4.8 maps to the base model; no separate fast-mode run exists. Keep them unmerged in the catalog (separate rows) and do not carry the base-model score onto the fast-mode row in future refreshes.
-3. **CrossCodeEval is a registered evidence gap** — cannot add scores until language, retrieval method and context budget are fixed to something comparable across the catalog.
-4. **Security / libraries / polyglot / algorithmic have only utility-model overlap** (GPT-4.x-era results). BaxBench re-checked 2026-09-24: no current-model rows. Aider leaderboard last updated 2025-11-20. Watch for leaderboard updates covering current selectable models.
-5. **R2ABench** covers one model; the paper is still v1 (Apr 2026). Watch for a successor edition with a common agent setup.
-6. **SWE-bench Verified** has only two mini-SWE-agent results (2026-02-17). The common-agent harness is the gate; vendor headline scores must not be substituted.
-7. **FeatureBench** leaderboard still evaluates v1.0; dataset v1.1 released 2026-08-24. Re-check when the leaderboard migrates.
-8. **GSO conflict resolved (2026-09-24):** the leaderboard now labels reasoning effort — 31.4% is GPT-5.4 xHigh, 25.5% is GPT-5.4 High. The xHigh run feeds the lens; the High run is retained as a labeled alternative.
-9. **Edition drift:** LiveBench still serves the 2026-06-25 release, but the leaderboard is live — rows appear/change without an edition bump (this pass picked up 11 new catalog rows that way). Treat captured LiveBench values as point-in-time; re-verify per refresh, update as a whole edition (never mix). Terminal-Bench 2.1 and original Pro are intentionally historical; keep them out of the lens.
-10. **Retirement watch:** Claude Opus 4.7, Gemini 3.5 Flash, Gemini 3.6 Flash and Kimi K2.7 Code are scheduled to retire from Copilot on 2026-10-02. At the next refresh they may leave the supported-models table; retire rows only when GitHub drops them, keeping evidence and notes intact.
-11. **Catalog sync each refresh:** diff the supported-models list and the pricing page against `rows` in `dist/data.js`; add new models, flag new/retired utility models, re-verify cache-write and long-context tiers per row. Tenant-level enablement is not connected and must stay out.
+1. **Zero-evidence model:** MAI-Code-1.1-Flash. Search LiveBench, Terminal-Bench 4.0, SWE-Bench Pro V2, SWE-rebench and SWE Atlas for new entries. Do **not** backfill from a different model version.
+2. **SWE-rebench window drift:** the captured values come from the 2026-05-15 → 2026-07-01 window (111 tasks). The leaderboard rolls monthly — re-capture the whole window at every refresh and record the window dates in the benchmark version string; never mix windows. New catalog models can appear here first (this is where GPT-5.6 Sol/Luna and Sonnet 5 surfaced).
+3. **ProgramBench is growing:** 7 catalog models captured on the 2026-09-09 update; check for new rows per refresh. Fable 5/5.1 and GPT-6 rows are not yet published there.
 
 ## 5. Data discipline (hard rules)
 

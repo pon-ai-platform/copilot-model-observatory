@@ -42,8 +42,8 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 18)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 18)
+assert.equal(benchmarks.length, 20)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 20)
 const old = migratePreferences({
   weights: {
     coding: 100,

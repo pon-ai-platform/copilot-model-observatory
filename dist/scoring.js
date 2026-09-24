@@ -11,9 +11,10 @@ export const capabilities = [
   { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['polyglot'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
-  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified'] },
+  { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
-  { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2'] },
+  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified'] },
+  { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
 ]
 export const defaults = Object.fromEntries(
   capabilities.map((c) => [c.id, c.id === 'coding' ? 100 : 0]),

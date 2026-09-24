@@ -91,6 +91,24 @@ export function expandCatalog(benchmarks, sources, models) {
       'Resolution of the refreshed 642-task public split.',
       'Full, not HARD. Revised tasks and locked evaluation protocol; not comparable to original Pro. Published agent setups differ.',
     ],
+    [
+      'rebench',
+      'Complex code changes',
+      'SWE-rebench',
+      'Window 2026-05-15 → 2026-07-01 · 111 tasks',
+      'https://swe-rebench.com/',
+      'Resolve fresh GitHub issues from a rolling contamination-free window.',
+      'Rolling time window; captured values are point-in-time and shift with each window. Model rows only; Claude Code, Codex, Junie and Cursor agent rows are different harnesses and are not captured. Kept separate from the SWE-Bench Pro V2 edition.',
+    ],
+    [
+      'program',
+      'Building programs',
+      'ProgramBench',
+      '200 tasks · updated 2026-09-09',
+      'https://programbench.com/',
+      'Re-implement a program from its compiled binary and docs; every behavioral test must pass.',
+      'Common mini-SWE-agent scaffold, no internet and no decompilation. Extremely hard: the best catalog model resolves 4.5%. Almost-resolved rates are captured in details. Agent-based fuzzing generates the test suite.',
+    ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
     sources[id] = url
@@ -160,6 +178,45 @@ export function expandCatalog(benchmarks, sources, models) {
     date: '2026-03-10',
     source: sources.optimization,
   })
+  for (const [name, value, uncertainty, agent] of [
+    ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
+    ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],
+    ['Claude Opus 5', 53.9, 3.2, 'Claude Code · xhigh'],
+    ['Claude Fable 5', 44.5, 3.8, 'Claude Code · max'],
+    ['Grok 4.7', 37.6, 3.5, 'Grok Build · xhigh'],
+    ['GPT-5.6 Sol', 37.3, 3.8, 'Codex · max'],
+    ['Claude Opus 4.8', 23.6, 3.6, 'Claude Code · max'],
+    ['GPT-5.6 Terra', 21.5, 3.3, 'Codex · max'],
+    ['Grok 4.6', 20.3, 3.1, 'Grok Build · high'],
+    ['Gemini 3.8 Flash', 19.1, 3.4, 'mini-SWE-agent · high'],
+    ['GPT-5.6 Luna', 17.3, 2.8, 'Codex · max'],
+    ['Grok 4.5', 12.4, 2.6, 'Grok Build · high'],
+    ['Claude Sonnet 5', 12.4, 3.1, 'Claude Code · max'],
+    ['Gemini 3.7 Flash', 11.2, 2.4, 'mini-SWE-agent · high'],
+  ])
+    add(name, 'terminal4', value, agent, null, { uncertainty })
+  for (const [name, value, uncertainty, agent] of [
+    ['Claude Fable 5', 64.5, 1.41, 'raw model · high'],
+    ['Grok 4.5', 63.8, 0.6, 'raw model · high'],
+    ['Claude Opus 5', 63.4, 1.35, 'raw model · high'],
+    ['GPT-5.6 Sol', 62.3, 1.83, 'raw model · medium'],
+    ['Claude Sonnet 5', 56.8, 0.94, 'raw model · high'],
+    ['GPT-5.6 Luna', 43.6, 1.47, 'raw model · medium'],
+  ])
+    add(name, 'rebench', value, agent, null, { uncertainty })
+  for (const [name, value, almost] of [
+    ['Claude Opus 5', 4.5, 37.0],
+    ['GPT-5.6 Sol', 1.0, 15.5],
+    ['GPT-5.5', 0.5, 13.5],
+    ['Gemini 3.6 Flash', 0.5, 4.0],
+    ['Claude Opus 4.8', 0, 16.5],
+    ['Gemini 3.7 Flash', 0, 5.5],
+    ['Claude Opus 4.7', 0, 4.5],
+  ]) {
+    add(name, 'program', value, 'mini-SWE-agent', null, {
+      context: `Almost-resolved (partial test pass): ${almost}%. 0% is a captured result, not a missing one.`,
+    })
+  }
   for (const [name, value, uncertainty, agent] of [
     ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
     ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],

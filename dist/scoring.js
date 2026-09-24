@@ -16,7 +16,7 @@ export const capabilities = [
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2'] },
 ]
 export const defaults = Object.fromEntries(
-  capabilities.map((c) => [c.id, equalWeighted.includes(c.id) ? 50 : 0]),
+  capabilities.map((c) => [c.id, c.id === 'coding' ? 100 : 0]),
 )
 export const defaultSelections = Object.fromEntries(
   capabilities.map((c) => [c.id, c.benchmarks[0]]),

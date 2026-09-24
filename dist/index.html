@@ -13,14 +13,29 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e223b'/%3E%3Cpath d='M7 24V15h4v9m3 0V7h4v17m3 0V11h4v13' fill='%238bddbd'/%3E%3C/svg%3E"
     />
+    <script>
+      // Set theme before first paint to avoid a flash of the wrong theme.
+      try {
+        var t = localStorage.getItem('observatory-theme')
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark')
+      } catch (e) {}
+    </script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
       <a class="brand" href="#"
-        ><span class="mark">▥</span> Model Observatory
+        ><img class="brand-logo" src="assets/datalab-logo-navy.svg" alt="Datalab" />
+        Model Observatory
         <span class="context">/ GitHub Copilot</span></a
-      ><a class="method-link" href="#methodology">Sources & methodology ↗</a>
+      >
+      <div class="header-actions">
+        <a class="method-link" href="#methodology">Sources & methodology ↗</a>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
+          Dark mode
+        </button>
+      </div>
     </header>
     <main>
       <div class="heading">

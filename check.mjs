@@ -9,8 +9,19 @@ import {
   migratePreferences,
   awards,
 } from './dist/scoring.js'
-const example = { evidence: { qna: { value: 60 }, tests: { value: 30 }, refactor: { value: 0 } } }
-assert.equal(score(example, defaults).value, 30)
+const example = {
+  evidence: {
+    coding: { value: 40 },
+    qna: { value: 60 },
+    tests: { value: 30 },
+    refactor: { value: 0 },
+  },
+}
+assert.equal(score(example, defaults).value, 40)
+assert.equal(
+  score({ evidence: { qna: { value: 60 }, tests: { value: 30 } } }, defaults).value,
+  null,
+)
 assert.equal(score(example, { qna: 75, tests: 25 }).value, 52.5)
 assert.equal(score(example, { terminal: 1 }).value, null)
 assert.equal(score(example, { qna: 1, terminal: 1 }).value, null)

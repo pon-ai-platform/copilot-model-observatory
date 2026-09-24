@@ -18,8 +18,8 @@ const state = {
   query: '',
   provider: '',
   view: 'engineering',
-  sort: 'name',
-  ascending: true,
+  sort: 'company',
+  ascending: false,
 }
 try {
   const p = JSON.parse(
@@ -337,12 +337,23 @@ $('view').addEventListener('change', (e) => {
   render()
 })
 $('close').addEventListener('click', () => $('details').close())
-$('details').addEventListener('click', (e) => {
-  if (e.target === $('details')) {
-    const r = $('details').getBoundingClientRect()
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)
-      $('details').close()
+// Theme toggle: flips [data-theme="dark"] on <html>, persists the choice.
+const applyTheme = (dark) => {
+  document.documentElement.toggleAttribute('data-theme', dark)
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+  const b = $('themeToggle')
+  if (b) {
+    b.setAttribute('aria-pressed', String(dark))
+    b.textContent = dark ? 'Light mode' : 'Dark mode'
   }
+}
+applyTheme(document.documentElement.getAttribute('data-theme') === 'dark')
+$('themeToggle').addEventListener('click', () => {
+  const dark = document.documentElement.getAttribute('data-theme') !== 'dark'
+  applyTheme(dark)
+  try {
+    localStorage.setItem('observatory-theme', dark ? 'dark' : 'light')
+  } catch {}
 })
 const context = document.modelContext
 if (context?.registerTool) {

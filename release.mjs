@@ -68,21 +68,24 @@ html = html.replace(
 fs.writeFileSync(htmlPath, html)
 
 // 4. dist/version.json — machine-readable release identity
-const counts = JSON.parse(run('node check.mjs'))
+// Import the modules directly (check.mjs can't run yet: it would see the new
+// data.js stamp against the old version.json).
+const dataUrl = 'file://' + path.join(root, 'dist', 'data.js').replace(/\\/g, '/')
+const { models, benchmarks, checked: checkedDate } = await import(dataUrl)
+const { score, defaults } = await import(
+  'file://' + path.join(root, 'dist', 'scoring.js').replace(/\\/g, '/')
+)
 const versionJson = {
   commit: head,
   branch,
-  checked: /export const checked = '([^']*)'/.exec(data)?.[1],
+  checked: checkedDate,
   released,
-  models: counts.models,
-  withEvidence: counts.withEvidence,
-  defaultScored: counts.defaultScored,
-  benchmarks: counts.benchmarks ?? null,
+  models: models.length,
+  withEvidence: models.filter((m) => Object.keys(m.evidence).length).length,
+  defaultScored: models.filter((m) => score(m, defaults).value !== null).length,
+  benchmarks: benchmarks.length,
 }
-fs.writeFileSync(
-  path.join(root, 'dist', 'version.json'),
-  JSON.stringify(versionJson, null, 2) + '\n',
-)
+fs.writeFileSync(path.join(root, 'dist', 'version.json'), JSON.stringify(versionJson, null, 2) + '\n')
 
 // 5. Gates
 console.log(run('npm run check'))

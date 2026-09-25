@@ -36,7 +36,7 @@ if (head !== remote)
 
 // 2. Stamp the release timestamp (UTC, ISO date + time)
 const now = new Date()
-const released = now.toISOString().slice(0, 16) + 'Z' // e.g. 2026-09-25T10:45Z
+const released = now.toISOString().slice(0, 19) + 'Z' // e.g. 2026-09-25T10:45:30Z
 
 const dataPath = path.join(root, 'dist', 'data.js')
 let data = fs.readFileSync(dataPath, 'utf8')

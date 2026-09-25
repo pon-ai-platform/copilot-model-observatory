@@ -8,7 +8,7 @@ export const capabilities = [
   { id: 'features', short: 'Implementing features', benchmarks: ['features'] },
   { id: 'security', short: 'Secure coding', benchmarks: ['security'] },
   { id: 'review', short: 'Code review', benchmarks: ['review'] },
-  { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['polyglot'] },
+  { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['polyglot', 'multilingual'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },

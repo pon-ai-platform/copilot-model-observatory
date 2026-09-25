@@ -3,7 +3,7 @@
 Living task document. Update it in the same commit as any data change.
 
 - **Snapshot checked:** 2026-09-24 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":27,"checks":"passed"}` — 20 benchmark measures/editions
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":27,"checks":"passed"}` — 21 benchmark measures/editions
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-09-24 gap-closing pass): `{"models":35,"withEvidence":29,"defaultScored":16,"checks":"passed"}`.
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -23,7 +23,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 
 | Model                       | Provider    | Utility | Evidence                                                                              |
 | --------------------------- | ----------- | ------- | ------------------------------------------------------------------------------------- |
-| GPT-5 mini                  | OpenAI      | —       | verified                                                                              |
+| GPT-5 mini                  | OpenAI      | —       | verified, multilingual                                                                |
 | GPT-5.3-Codex               | OpenAI      | —       | qna, tests, refactor, terminal (2.1)                                                  |
 | GPT-5.4                     | OpenAI      | —       | coding, qna, tests, refactor, terminal (2.1), features, pro (original) + alternatives |
 | GPT-5.4 mini                | OpenAI      | —       | coding, terminal (2.1)                                                                |
@@ -38,7 +38,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | GPT-4o                      | OpenAI      | ✅      | review, libraries, algorithmic, optimization (0)                                      |
 | GPT-4o mini                 | OpenAI      | ✅      | review, libraries, algorithmic                                                        |
 | GPT-4.1                     | OpenAI      | ✅      | security, polyglot                                                                    |
-| Claude Haiku 4.5            | Anthropic   | —       | verified, review, pro (original)                                                      |
+| Claude Haiku 4.5            | Anthropic   | —       | verified, review, pro (original), multilingual                                        |
 | Claude Sonnet 4.6           | Anthropic   | —       | coding, architecture, qna, tests, refactor, review, terminal (2.1)                    |
 | Claude Sonnet 5             | Anthropic   | —       | coding, optimization, terminal4, pro2                                                 |
 | Claude Opus 4.7             | Anthropic   | —       | coding, features, optimization, program, terminal4                                    |
@@ -48,7 +48,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | Claude Opus 5.5             | Anthropic   | —       | coding                                                                                |
 | Claude Fable 5              | Anthropic   | —       | coding, qna, tests, refactor, rebench, terminal4                                      |
 | Claude Fable 5.1            | Anthropic   | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
-| Gemini 3.5 Flash            | Google      | —       | coding                                                                                |
+| Gemini 3.5 Flash            | Google      | —       | coding, verified, multilingual                                                        |
 | Gemini 3.6 Flash            | Google      | —       | coding, program                                                                       |
 | Gemini 3.7 Flash            | Google      | —       | coding, program, terminal4                                                            |
 | Gemini 3.8 Flash            | Google      | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
@@ -74,7 +74,7 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | refactor     | SWE Atlas · Refactoring                               | Refactoring           | ✅ (trio)              | %                            | 11 models ⏳            |
 | terminal     | Terminal-Bench 2.1 (Terminus 2)                       | Terminal              | historical             | %                            | 4 models                |
 | terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI                   | 14 models               |
-| verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | ✅                     | %                            | 2 models ⏳             |
+| verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | ✅                     | %                            | 3 models ⏳             |
 | pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                            | 2 models                |
 | pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                       | 8 models                |
 | rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI                   | 6 models                |
@@ -83,7 +83,8 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | security     | BaxBench (no security reminder)                       | Secure coding         | ✅                     | % passing functional+exploit | 1 utility model ⏳      |
 | review       | SWE-PRBench (eval_100 · GPT-5.2 judge)                | Code review           | ✅                     | composite × 100              | 4 models (2 utility) ⏳ |
 | libraries    | BigCodeBench (Full · Instruct · v0.1.0)               | Libraries & APIs      | ✅                     | pass@1                       | 2 utility models ⏳     |
-| polyglot     | Aider Polyglot (225 exercises · pass rate 2)          | Multilingual editing  | ✅                     | %                            | 1 utility model ⏳      |
+| polyglot     | Aider Polyglot (225 exercises · pass rate 2)          | Multilingual editing  | ✅ (selectable)        | %                            | 1 utility model ⏳      |
+| multilingual | SWE-bench Multilingual (300 tasks · 9 languages)      | Multilingual editing  | ✅ (selectable)        | % resolve                    | 3 models                |
 | algorithmic  | LiveCodeBench (454-problem window)                    | Algorithmic coding    | ✅                     | pass@1                       | 2 utility models ⏳     |
 | optimization | GSO (102 tasks · Opt@1)                               | Making code faster    | ✅                     | Opt@1 %                      | 6 models (1 utility)    |
 | completion   | CrossCodeEval (NeurIPS 2023)                          | Cross-file completion | ✅ but **gap**         | —                            | 0 models ⏳             |
@@ -97,6 +98,9 @@ Ordered by value-to-effort. Each item names the blocker, not just the wish.
 1. **Zero-evidence model:** MAI-Code-1.1-Flash. Search LiveBench, Terminal-Bench 4.0, SWE-Bench Pro V2, SWE-rebench and SWE Atlas for new entries. Do **not** backfill from a different model version.
 2. **SWE-rebench window drift:** the captured values come from the 2026-05-15 → 2026-07-01 window (111 tasks). The leaderboard rolls monthly — re-capture the whole window at every refresh and record the window dates in the benchmark version string; never mix windows. New catalog models can appear here first (this is where GPT-5.6 Sol/Luna and Sonnet 5 surfaced).
 3. **ProgramBench is growing:** 7 catalog models captured on the 2026-09-09 update; check for new rows per refresh. Fable 5/5.1 and GPT-6 rows are not yet published there.
+4. **SWE-bench experiments repo is the fresher source** for the SWE-bench family: new common-harness (mini-SWE-agent) submissions land in `SWE-bench/experiments/evaluation/<split>/` before (or without) appearing in the rendered leaderboard. This pass surfaced Gemini 3.5 Flash Verified 71.8 (2026-09-01, mini 2.4.2) and the Multilingual batch there. Re-scan `evaluation/verified` and `evaluation/multilingual` per refresh for catalog models.
+5. **SWE-bench Multimodal v2 (2026-09-01)** still has no catalog-model rows on any harness; all submissions are agent systems (GUIRepair, ZenCoder, Refact) or 2024-era models. Watch for mini-SWE-agent rows.
+6. **Rejected candidates (2026-09-25 sweep):** SWE-bench Multilingual baseline paper (only Claude 3.7 Sonnet, superseded by the mini-SWE-agent batch now captured); MLE-bench (agent-system leaderboard, submissions closed 2026-04-24, v2 pending in openai/frontier-evals); CodeClash (frozen Nov 2025, 8 old models, goal-oriented not task-resolution); Commit-0 (frozen 2024, Sonnet 3.5 only); KernelBench (site unreachable, no maintained leaderboard); SWE-Lancer (merged into openai/prepareded, no current leaderboard); SWE-rebench v2 dataset exists but the leaderboard still serves the v1 window. Re-evaluate when any of these change.
 
 ## 5. Data discipline (hard rules)
 

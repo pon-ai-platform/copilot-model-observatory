@@ -109,6 +109,15 @@ export function expandCatalog(benchmarks, sources, models) {
       'Re-implement a program from its compiled binary and docs; every behavioral test must pass.',
       'Common mini-SWE-agent scaffold, no internet and no decompilation. Extremely hard: the best catalog model resolves 4.5%. Almost-resolved rates are captured in details. Agent-based fuzzing generates the test suite.',
     ],
+    [
+      'multilingual',
+      'Multilingual editing',
+      'SWE-bench Multilingual',
+      '300 tasks · 42 repos · 9 languages · mini-SWE-agent',
+      'https://www.swebench.com/multilingual.html',
+      'Resolve real GitHub issues across C, C++, Go, Java, JS, TS, PHP, Ruby and Rust.',
+      'Common mini-SWE-agent harness, single rollout per instance. Agent versions differ per entry (2.0.0a0 for the February batch, 2.4.x for September). Kept separate from Aider Polyglot, which measures editing exercises, not issue resolution.',
+    ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
     sources[id] = url
@@ -159,6 +168,13 @@ export function expandCatalog(benchmarks, sources, models) {
   })
   add('GPT-4o', 'algorithmic', 29.5, 'GPT-4o-2024-08-06 · fixed 454-problem window')
   add('GPT-4o mini', 'algorithmic', 27.5, 'GPT-4o-mini-2024-07-18 · fixed 454-problem window')
+  for (const [name, value, agent, date] of [
+    ['Claude Haiku 4.5', 64.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
+    ['Gemini 3.5 Flash', 67.0, 'mini-SWE-agent 2.4.6', '2026-09-02'],
+    ['GPT-5 mini', 39.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
+  ])
+    add(name, 'multilingual', value, agent, date)
+  add('Gemini 3.5 Flash', 'verified', 71.8, 'mini-SWE-agent 2.4.2', '2026-09-01')
   for (const [name, value, date] of [
     ['Claude Opus 4.8', 47.1, '2026-07-12'],
     ['Claude Opus 4.7', 44.1, '2026-04-27'],

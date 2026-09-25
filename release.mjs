@@ -85,7 +85,10 @@ const versionJson = {
   defaultScored: models.filter((m) => score(m, defaults).value !== null).length,
   benchmarks: benchmarks.length,
 }
-fs.writeFileSync(path.join(root, 'dist', 'version.json'), JSON.stringify(versionJson, null, 2) + '\n')
+fs.writeFileSync(
+  path.join(root, 'dist', 'version.json'),
+  JSON.stringify(versionJson, null, 2) + '\n',
+)
 
 // 5. Gates
 console.log(run('npm run check'))

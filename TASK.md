@@ -125,11 +125,24 @@ From README + `check.mjs`; enforced by assertions:
 ## 7. Gates (all must pass before deploy)
 
 ```sh
-node check.mjs          # JSON counts must match the baseline above (or an intended new one)
+node check.mjs          # JSON counts must match the baseline above (or an intended new one) + release-stamp assertions
 npm run check           # node --check on all files
 npm run format:check    # Prettier (printWidth 100, semi:false, singleQuote:true)
 ```
 
 Plus a browser smoke test via `node serve.mjs` on http://127.0.0.1:4173: search, sort, model details, missing-score handling, preference persistence, WebMCP weight rejection. Run node/npm through nvm (`nvm use --lts`).
 
-Deploy only after committing: `CLOUDFLARE_ACCOUNT_ID=… npx wrangler pages deploy dist --project-name=copilot-model-observatory --branch=main --commit-dirty=false` (full command in README). Live: https://copilot-models.pon-ai.com.
+## 8. Release protocol (date-time on the site updates every release)
+
+The site displays two distinct stamps: `checked` (when sources were last verified by hand, set during data refresh, step 4 above) and `released` (date-time the exact running build was published, set automatically per release). The footer and every model-details dialog render the live `released` value from `dist/data.js`; `dist/version.json` exposes both stamps plus the deployed commit at `/version.json`.
+
+Release flow — **always via `release.mjs`**, never a bare `wrangler pages deploy`:
+
+```sh
+# data changes finished and browser smoke test passed:
+git add -A && git commit -m "…" && git push origin main
+npm run release:deploy   # refuses on dirty/unpushed tree → stamps released (UTC) + version.json → gates → deploy
+git add dist/ && git commit -m "Stamp release <ISO timestamp>" && git push origin main
+```
+
+`check.mjs` enforces: `checked` is YYYY-MM-DD; `released` is an ISO date-time with `Z`; `released ≥ checked`; `version.json` matches both and carries the commit hash; the `index.html` footer contains the release stamp. So the stamps cannot silently drift — a stale `version.json` fails the suite.

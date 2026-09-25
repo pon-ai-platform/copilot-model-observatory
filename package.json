@@ -7,7 +7,9 @@
     "start": "node serve.mjs",
     "check": "node --check dist/app.js && node --check dist/data.js && node --check dist/scoring.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "release": "node release.mjs",
+    "release:deploy": "node release.mjs --deploy"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

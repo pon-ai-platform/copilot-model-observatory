@@ -1,4 +1,4 @@
-import { models, benchmarks, sources, checked } from './data.js'
+import { models, benchmarks, sources, checked, released } from './data.js'
 import {
   defaults,
   score,
@@ -265,7 +265,7 @@ function details(id) {
   if (!m) return
   const s = score(m, state.weights, state.selections)
   $('detailBody').innerHTML =
-    `<h2 id="detailTitle">${escape(m.name)}</h2><p class="detail-meta">${m.provider} · ${m.utility ? 'Background utility model' : 'Listed by GitHub Copilot'} · Checked ${checked}</p><p class="detail-meta">Plan, IDE and organization policy can restrict access. <a href="${sources.availability}" target="_blank" rel="noopener">Availability matrix ↗</a></p>${m.notes.map((n) => `<p class="notes">${escape(n)}</p>`).join('')}<h3>Copilot pricing <span class="detail-meta">USD / 1M tokens</span></h3>${rates(m.price)}${m.long ? `<p class="detail-meta">Long-context tier: above ${m.long.threshold.toLocaleString()} input tokens</p>${rates(m.long)}` : ''}<p class="detail-meta">— means no separate rate listed. <a href="${sources.pricing}" target="_blank" rel="noopener">Official rate table ↗</a></p><h3>Published benchmark evidence</h3><p class="detail-meta">External agents, not Copilot. Uncertainty is reproduced as reported; no composite confidence interval is inferred.</p>${
+    `<h2 id="detailTitle">${escape(m.name)}</h2><p class="detail-meta">${m.provider} · ${m.utility ? 'Background utility model' : 'Listed by GitHub Copilot'} · Checked ${checked} · Released ${released}</p><p class="detail-meta">Plan, IDE and organization policy can restrict access. <a href="${sources.availability}" target="_blank" rel="noopener">Availability matrix ↗</a></p>${m.notes.map((n) => `<p class="notes">${escape(n)}</p>`).join('')}<h3>Copilot pricing <span class="detail-meta">USD / 1M tokens</span></h3>${rates(m.price)}${m.long ? `<p class="detail-meta">Long-context tier: above ${m.long.threshold.toLocaleString()} input tokens</p>${rates(m.long)}` : ''}<p class="detail-meta">— means no separate rate listed. <a href="${sources.pricing}" target="_blank" rel="noopener">Official rate table ↗</a></p><h3>Published benchmark evidence</h3><p class="detail-meta">External agents, not Copilot. Uncertainty is reproduced as reported; no composite confidence interval is inferred.</p>${
       benchmarks
         .filter((b) => m.evidence[b.id])
         .map((b) => evidenceCard(b, m.evidence[b.id]))
@@ -300,43 +300,8 @@ for (const p of [...new Set(models.map((m) => m.provider))].sort())
   $('provider').add(new Option(p, p))
 weightControls()
 render()
-$('sourceCards').innerHTML = benchmarks
-  .map(
-    (b) =>
-      `<article class="source-card"><a href="${sources[b.id]}" target="_blank" rel="noopener">${b.name} ↗</a><p>${b.description}</p><p class="source-coverage">${models.filter((m) => Number.isFinite(m.evidence[b.id]?.value)).length} of ${models.length} models with evidence${models.some((m) => !m.utility && Number.isFinite(m.evidence[b.id]?.value)) ? '' : ' · no selectable-model coverage'}</p><p>${b.note}</p><small>${b.version} · checked ${checked}</small></article>`,
-  )
-  .join('')
-$('sortLens').addEventListener('click', () => {
-  state.sort = 'company'
-  state.ascending = false
-  state.weighted = true
-  save()
-  render()
-})
-$('reset').addEventListener('click', () => {
-  state.weights = { ...defaults }
-  state.selections = { ...defaultSelections }
-  save()
-  weightControls()
-  render()
-})
-$('search').addEventListener('input', (e) => {
-  state.query = e.target.value
-  render()
-})
-$('provider').addEventListener('change', (e) => {
-  state.provider = e.target.value
-  render()
-})
-$('view').addEventListener('change', (e) => {
-  state.view = e.target.value
-  if (state.sort !== 'company') {
-    state.sort = 'name'
-    state.ascending = true
-  }
-  render()
-})
-$('close').addEventListener('click', () => $('details').close())
+document.querySelector('footer span').textContent =
+  `Independent reference · sources checked ${new Date(checked + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })} · released ${released.slice(11, 16)} UTC ${released.slice(0, 10)}`
 // Theme toggle: flips [data-theme="dark"] on <html>, persists the choice.
 const applyTheme = (dark) => {
   document.documentElement.toggleAttribute('data-theme', dark)

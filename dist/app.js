@@ -302,6 +302,16 @@ weightControls()
 render()
 document.querySelector('footer span').textContent =
   `Independent reference · sources checked ${new Date(checked + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })} · released ${released.slice(11, 16)} UTC ${released.slice(0, 10)}`
+const snapshotBadge = document.getElementById('snapshotDate')
+if (snapshotBadge)
+  snapshotBadge.textContent = new Date(checked + 'T00:00:00Z')
+    .toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    })
+    .replace(/^(\d+) (\w{3})\w* (\d+)$/, '$1 $2 $3')
 $('sourceCards').innerHTML = benchmarks
   .map(
     (b) =>

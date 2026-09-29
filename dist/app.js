@@ -302,6 +302,43 @@ weightControls()
 render()
 document.querySelector('footer span').textContent =
   `Independent reference · sources checked ${new Date(checked + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })} · released ${released.slice(11, 16)} UTC ${released.slice(0, 10)}`
+$('sourceCards').innerHTML = benchmarks
+  .map(
+    (b) =>
+      `<article class="source-card"><a href="${sources[b.id]}" target="_blank" rel="noopener">${b.name} ↗</a><p>${b.description}</p><p class="source-coverage">${models.filter((m) => Number.isFinite(m.evidence[b.id]?.value)).length} of ${models.length} models with evidence${models.some((m) => !m.utility && Number.isFinite(m.evidence[b.id]?.value)) ? '' : ' · no selectable-model coverage'}</p><p>${b.note}</p><small>${b.version} · checked ${checked}</small></article>`,
+  )
+  .join('')
+$('sortLens').addEventListener('click', () => {
+  state.sort = 'company'
+  state.ascending = false
+  state.weighted = true
+  save()
+  render()
+})
+$('reset').addEventListener('click', () => {
+  state.weights = { ...defaults }
+  state.selections = { ...defaultSelections }
+  save()
+  weightControls()
+  render()
+})
+$('search').addEventListener('input', (e) => {
+  state.query = e.target.value
+  render()
+})
+$('provider').addEventListener('change', (e) => {
+  state.provider = e.target.value
+  render()
+})
+$('view').addEventListener('change', (e) => {
+  state.view = e.target.value
+  if (state.sort !== 'company') {
+    state.sort = 'name'
+    state.ascending = true
+  }
+  render()
+})
+$('close').addEventListener('click', () => $('details').close())
 // Theme toggle: flips [data-theme="dark"] on <html>, persists the choice.
 const applyTheme = (dark) => {
   document.documentElement.toggleAttribute('data-theme', dark)

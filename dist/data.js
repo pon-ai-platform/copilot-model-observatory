@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-09-24'
+export const checked = '2026-09-29'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-09-25T09:43:33Z'
 export const sources = {
@@ -110,6 +110,7 @@ const rows = [
   ['Claude Haiku 4.5', 'Anthropic', 1, 0.1, 1.25, 5],
   ['Claude Sonnet 4.6', 'Anthropic', 3, 0.3, 3.75, 15],
   ['Claude Sonnet 5', 'Anthropic', 2, 0.2, 2.5, 10],
+  ['Claude Sonnet 5.5', 'Anthropic', 2, 0.2, 2.5, 10],
   ['Claude Opus 4.7', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8 (fast mode)', 'Anthropic', 10, 1, 12.5, 50],
@@ -151,6 +152,7 @@ for (const [name, value, setting] of [
   ['GPT-6 Astra', 80.4, 'Max Effort'],
   ['Claude Fable 5.1', 86.4, 'Max Effort'],
   ['Claude Opus 5.5', 89.3, 'Thinking Max Effort'],
+  ['Claude Sonnet 5.5', 88.9, 'xHigh Effort'],
   ['Claude Fable 5', 86, 'Max Effort'],
   ['GPT-5.6 Luna', 82.9, 'Max Effort'],
   ['GPT-5.6 Sol', 83.9, 'Max Effort'],

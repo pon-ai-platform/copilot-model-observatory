@@ -12,7 +12,7 @@ Run `node serve.mjs` from this directory and open http://127.0.0.1:4173. Run `no
 
 [`TASK.md`](TASK.md) is the living task document tracking catalog and benchmark coverage.
 
-`dist/data.js` contains the dated snapshot and primary-source URLs, separate from rendering and scoring. This version was checked on 2026-09-24; it does not automatically refresh. Update prices from GitHub's Copilot rate table, not vendor API pages. Retain cache write/read and long-context tiers. Compare the supported-model list and utility list; tenant-level enablement is not connected.
+`dist/data.js` contains the dated snapshot and primary-source URLs, separate from rendering and scoring. This version was checked on 2026-09-29; it does not automatically refresh. Update prices from GitHub's Copilot rate table, not vendor API pages. Retain cache write/read and long-context tiers. Compare the supported-model list and utility list; tenant-level enablement is not connected.
 
 Each evidence record includes value, source, agent, result date if available, and published uncertainty if available. Missing results must remain absent. Do not fill from a different model version or silently combine benchmark editions. Alternative harness results belong in `alternatives`, not substituted into the main table. Source dates and unknown result dates must remain distinct.
 

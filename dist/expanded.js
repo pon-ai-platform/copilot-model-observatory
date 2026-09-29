@@ -59,10 +59,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'optimization',
       'Making code faster',
       'GSO',
-      '102 tasks · Opt@1',
+      '102 tasks · Opt@1 · updated 2026-09-27',
       'https://livecodebench.github.io/gso.html',
       'Single-attempt estimate of tasks achieving at least 95% of human speedup while passing correctness tests.',
-      'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry; the earlier unlabeled GPT-5.4 duplicate is resolved as two reasoning settings and the xHigh run feeds the lens.',
+      'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry; the earlier unlabeled GPT-5.4 duplicate is resolved as two reasoning settings and the xHigh run feeds the lens. The 2026-09-27 update improved elicitation (models are explicitly asked to keep measuring and improving after their first speedup); rows from before and after that date are not directly comparable.',
     ],
     [
       'completion',
@@ -184,6 +184,13 @@ export function expandCatalog(benchmarks, sources, models) {
   ])
     add(name, 'optimization', value, 'OpenHands · Opt@1', date)
   add('GPT-5.4', 'optimization', 31.4, 'OpenHands · Opt@1 · xHigh', '2026-03-10')
+  for (const [name, value] of [
+    ['Claude Fable 5.1', 88.2],
+    ['GPT-6 Astra', 79.4],
+    ['Claude Fable 5', 78.4],
+    ['GPT-5.6 Sol', 76.5],
+  ])
+    add(name, 'optimization', value, 'OpenHands · Opt@1 · xHigh', '2026-09-27')
   get('GPT-5.4').notes.push(
     'GSO initially published 31.4% and 25.5% for GPT 5.4 / OpenHands / Opt@1 without reasoning-effort labels; the leaderboard now shows these are two reasoning settings (xHigh and High) on the same date. The xHigh run is used as main evidence and the High run is retained below.',
   )

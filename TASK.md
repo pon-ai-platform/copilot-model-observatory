@@ -2,10 +2,10 @@
 
 Living task document. Update it in the same commit as any data change.
 
-- **Snapshot checked:** 2026-09-30 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}` — 21 benchmark measures/editions
+- **Snapshot checked:** 2026-10-08 (`checked` in `dist/data.js`)
+- **Acceptance baseline:** `node check.mjs` → `{"models":38,"withEvidence":36,"defaultScored":30,"benchmarks":21,"checks":"passed"}` — 21 benchmark measures/editions
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
-  - Previous baseline (before the 2026-09-30 GPT-6.1 Sol addition): `{"models":36,"withEvidence":34,"defaultScored":28,"benchmarks":21,"checks":"passed"}` (2026-09-29 pass: `{"models":35,"withEvidence":33,"defaultScored":27,"checks":"passed"}`).
+  - Previous baseline (before the 2026-10-08 refresh): `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}` (2026-09-30 pass: `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}` after GPT-6.1 Sol; pre-2026-09-29: `{"models":35,"withEvidence":33,"defaultScored":27,"benchmarks":21,"checks":"passed"}`).
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
 
 ## 1. Task statement
@@ -19,7 +19,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 
 ## 2. Model inventory (current state)
 
-37 models. "Evidence" lists the benchmark ids with captured primary-source results. ✅ = has evidence, ⏳ = zero evidence anywhere.
+38 models. "Evidence" lists the benchmark ids with captured primary-source results. ✅ = has evidence, ⏳ = zero evidence anywhere.
 
 | Model                       | Provider    | Utility | Evidence                                                                              |
 | --------------------------- | ----------- | ------- | ------------------------------------------------------------------------------------- |
@@ -33,21 +33,22 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | GPT-5.6 Sol                 | OpenAI      | —       | coding, qna, tests, rebench, program, terminal4, pro2                                 |
 | GPT-5.6 Terra               | OpenAI      | —       | coding, terminal4, pro2                                                               |
 | GPT-6 Astra                 | OpenAI      | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
-| GPT-6 Luna                  | OpenAI      | —       | coding                                                                                |
+| GPT-6 Luna                  | OpenAI      | —       | coding, terminal4                                                                     |
 | GPT-6 Sol                   | OpenAI      | —       | coding                                                                                |
-| GPT-6.1 Sol                 | OpenAI      | —       | coding                                                                                |
+| GPT-6.1 Sol                 | OpenAI      | —       | coding, terminal4                                                                     |
 | GPT-4o                      | OpenAI      | ✅      | review, libraries, algorithmic, optimization (0)                                      |
 | GPT-4o mini                 | OpenAI      | ✅      | review, libraries, algorithmic                                                        |
 | GPT-4.1                     | OpenAI      | ✅      | security, polyglot                                                                    |
 | Claude Haiku 4.5            | Anthropic   | —       | verified, review, pro (original), multilingual                                        |
+| Claude Haiku 5.5            | Anthropic   | —       | coding                                                                                |
 | Claude Sonnet 4.6           | Anthropic   | —       | coding, architecture, qna, tests, refactor, review, terminal (2.1)                    |
 | Claude Sonnet 5             | Anthropic   | —       | coding, optimization, terminal4, pro2                                                 |
-| Claude Sonnet 5.5           | Anthropic   | —       | coding                                                                                |
+| Claude Sonnet 5.5           | Anthropic   | —       | coding, terminal4                                                                     |
 | Claude Opus 4.7             | Anthropic   | —       | coding, features, optimization, program, terminal4                                    |
 | Claude Opus 4.8             | Anthropic   | —       | coding, optimization, program, terminal4                                              |
 | Claude Opus 4.8 (fast mode) | Anthropic   | —       | coding                                                                                |
 | Claude Opus 5               | Anthropic   | —       | coding, qna, tests, optimization, rebench, program, terminal4, pro2                   |
-| Claude Opus 5.5             | Anthropic   | —       | coding                                                                                |
+| Claude Opus 5.5             | Anthropic   | —       | coding, terminal4                                                                     |
 | Claude Fable 5              | Anthropic   | —       | coding, qna, tests, refactor, rebench, terminal4                                      |
 | Claude Fable 5.1            | Anthropic   | —       | coding, qna, tests, refactor, terminal4, pro2                                         |
 | Gemini 3.5 Flash            | Google      | —       | coding, verified, multilingual                                                        |
@@ -61,7 +62,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | Grok 4.6                    | xAI         | —       | coding, terminal4                                                                     |
 | Grok 4.7                    | xAI         | —       | coding, terminal4                                                                     |
 
-Notes carried in `dist/data.js`: Gemini 3.6–3.8 promotional Copilot pricing through 2026-12-31; utility models power background features and are not selectable; `fast mode` is GA-listed but keeps "preview" in its name; Fable 5, Fable 5.1 and GPT-5.6 Sol have elevated refusal-related failures on parts of SWE Atlas; Scale abbreviates GPT-5.3-Codex as "GPT 5.3 (Codex)"; GitHub retirement schedule flags Claude Opus 4.7, Gemini 3.5 Flash, Gemini 3.6 Flash and Kimi K2.7 Code for retirement on 2026-10-02 (Sonnet 4.6 remains for annual-plan individuals). Claude Sonnet 5.5 was added in the 2026-09-29 refresh after GitHub listed it as GA. GPT-6.1 Sol was added in the 2026-09-30 refresh after GitHub listed it as GA.
+Notes carried in `dist/data.js`: Gemini 3.6–3.8 promotional Copilot pricing through 2026-12-31; utility models power background features and are not selectable; `fast mode` is GA-listed but keeps "preview" in its name; Fable 5, Fable 5.1 and GPT-5.6 Sol have elevated refusal-related failures on parts of SWE Atlas; Scale abbreviates GPT-5.3-Codex as "GPT 5.3 (Codex)"; GitHub retirement schedule flags Claude Opus 4.7, Gemini 3.5 Flash, Gemini 3.6 Flash and Kimi K2.7 Code for retirement on 2026-10-02 (Sonnet 4.6 remains for annual-plan individuals). Claude Sonnet 5.5 was added in the 2026-09-29 refresh after GitHub listed it as GA. GPT-6.1 Sol was added in the 2026-09-30 refresh after GitHub listed it as GA. Claude Haiku 5.5 was added in the 2026-10-08 refresh after GitHub listed it as GA; Sonnet 5.5 cached-input price dropped to $0.10 the same day. GitHub's retirement of Opus 4.7, Gemini 3.5/3.6 Flash and Kimi K2.7 Code took effect 2026-10-02; they remain in the catalog with their retirement notes until GitHub removes the entries from the supported-models table.
 
 ## 3. Benchmark inventory (18 measures / editions)
 
@@ -69,13 +70,13 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 
 | id           | Benchmark                                             | Capability            | Main lens?             | Scale                        | Coverage today          |
 | ------------ | ----------------------------------------------------- | --------------------- | ---------------------- | ---------------------------- | ----------------------- |
-| coding       | LiveBench · Coding (LiveBench-2026-06-25)             | General coding        | ✅ default             | /100, category avg           | 29 models               |
+| coding       | LiveBench · Coding (LiveBench-2026-06-25)             | General coding        | ✅ default             | /100, category avg           | 30 models               |
 | architecture | R2ABench (Paper v1 · Table 3 · Full PRD · Direct)     | Architecture          | ✅                     | Node F1 × 100                | 1 model (Sonnet 4.6) ⏳ |
 | qna          | SWE Atlas · Codebase QnA                              | Codebase Q&A          | ✅ (equal-weight trio) | task resolve %               | 12 models               |
 | tests        | SWE Atlas · Test Writing                              | Test writing          | ✅ (trio)              | %                            | 12 models               |
 | refactor     | SWE Atlas · Refactoring                               | Refactoring           | ✅ (trio)              | %                            | 11 models ⏳            |
 | terminal     | Terminal-Bench 2.1 (Terminus 2)                       | Terminal              | historical             | %                            | 4 models                |
-| terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI                   | 14 models               |
+| terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI                   | 19 models               |
 | verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | ✅                     | %                            | 3 models ⏳             |
 | pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                            | 2 models                |
 | pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                       | 8 models                |

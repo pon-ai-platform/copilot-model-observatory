@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-09-30'
+export const checked = '2026-10-08'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-09-30T07:45:07Z'
 export const sources = {
@@ -109,9 +109,10 @@ const rows = [
   ['GPT-6 Sol', 'OpenAI', 2, 0.2, 2.5, 10, 272, 4, 0.4, 5, 15],
   ['GPT-6.1 Sol', 'OpenAI', 2, 0.1, 2.5, 10, 272, 4, 0.2, 5, 15],
   ['Claude Haiku 4.5', 'Anthropic', 1, 0.1, 1.25, 5],
+  ['Claude Haiku 5.5', 'Anthropic', 0.1, 0.01, 0.125, 0.5, 100, 0.5, 0.05, 0.625, 2.5],
   ['Claude Sonnet 4.6', 'Anthropic', 3, 0.3, 3.75, 15],
   ['Claude Sonnet 5', 'Anthropic', 2, 0.2, 2.5, 10],
-  ['Claude Sonnet 5.5', 'Anthropic', 2, 0.2, 2.5, 10],
+  ['Claude Sonnet 5.5', 'Anthropic', 2, 0.1, 2.5, 10],
   ['Claude Opus 4.7', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8 (fast mode)', 'Anthropic', 10, 1, 12.5, 50],
@@ -173,6 +174,7 @@ for (const [name, value, setting] of [
   ['Gemini 3.6 Flash', 77.9, 'High'],
   ['GPT-5.6 Terra', 78.2, 'Max Effort'],
   ['Grok 4.6', 76.8, 'not specified'],
+  ['Claude Haiku 5.5', 76.4, 'xHigh Effort'],
   ['Gemini 3.8 Flash', 72.5, 'High'],
   ['Grok 4.7', 77.2, 'xHigh'],
   ['GPT-5.4 nano', 70.8, 'xHigh'],

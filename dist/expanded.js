@@ -241,9 +241,13 @@ export function expandCatalog(benchmarks, sources, models) {
     })
   }
   for (const [name, value, uncertainty, agent] of [
+    ['Claude Opus 5.5', 64.8, 3.1, 'Claude Code · max'],
+    ['Claude Sonnet 5.5', 61.8, 2.9, 'Claude Code · max'],
     ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
+    ['GPT-6.1 Sol', 58.2, 3.1, 'Codex · max'],
     ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],
     ['Claude Opus 5', 53.9, 3.2, 'Claude Code · xhigh'],
+    ['GPT-6 Sol', 49.4, 3.2, 'Codex · max'],
     ['Claude Fable 5', 44.5, 3.8, 'Claude Code · max'],
     ['Grok 4.7', 37.6, 3.5, 'Grok Build · xhigh'],
     ['GPT-5.6 Sol', 37.3, 3.8, 'Codex · max'],
@@ -252,6 +256,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Grok 4.6', 20.3, 3.1, 'Grok Build · high'],
     ['Gemini 3.8 Flash', 19.1, 3.4, 'mini-SWE-agent · high'],
     ['GPT-5.6 Luna', 17.3, 2.8, 'Codex · max'],
+    ['GPT-6 Luna', 16.4, 2.7, 'Codex · max'],
     ['Grok 4.5', 12.4, 2.6, 'Grok Build · high'],
     ['Claude Sonnet 5', 12.4, 3.1, 'Claude Code · max'],
     ['Gemini 3.7 Flash', 11.2, 2.4, 'mini-SWE-agent · high'],

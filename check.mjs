@@ -102,7 +102,7 @@ assert.equal(
   0,
 )
 assert.equal(score(astra, { completion: 1 }).value, null)
-assert.deepEqual(awards(models, { terminal: 1 }).best, [astra.id])
+assert.deepEqual(awards(models, { terminal: 1 }).best, ['claude-opus-5-5'])
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {
   for (const [id, e] of Object.entries(m.evidence)) {

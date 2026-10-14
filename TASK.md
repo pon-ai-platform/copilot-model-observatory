@@ -3,7 +3,7 @@
 Living task document. Update it in the same commit as any data change.
 
 - **Snapshot checked:** 2026-10-14 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":25,"benchmarks":27,"checks":"passed"}` — 27 benchmark measures/editions (2026-10-14: General coding switched to LiveBench 2.0; R2ABench and Aider Polyglot dropped; five Vals AI benchmarks added; LiveBench 2.0 Agentic and Vals SWE-bench Multimodal added)
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":32,"defaultScored":25,"benchmarks":23,"checks":"passed"}` — 23 benchmark measures/editions (2026-10-14: General coding switched to LiveBench 2.0; R2ABench, Aider Polyglot, BaxBench, BigCodeBench, LiveCodeBench and CrossCodeEval dropped; five Vals AI benchmarks, LiveBench 2.0 Agentic and Vals SWE-bench Multimodal added)
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-10-14 refresh): `{"models":38,"withEvidence":36,"defaultScored":30,"benchmarks":21,"checks":"passed"}` (2026-10-08 pass, after Haiku 5.5: same; 2026-09-30 pass: `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}`; pre-2026-09-29: `{"models":35,"withEvidence":33,"defaultScored":27,"benchmarks":21,"checks":"passed"}`).
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -36,9 +36,9 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | GPT-6 Luna                  | OpenAI      | —       | coding (LB 1.0), terminal4, livebench2, vibecode, migration, cyber, ioi                                                           |
 | GPT-6 Sol                   | OpenAI      | —       | coding (LB 1.0), terminal4, livebench2, vibecode, migration, cyber, ioi                                                           |
 | GPT-6.1 Sol                 | OpenAI      | —       | coding (LB 1.0), terminal4, pro2, livebench2, vibecode, migration, cyber, ioi                                                     |
-| GPT-4o                      | OpenAI      | ✅      | review, libraries, algorithmic, optimization (0)                                                                                  |
-| GPT-4o mini                 | OpenAI      | ✅      | review, libraries, algorithmic                                                                                                    |
-| GPT-4.1                     | OpenAI      | ✅      | security                                                                                                                          |
+| GPT-4o                      | OpenAI      | ✅      | review, optimization (0)                                                                                                          |
+| GPT-4o mini                 | OpenAI      | ✅      | review                                                                                                                            |
+| GPT-4.1                     | OpenAI      | ✅      | ⏳                                                                                                                                |
 | Claude Haiku 4.5            | Anthropic   | —       | verified, pro (original), review, multilingual, program, livebench2, vibecode, migration                                          |
 | Claude Haiku 5.5            | Anthropic   | —       | coding (LB 1.0), pro2, livebench2, vibecode, migration, cyber, ioi, vcb100                                                        |
 | Claude Sonnet 4.6           | Anthropic   | —       | coding (LB 1.0), qna, tests, refactor, terminal (2.1), review, program, livebench2, vibecode, migration                           |
@@ -63,39 +63,35 @@ Vals AI results also carry alternative-harness rows (Vibe Code Bench: Claude Cod
 
 Notes carried in `dist/data.js`: Gemini 3.7/3.8 Flash promotional Copilot pricing through 2026-12-31; Gemini 4 Argon promotional pricing until 2026-12-01 (GA, Powerful; GitHub lists it as not on Copilot Pro and not on GitHub.com); utility models power background features and are not selectable; `fast mode` is GA-listed but keeps "preview" in its name; Fable 5, Fable 5.1 and GPT-5.6 Sol have elevated refusal-related failures on parts of SWE Atlas; Scale abbreviates GPT-5.3-Codex as "GPT 5.3 (Codex)". Sonnet 4.6 remains for annual-plan individuals. Claude Sonnet 5.5 was added 2026-09-29, GPT-6.1 Sol 2026-09-30, Claude Haiku 5.5 2026-10-08 and Gemini 4 Argon 2026-10-14, each after GitHub listed it as GA. **Removed 2026-10-14:** Claude Opus 4.7, Gemini 3.5 Flash, Gemini 3.6 Flash and Kimi K2.7 Code — retired 2026-10-02 and no longer in GitHub's supported-models or pricing tables; their evidence rows were dropped with them (git history keeps them).
 
-## 3. Benchmark inventory (27 measures / editions)
+## 3. Benchmark inventory (23 measures / editions)
 
 Main-lens selection is one benchmark per capability (`dist/scoring.js`). Historical editions stay in the historical view.
 
-| id           | Benchmark                                             | Capability            | Main lens?             | Scale                        | Coverage today          |
-| ------------ | ----------------------------------------------------- | --------------------- | ---------------------- | ---------------------------- | ----------------------- |
-| coding       | LiveBench 1.0 · Coding (LiveBench-2026-06-25, /v1/)   | General coding        | historical             | /100, category avg           | 26 models               |
-| qna          | SWE Atlas · Codebase QnA                              | Codebase Q&A          | ✅ (equal-weight trio) | task resolve %               | 11 models               |
-| tests        | SWE Atlas · Test Writing                              | Test writing          | ✅ (trio)              | %                            | 11 models               |
-| refactor     | SWE Atlas · Refactoring                               | Refactoring           | ✅ (trio)              | %                            | 9 models ⏳             |
-| terminal     | Terminal-Bench 2.1 (Terminus 2)                       | Terminal              | historical             | %                            | 4 models                |
-| terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI                   | 19 models               |
-| verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | selectable             | %                            | 2 models ⏳             |
-| multimodal   | SWE-bench Multimodal (Vals AI run, 480 tasks)         | Fixing bugs           | ✅ default             | %, ± published               | 11 models               |
-| lbagentic    | LiveBench 2.0 · Agentic (18 tasks)                    | Long-running agents   | ✅ new capability      | /100, mean task score        | 25 models               |
-| livebench2   | LiveBench 2.0 · Coding (release 2026-10-13, 29 tasks) | General coding        | ✅ default             | /100, mean task score        | 25 models               |
-| pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                            | 2 models                |
-| pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                       | 11 models               |
-| rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI                   | 6 models                |
-| program      | ProgramBench (200 tasks · 2026-09-28)                 | Building programs     | ✅ new capability      | % resolved                   | 10 models               |
-| features     | FeatureBench (Lite · v1.0 · resolved)                 | Implementing features | selectable             | whole-task %                 | 2 models ⏳             |
-| vcb100       | Vibe Code Bench 1-100 (Vals AI, 50 tasks)             | Implementing features | ✅ default             | %, ± published               | 12 models               |
-| vibecode     | Vibe Code Bench v1.1 (Vals AI, OpenHands, 50 apps)    | Building apps         | ✅ new capability      | %, ± published               | 30 models (1 utility)   |
-| migration    | Code Migration (Vals AI, 130 tasks)                   | Migrating code        | ✅ new capability      | hidden-test pass %           | 28 models (1 utility)   |
-| security     | BaxBench (no security reminder)                       | Secure coding         | selectable             | % passing functional+exploit | 1 utility model ⏳      |
-| cyber        | CyberBench v1.1 (Vals AI, 116 tasks)                  | Secure coding         | ✅ default             | %, refusals = failures       | 20 models               |
-| review       | SWE-PRBench (eval_100 · GPT-5.2 judge)                | Code review           | ✅                     | composite × 100              | 4 models (2 utility) ⏳ |
-| libraries    | BigCodeBench (Full · Instruct · v0.1.0)               | Libraries & APIs      | view only              | pass@1                       | 2 utility models ⏳     |
-| multilingual | SWE-bench Multilingual (300 tasks · 9 languages)      | Multilingual editing  | ✅                     | % resolve                    | 2 models ⏳             |
-| ioi          | IOI 2024–2026 (Vals AI, 18 problems)                  | Algorithmic coding    | ✅ default             | %, ± published               | 21 models               |
-| algorithmic  | LiveCodeBench (454-problem window)                    | Algorithmic coding    | selectable             | pass@1                       | 2 utility models ⏳     |
-| optimization | GSO (102 tasks · Opt@1 · updated 2026-09-27)          | Making code faster    | ✅                     | Opt@1 %                      | 9 models (1 utility)    |
-| completion   | CrossCodeEval (NeurIPS 2023)                          | Cross-file completion | ✅ but **gap**         | —                            | 0 models ⏳             |
+| id           | Benchmark                                             | Capability            | Main lens?             | Scale                    | Coverage today          |
+| ------------ | ----------------------------------------------------- | --------------------- | ---------------------- | ------------------------ | ----------------------- |
+| coding       | LiveBench 1.0 · Coding (LiveBench-2026-06-25, /v1/)   | General coding        | historical             | /100, category avg       | 26 models               |
+| qna          | SWE Atlas · Codebase QnA                              | Codebase Q&A          | ✅ (equal-weight trio) | task resolve %           | 11 models               |
+| tests        | SWE Atlas · Test Writing                              | Test writing          | ✅ (trio)              | %                        | 11 models               |
+| refactor     | SWE Atlas · Refactoring                               | Refactoring           | ✅ (trio)              | %                        | 9 models ⏳             |
+| terminal     | Terminal-Bench 2.1 (Terminus 2)                       | Terminal              | historical             | %                        | 4 models                |
+| terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI               | 19 models               |
+| verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | selectable             | %                        | 2 models ⏳             |
+| multimodal   | SWE-bench Multimodal (Vals AI run, 480 tasks)         | Fixing bugs           | ✅ default             | %, ± published           | 11 models               |
+| lbagentic    | LiveBench 2.0 · Agentic (18 tasks)                    | Long-running agents   | ✅ new capability      | /100, mean task score    | 25 models               |
+| livebench2   | LiveBench 2.0 · Coding (release 2026-10-13, 29 tasks) | General coding        | ✅ default             | /100, mean task score    | 25 models               |
+| pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                        | 2 models                |
+| pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                   | 11 models               |
+| rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI               | 6 models                |
+| program      | ProgramBench (200 tasks · 2026-09-28)                 | Building programs     | ✅ new capability      | % resolved               | 10 models               |
+| features     | FeatureBench (Lite · v1.0 · resolved)                 | Implementing features | selectable             | whole-task %             | 2 models ⏳             |
+| vcb100       | Vibe Code Bench 1-100 (Vals AI, 50 tasks)             | Implementing features | ✅ default             | %, ± published           | 12 models               |
+| vibecode     | Vibe Code Bench v1.1 (Vals AI, OpenHands, 50 apps)    | Building apps         | ✅ new capability      | %, ± published           | 30 models (1 utility)   |
+| migration    | Code Migration (Vals AI, 130 tasks)                   | Migrating code        | ✅ new capability      | hidden-test pass %       | 28 models (1 utility)   |
+| cyber        | CyberBench v1.1 (Vals AI, 116 tasks)                  | Secure coding         | ✅ default             | %, refusals = failures ⚠ | 20 models               |
+| review       | SWE-PRBench (eval_100 · GPT-5.2 judge)                | Code review           | ✅                     | composite × 100          | 4 models (2 utility) ⏳ |
+| multilingual | SWE-bench Multilingual (300 tasks · 9 languages)      | Multilingual editing  | ✅                     | % resolve                | 2 models ⏳             |
+| ioi          | IOI 2024–2026 (Vals AI, 18 problems)                  | Algorithmic coding    | ✅ default             | %, ± published           | 21 models               |
+| optimization | GSO (102 tasks · Opt@1 · updated 2026-09-27)          | Making code faster    | ✅                     | Opt@1 %                  | 9 models (1 utility)    |
 
 Scoring defaults: the company lens opens in **topic mode** — five sliders (one per Overview topic, equal weights, `topicDefaults`), score = weighted mean of the model's topic standings, requiring scores covering ≥ half of the weight (`topicLens`). Saved preferences without `mode` open in advanced mode. **Advanced mode** keeps per-capability sliders: only General coding (`coding` capability → `livebench2`) starts at weight 100; every other capability defaults to 0 and new capabilities join at 0. Fifteen capabilities (Cross-file completion, Code review and Multilingual editing lost their sliders on 2026-10-14: 0–2 selectable models with results; Fixing bugs returned the same day with SWE-bench Multimodal as default, and Long-running agent work was added for LiveBench 2.0 Agentic). `defaultScored` in the baseline refers to advanced-mode defaults. Preference migration forces selections `livebench2`/`terminal4`/`pro2`, drops weights for removed capabilities and resets saved selections that no longer exist (e.g. `polyglot` → `multilingual`). Cost never enters the score. Aider Polyglot was dropped on 2026-10-14 (leaderboard frozen since 2025-11-20, only GPT-4.1 overlapped).
 
@@ -115,7 +111,8 @@ Ordered by value-to-effort. Each item names the blocker, not just the wish.
    **LMArena Code Arena | WebDev** (arena.ai/leaderboard/webdev, 143 models, updated 2026-10-13) is live and covers current models (Opus 5.5 max 1811, GPT-6 Astra max 1780, Sonnet 5.5 xhigh …) but publishes Elo-style preference scores (± CI, vote counts), not 0–100 success rates. Not captured: it would need its own scale handling (it could only enter the Overview via rank-based standing). Revisit if a preference signal is wanted.
    **Code review:** no maintained code-review leaderboard with current catalog models found (2026-10-14 search); SWE-PRBench remains the only source.
    **Vals AI (vals.ai/benchmarks) is now a primary source** for Vibe Code Bench, Code Migration, CyberBench, IOI and Vibe Code Bench 1-100. Refresh by opening each page in the browser, clicking "View N more models", and reading the detailed table (score ± and fallback/refusal flags). Keep Terminal-Bench 4.0 and ProgramBench from their original publishers, not Vals' reruns. CyberBench scores for GPT-6 Astra, GPT-6.1 Sol and Gemini 3.7/3.8 Flash are dominated by ~50% provider refusals.
-8. **Rejected candidates (2026-09-25 sweep):** SWE-bench Multilingual baseline paper (only Claude 3.7 Sonnet, superseded by the mini-SWE-agent batch now captured); MLE-bench (agent-system leaderboard, submissions closed 2026-04-24, v2 pending in openai/frontier-evals); CodeClash (frozen Nov 2025, 8 old models, goal-oriented not task-resolution); Commit-0 (frozen 2024, Sonnet 3.5 only); KernelBench (site unreachable, no maintained leaderboard); SWE-Lancer (merged into openai/prepareded, no current leaderboard); SWE-rebench v2 dataset exists but the leaderboard still serves the v1 window. Re-evaluate when any of these change.
+8. **Dropped 2026-10-14 (utility-only or empty):** BaxBench (GPT-4.1 only), BigCodeBench and LiveCodeBench (GPT-4o / GPT-4o mini only), CrossCodeEval (no results). Re-add only if current selectable models get results. Refusal marker: evidence with `refusals` ≥ 25% (parsed from Vals flags) shows ⚠ in benchmark and topic cells; the score itself is unchanged.
+9. **Rejected candidates (2026-09-25 sweep):** SWE-bench Multilingual baseline paper (only Claude 3.7 Sonnet, superseded by the mini-SWE-agent batch now captured); MLE-bench (agent-system leaderboard, submissions closed 2026-04-24, v2 pending in openai/frontier-evals); CodeClash (frozen Nov 2025, 8 old models, goal-oriented not task-resolution); Commit-0 (frozen 2024, Sonnet 3.5 only); KernelBench (site unreachable, no maintained leaderboard); SWE-Lancer (merged into openai/prepareded, no current leaderboard); SWE-rebench v2 dataset exists but the leaderboard still serves the v1 window. Re-evaluate when any of these change.
 
 ## 5. Data discipline (hard rules)
 

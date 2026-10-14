@@ -11,15 +11,6 @@ export function expandCatalog(benchmarks, sources, models) {
       'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands. Claude Opus 4.7 (46.7%) left the catalog when GitHub retired it on 2026-10-02.',
     ],
     [
-      'security',
-      'Secure coding',
-      'BaxBench',
-      'No security reminder',
-      'https://baxbench.com/',
-      'Backend solutions that pass both functional tests and security exploits.',
-      '392 tasks. Prompt variants are separate. Functional correctness and insecure share appear in model details. Current selectable models have no captured results.',
-    ],
-    [
       'review',
       'Code review',
       'SWE-PRBench',
@@ -29,24 +20,6 @@ export function expandCatalog(benchmarks, sources, models) {
       '100-PR evaluation split, GPT-5.2 judge. Detection and false-positive rates remain separate in details. This is a narrow, emerging benchmark.',
     ],
     [
-      'libraries',
-      'Libraries & APIs',
-      'BigCodeBench',
-      'Full · Instruct · v0.1.0',
-      'https://bigcode-bench.github.io/',
-      'Pass@1 for coding from natural-language instructions using libraries.',
-      'Full set of 1,140 tasks. Hard and Complete variants are not mixed in. Captured matches are older utility models.',
-    ],
-    [
-      'algorithmic',
-      'Algorithmic coding',
-      'LiveCodeBench',
-      '2024-08-01 to 2025-05-01',
-      'https://livecodebench.github.io/leaderboard.html',
-      'Code generation pass@1 on 454 programming problems in the fixed date window.',
-      'Different from LiveBench. Scores depend on problem dates. This captured official window has only older utility-model matches.',
-    ],
-    [
       'optimization',
       'Making code faster',
       'GSO',
@@ -54,15 +27,6 @@ export function expandCatalog(benchmarks, sources, models) {
       'https://livecodebench.github.io/gso.html',
       'Single-attempt estimate of tasks achieving at least 95% of human speedup while passing correctness tests.',
       'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry; the earlier unlabeled GPT-5.4 duplicate is resolved as two reasoning settings and the xHigh run feeds the lens. The 2026-09-27 update improved elicitation (models are explicitly asked to keep measuring and improving after their first speedup); rows from before and after that date are not directly comparable.',
-    ],
-    [
-      'completion',
-      'Cross-file completion',
-      'CrossCodeEval',
-      'NeurIPS 2023',
-      'https://github.com/amazon-science/cceval',
-      'Code completion using information from other files.',
-      'Registered as an evidence gap: no comparable catalog-model result captured. Language, retrieval method and context budget must be fixed before adding scores.',
     ],
     [
       'terminal4',
@@ -217,16 +181,6 @@ export function expandCatalog(benchmarks, sources, models) {
       context: `Detection (DR_A): ${detection}% (higher is better). False-positive rate: ${falsePositive}% (lower is better). Overall score is the published composite × 100.`,
     })
   }
-  add('GPT-4.1', 'security', 40.8, 'BaxBench · no security reminder', null, {
-    context:
-      'Functional correctness: 56.4%. Insecure share among correct solutions: 27.7% (lower is better).',
-  })
-  add('GPT-4o mini', 'libraries', 46.1, 'GPT-4o-mini-2024-07-18 · chat · Full / Instruct')
-  add('GPT-4o', 'libraries', 48, 'GPT-4o-2024-11-20 · chat · Full / Instruct', null, {
-    context: 'Historical dated variant; not evidence for every GPT-4o deployment.',
-  })
-  add('GPT-4o', 'algorithmic', 29.5, 'GPT-4o-2024-08-06 · fixed 454-problem window')
-  add('GPT-4o mini', 'algorithmic', 27.5, 'GPT-4o-mini-2024-07-18 · fixed 454-problem window')
   for (const [name, value, agent, date] of [
     ['Claude Haiku 4.5', 64.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
     ['GPT-5 mini', 39.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
@@ -347,11 +301,17 @@ export function expandCatalog(benchmarks, sources, models) {
   ])
     add(name, 'livebench2', value, 'LiveBench 2.0 · single run · highest supported effort')
   // Vals AI rows: [name, value, uncertainty, fallback/refusal note, setting]
+  // Share of tasks refused by the provider (scored as failures), parsed from the Vals flag text.
+  const refusalRate = (flag) => {
+    const refused = flag.match(/(\d+) provider refusals?/)
+    const tasks = flag.match(/on (\d+) tasks/)
+    return refused && tasks ? { refusals: Number(refused[1]) / Number(tasks[1]) } : {}
+  }
   const vals = (id, agent, rows) => {
     for (const [name, value, uncertainty, flag, setting] of rows)
       add(name, id, value, setting ? `${agent} · ${setting}` : agent, null, {
         uncertainty,
-        ...(flag ? { context: `Vals AI flag: ${flag}` } : {}),
+        ...(flag ? { context: `Vals AI flag: ${flag}`, ...refusalRate(flag) } : {}),
       })
   }
   const alt = (name, benchmark, value, uncertainty, agent, context) =>

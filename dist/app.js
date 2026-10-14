@@ -113,9 +113,9 @@ function weightControls() {
 }
 const views = {
   engineering: ['livebench2', 'qna', 'tests', 'refactor'],
-  coding: ['ioi', 'algorithmic', 'migration', 'multilingual', 'libraries', 'completion'],
+  coding: ['ioi', 'migration', 'multilingual'],
   building: ['vibecode', 'vcb100', 'features', 'program'],
-  quality: ['cyber', 'security', 'review', 'optimization'],
+  quality: ['cyber', 'review', 'optimization'],
   issues: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
   history: ['coding', 'terminal', 'pro'],
 }
@@ -186,6 +186,13 @@ function modelCell(m) {
     `${markers ? `<div class="awards">${markers}</div>` : ''}</td>`
   )
 }
+const refusalLimit = 0.25
+const refusalNote = (e) =>
+  e?.refusals >= refusalLimit
+    ? `${(e.refusals * 100).toFixed(0)}% of tasks refused by the provider and scored as failures — the score reflects safety policy as much as skill`
+    : null
+const flag = (notes) =>
+  notes.length ? `<span class="refusal-flag" title="${escape(notes.join(' · '))}">⚠</span>` : ''
 function evidenceCell(b, m) {
   const e = m.evidence[b.id]
   if (!e) return '<td class="absent" title="No result captured in this snapshot">—</td>'
@@ -193,6 +200,7 @@ function evidenceCell(b, m) {
   return (
     `<td title="${tip}">` +
     `<span class="benchmark-value">${e.value.toFixed(1)}<small>${b.unit || '%'}</small></span>` +
+    flag([refusalNote(e)].filter(Boolean)) +
     '</td>'
   )
 }
@@ -214,9 +222,15 @@ function topicCell(t, m) {
   const r = topicTable.get(m.id)[t.id]
   if (r.value === null)
     return `<td class="absent" title="${m.utility ? 'Utility model: not ranked' : `Limited evidence: ${r.present} of ${r.eligible.length} benchmarks`}">—</td>`
+  const notes = r.parts
+    .map((p) => {
+      const note = refusalNote(m.evidence[p.benchmark])
+      return note && `${benchmarks.find((b) => b.id === p.benchmark).name}: ${note}`
+    })
+    .filter(Boolean)
   return (
     `<td><button class="topic-button" data-topic="${t.id}" data-topic-model="${m.id}" title="Based on ${r.present} of ${r.eligible.length} benchmarks — click for the raw results">` +
-    `<span class="benchmark-value">${r.value.toFixed(1)}<small>/100</small></span></button></td>`
+    `<span class="benchmark-value">${r.value.toFixed(1)}<small>/100</small></span></button>${flag(notes)}</td>`
   )
 }
 function rowFor(m) {
@@ -309,7 +323,7 @@ function topicDetails(modelId, topicId) {
         : p
           ? `Rank ${p.rank} of ${p.n} · standing ${p.standing.toFixed(0)}/100`
           : 'No result for this model.'
-      return `<article class="evidence"><div class="evidence-head"><strong>${b.name}</strong><span class="number">${e ? e.value.toFixed(2) + (b.unit || '%') : '—'}</span></div><p>${status}</p>${e ? `<p>${escape(e.agent)}${e.uncertainty != null ? ` · published uncertainty ±${e.uncertainty.toFixed(2)} points` : ''}</p>${e.context ? `<p>${escape(e.context)}</p>` : ''}` : ''}<p>${b.version}</p><a href="${sources[id]}" target="_blank" rel="noopener">Original result & methodology ↗</a></article>`
+      return `<article class="evidence"><div class="evidence-head"><strong>${b.name}</strong><span class="number">${e ? e.value.toFixed(2) + (b.unit || '%') : '—'}</span></div><p>${status}</p>${refusalNote(e) ? `<p class="notes">⚠ ${refusalNote(e)}.</p>` : ''}${e ? `<p>${escape(e.agent)}${e.uncertainty != null ? ` · published uncertainty ±${e.uncertainty.toFixed(2)} points` : ''}</p>${e.context ? `<p>${escape(e.context)}</p>` : ''}` : ''}<p>${b.version}</p><a href="${sources[id]}" target="_blank" rel="noopener">Original result & methodology ↗</a></article>`
     })
     .join('')
   $('detailBody').innerHTML =

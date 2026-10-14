@@ -15,6 +15,7 @@ import {
   topicLens,
   topicDefaults,
 } from './dist/scoring.js'
+const astraRefusals = () => models.find((m) => m.name === 'GPT-6 Astra').evidence.cyber.refusals
 const example = {
   evidence: {
     livebench2: { value: 40 },
@@ -48,8 +49,10 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 27)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 27)
+assert.equal(benchmarks.length, 23)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 23)
+assert.equal(Math.round(astraRefusals() * 10000), 5259)
+assert.equal(models.find((m) => m.name === 'GPT-6 Sol').evidence.cyber.refusals, undefined)
 for (const c of capabilities)
   for (const id of c.benchmarks)
     assert.ok(

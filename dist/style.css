@@ -525,6 +525,13 @@ input[type='range'] {
   background: var(--navy);
   color: #ffffff;
 }
+html[data-theme='dark'] .secondary {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+html[data-theme='dark'] .secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
 .local-note {
   font-size: 12px;
   color: var(--fg-faint);
@@ -668,6 +675,11 @@ tbody tr:hover {
   padding: 0;
   text-align: left;
   cursor: pointer;
+}
+.refusal-flag {
+  color: var(--warning-fg);
+  margin-left: 4px;
+  cursor: help;
 }
 .topic-button:hover .benchmark-value,
 .topic-button:focus-visible .benchmark-value {

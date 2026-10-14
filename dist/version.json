@@ -1,8 +1,8 @@
 {
-  "commit": "5a7c405610cbc82348cafadcc2c7a62bafb8be2e",
+  "commit": "0913c144ec1a8e5c0aa5850b7b16dc7710688ec3",
   "branch": "main",
   "checked": "2026-10-14",
-  "released": "2026-10-14T11:34:48Z",
+  "released": "2026-10-14T11:37:53Z",
   "models": 35,
   "withEvidence": 32,
   "defaultScored": 25,

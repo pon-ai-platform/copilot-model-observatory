@@ -21,7 +21,7 @@
         if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark')
       } catch (e) {}
     </script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=dev" />
   </head>
   <body>
     <header>
@@ -195,6 +195,16 @@
     <noscript
       >This comparison requires JavaScript. Source references remain available below.</noscript
     >
-    <script type="module" src="app.js"></script>
+    <!-- ?v= is rewritten per release by release.mjs: the custom domain caches JS/CSS for 4 hours. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "./data.js": "./data.js?v=dev",
+          "./scoring.js": "./scoring.js?v=dev",
+          "./expanded.js": "./expanded.js?v=dev"
+        }
+      }
+    </script>
+    <script type="module" src="app.js?v=dev"></script>
   </body>
 </html>

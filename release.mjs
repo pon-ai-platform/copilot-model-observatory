@@ -65,6 +65,8 @@ html = html.replace(
   /(Independent reference · sources checked )[^<]+/,
   `$1${stampHuman} · released ${released.slice(11, 16)} UTC`,
 )
+const assetVersion = released.replace(/[-:]/g, '')
+html = html.replace(/(\.(?:js|css))\?v=[^"]+"/g, `$1?v=${assetVersion}"`)
 fs.writeFileSync(htmlPath, html)
 
 // 4. dist/version.json — machine-readable release identity

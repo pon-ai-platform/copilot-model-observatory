@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-09-24. No imputed model results.
+// Curated primary-source results, checked 2026-10-14. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -8,7 +8,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'Lite · v1.0 · resolved',
       'https://github.com/LiberCoders/FeatureBench',
       'Percentage of complete feature tasks resolved, not individual tests passed.',
-      'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands.',
+      'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands. Claude Opus 4.7 (46.7%) left the catalog when GitHub retired it on 2026-10-02.',
     ],
     [
       'security',
@@ -104,7 +104,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'program',
       'Building programs',
       'ProgramBench',
-      '200 tasks · updated 2026-09-09',
+      '200 tasks · updated 2026-09-28',
       'https://programbench.com/',
       'Re-implement a program from its compiled binary and docs; every behavioral test must pass.',
       'Common mini-SWE-agent scaffold, no internet and no decompilation. Extremely hard: the best catalog model resolves 4.5%. Almost-resolved rates are captured in details. Agent-based fuzzing generates the test suite.',
@@ -116,7 +116,16 @@ export function expandCatalog(benchmarks, sources, models) {
       '300 tasks · 42 repos · 9 languages · mini-SWE-agent',
       'https://www.swebench.com/multilingual.html',
       'Resolve real GitHub issues across C, C++, Go, Java, JS, TS, PHP, Ruby and Rust.',
-      'Common mini-SWE-agent harness, single rollout per instance. Agent versions differ per entry (2.0.0a0 for the February batch, 2.4.x for September). Kept separate from Aider Polyglot, which measures editing exercises, not issue resolution.',
+      'Common mini-SWE-agent harness, single rollout per instance. Captured catalog entries come from the February batch (mini-SWE-agent 2.0.0a0). Kept separate from Aider Polyglot, which measures editing exercises, not issue resolution.',
+    ],
+    [
+      'livebench2',
+      'Fixing bugs',
+      'LiveBench 2.0 · Coding',
+      'LiveBench 2.0 · release 2026-10-13 · 29 tasks',
+      'https://livebench.ai/',
+      'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
+      'New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (the General coding column). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
     ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
@@ -129,7 +138,7 @@ export function expandCatalog(benchmarks, sources, models) {
       subtitle: name,
       description,
       note,
-      ...(id === 'review' ? { unit: '/100' } : {}),
+      ...(id === 'review' || id === 'livebench2' ? { unit: '/100' } : {}),
     })
   }
   const get = (name) => models.find((m) => m.name === name)
@@ -137,7 +146,6 @@ export function expandCatalog(benchmarks, sources, models) {
     get(name).evidence[id] = { value, agent, date, source: sources[id], ...extra }
   }
   for (const [name, value, passed] of [
-    ['Claude Opus 4.7', 46.7, 78.2],
     ['GPT-5.5', 26.7, 69.8],
     ['GPT-5.4', 23.3, 66.2],
   ]) {
@@ -170,14 +178,11 @@ export function expandCatalog(benchmarks, sources, models) {
   add('GPT-4o mini', 'algorithmic', 27.5, 'GPT-4o-mini-2024-07-18 · fixed 454-problem window')
   for (const [name, value, agent, date] of [
     ['Claude Haiku 4.5', 64.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
-    ['Gemini 3.5 Flash', 67.0, 'mini-SWE-agent 2.4.6', '2026-09-02'],
     ['GPT-5 mini', 39.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
   ])
     add(name, 'multilingual', value, agent, date)
-  add('Gemini 3.5 Flash', 'verified', 71.8, 'mini-SWE-agent 2.4.2', '2026-09-01')
   for (const [name, value, date] of [
     ['Claude Opus 4.8', 47.1, '2026-07-12'],
-    ['Claude Opus 4.7', 44.1, '2026-04-27'],
     ['GPT-5.5', 40.2, '2026-04-27'],
     ['Claude Sonnet 5', 37.3, '2026-07-12'],
     ['GPT-4o', 0, '2025-05-30'],
@@ -202,23 +207,6 @@ export function expandCatalog(benchmarks, sources, models) {
     source: sources.optimization,
   })
   for (const [name, value, uncertainty, agent] of [
-    ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
-    ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],
-    ['Claude Opus 5', 53.9, 3.2, 'Claude Code · xhigh'],
-    ['Claude Fable 5', 44.5, 3.8, 'Claude Code · max'],
-    ['Grok 4.7', 37.6, 3.5, 'Grok Build · xhigh'],
-    ['GPT-5.6 Sol', 37.3, 3.8, 'Codex · max'],
-    ['Claude Opus 4.8', 23.6, 3.6, 'Claude Code · max'],
-    ['GPT-5.6 Terra', 21.5, 3.3, 'Codex · max'],
-    ['Grok 4.6', 20.3, 3.1, 'Grok Build · high'],
-    ['Gemini 3.8 Flash', 19.1, 3.4, 'mini-SWE-agent · high'],
-    ['GPT-5.6 Luna', 17.3, 2.8, 'Codex · max'],
-    ['Grok 4.5', 12.4, 2.6, 'Grok Build · high'],
-    ['Claude Sonnet 5', 12.4, 3.1, 'Claude Code · max'],
-    ['Gemini 3.7 Flash', 11.2, 2.4, 'mini-SWE-agent · high'],
-  ])
-    add(name, 'terminal4', value, agent, null, { uncertainty })
-  for (const [name, value, uncertainty, agent] of [
     ['Claude Fable 5', 64.5, 1.41, 'raw model · high'],
     ['Grok 4.5', 63.8, 0.6, 'raw model · high'],
     ['Claude Opus 5', 63.4, 1.35, 'raw model · high'],
@@ -231,10 +219,13 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Opus 5', 4.5, 37.0],
     ['GPT-5.6 Sol', 1.0, 15.5],
     ['GPT-5.5', 0.5, 13.5],
-    ['Gemini 3.6 Flash', 0.5, 4.0],
     ['Claude Opus 4.8', 0, 16.5],
     ['Gemini 3.7 Flash', 0, 5.5],
-    ['Claude Opus 4.7', 0, 4.5],
+    ['Claude Sonnet 4.6', 0, 1.0],
+    ['GPT-5.4', 0, 0.0],
+    ['Claude Haiku 4.5', 0, 0.0],
+    ['GPT-5.4 mini', 0, 0.0],
+    ['GPT-5 mini', 0, 0.0],
   ]) {
     add(name, 'program', value, 'mini-SWE-agent', null, {
       context: `Almost-resolved (partial test pass): ${almost}%. 0% is a captured result, not a missing one.`,
@@ -267,10 +258,41 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Fable 5.1', 99.1, 0.5, 'Claude Code · high'],
     ['Kimi K3', 97.7, 0.9, 'mini-swe-agent · max'],
     ['GPT-6 Astra', 96.9, 1.1, 'Codex · high'],
+    ['GPT-6.1 Sol', 96.11, 1.24, 'mini-swe-agent · xhigh'],
+    ['Claude Sonnet 5.5', 95.79, 1.3, 'mini-swe-agent · xhigh'],
     ['GPT-5.6 Sol', 95.5, 1.4, 'Codex · xhigh'],
     ['Gemini 3.8 Flash', 94.86, 1.46, 'mini-swe-agent · high'],
     ['Claude Sonnet 5', 93.15, 1.71, 'Claude Code · xhigh'],
     ['GPT-5.6 Terra', 92.37, 1.81, 'Codex · xhigh'],
+    ['Claude Haiku 5.5', 87.23, 2.36, 'mini-swe-agent · high'],
   ])
     add(name, 'pro2', value, agent, null, { uncertainty })
+  for (const [name, value] of [
+    ['Claude Fable 5', 98.3],
+    ['Claude Fable 5.1', 97.7],
+    ['Claude Opus 5.5', 96.3],
+    ['GPT-6.1 Sol', 96],
+    ['Claude Sonnet 5.5', 94.7],
+    ['Grok 4.5', 94.3],
+    ['GPT-6 Astra', 93.7],
+    ['GPT-6 Sol', 93.1],
+    ['Claude Opus 5', 90.8],
+    ['Gemini 4 Argon', 89.7],
+    ['GPT-5.6 Sol', 89.7],
+    ['Grok 4.6', 89.1],
+    ['GPT-5.6 Terra', 86.2],
+    ['GPT-5.5', 85.1],
+    ['Claude Haiku 5.5', 84.5],
+    ['Grok 4.7', 84.5],
+    ['GPT-6 Luna', 84.5],
+    ['Claude Sonnet 5', 82.2],
+    ['Gemini 3.8 Flash', 82.2],
+    ['Gemini 3.7 Flash', 80.5],
+    ['Claude Opus 4.8', 77.3],
+    ['GPT-5.6 Luna', 73.6],
+    ['Claude Sonnet 4.6', 66.6],
+    ['Kimi K3', 59.3],
+    ['Claude Haiku 4.5', 48.1],
+  ])
+    add(name, 'livebench2', value, 'LiveBench 2.0 · single run · highest supported effort')
 }

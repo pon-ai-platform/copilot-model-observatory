@@ -92,7 +92,7 @@ const views = {
   engineering: ['coding', 'architecture', 'qna', 'tests', 'refactor'],
   coding: ['algorithmic', 'libraries', 'polyglot', 'completion'],
   quality: ['features', 'security', 'review', 'optimization'],
-  issues: ['terminal4', 'verified', 'pro2'],
+  issues: ['terminal4', 'verified', 'livebench2', 'pro2'],
   history: ['terminal', 'pro'],
 }
 function visibleBenchmarks() {

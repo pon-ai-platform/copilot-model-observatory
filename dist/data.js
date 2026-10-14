@@ -1,9 +1,9 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-10-08'
+export const checked = '2026-10-14'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-10-08T09:09:39Z'
 export const sources = {
-  coding: 'https://livebench.ai/',
+  coding: 'https://livebench.ai/v1/',
   architecture: 'https://arxiv.org/html/2604.06683v1#S4.T3',
   availability: 'https://docs.github.com/en/copilot/reference/ai-models/supported-models',
   pricing: 'https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing',
@@ -24,7 +24,7 @@ export const benchmarks = [
     description:
       'General coding: writing new code and completing existing code. Uses the LiveBench Coding category average.',
     version: 'LiveBench-2026-06-25',
-    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. This is not a repository-level feature implementation benchmark. The source page is a live leaderboard; captured rows can change without an edition bump, so re-verify values per refresh.',
+    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. This is not a repository-level feature implementation benchmark. LiveBench 1.0 moved to livebench.ai/v1/ when LiveBench 2.0 launched on 2026-10-13; the 2.0 Coding suite is a different benchmark and is tracked separately under Fixing bugs.',
   },
   {
     id: 'architecture',
@@ -113,19 +113,16 @@ const rows = [
   ['Claude Sonnet 4.6', 'Anthropic', 3, 0.3, 3.75, 15],
   ['Claude Sonnet 5', 'Anthropic', 2, 0.2, 2.5, 10],
   ['Claude Sonnet 5.5', 'Anthropic', 2, 0.1, 2.5, 10],
-  ['Claude Opus 4.7', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8 (fast mode)', 'Anthropic', 10, 1, 12.5, 50],
   ['Claude Opus 5', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 5.5', 'Anthropic', 4, 0.2, 5, 20],
   ['Claude Fable 5', 'Anthropic', 10, 1, 12.5, 50],
   ['Claude Fable 5.1', 'Anthropic', 10, 0.25, 12.5, 50],
-  ['Gemini 3.5 Flash', 'Google', 1.5, 0.15, null, 9],
-  ['Gemini 3.6 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 3.7 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 3.8 Flash', 'Google', 0.75, 0.075, null, 3.75],
+  ['Gemini 4 Argon', 'Google', 2, 0.1, null, 10],
   ['MAI-Code-1.1-Flash', 'Microsoft', 0.2, 0.02, null, 1.2],
-  ['Kimi K2.7 Code', 'Moonshot AI', 0.95, 0.19, null, 4],
   ['Kimi K3', 'Moonshot AI', 3, 0.3, null, 15],
   ['Grok 4.5', 'xAI', 2, 0.5, null, 6, 200, 4, 1, null, 12],
   ['Grok 4.6', 'xAI', 2, 0.5, null, 6, 200, 4, 1, null, 12],
@@ -158,7 +155,6 @@ for (const [name, value, setting] of [
   ['Claude Fable 5', 86, 'Max Effort'],
   ['GPT-5.6 Luna', 82.9, 'Max Effort'],
   ['GPT-5.6 Sol', 83.9, 'Max Effort'],
-  ['Claude Opus 4.7', 82.1, 'Thinking xHigh Effort'],
   ['GPT-5.5', 82.1, 'Thinking xHigh Effort'],
   ['Claude Opus 4.8', 81.8, 'Thinking Max Effort'],
   ['GPT-6 Sol', 81.8, 'Max Effort'],
@@ -170,16 +166,13 @@ for (const [name, value, setting] of [
   ['Claude Sonnet 4.6', 79.3, 'Thinking Medium Effort'],
   ['Gemini 3.7 Flash', 78.9, 'High'],
   ['GPT-5.4', 77.5, 'Thinking xHigh Effort'],
-  ['Gemini 3.5 Flash', 78.2, 'High'],
-  ['Gemini 3.6 Flash', 77.9, 'High'],
   ['GPT-5.6 Terra', 78.2, 'Max Effort'],
-  ['Grok 4.6', 76.8, 'not specified'],
+  ['Grok 4.6', 76.8, 'xHigh'],
   ['Claude Haiku 5.5', 76.4, 'xHigh Effort'],
   ['Gemini 3.8 Flash', 72.5, 'High'],
   ['Grok 4.7', 77.2, 'xHigh'],
   ['GPT-5.4 nano', 70.8, 'xHigh'],
   ['Grok 4.5', 68.6, 'not specified'],
-  ['Kimi K2.7 Code', 74, 'not specified'],
   ['GPT-5.4 mini', 71.6, 'xHigh'],
 ])
   get(name).evidence.coding = {
@@ -209,13 +202,6 @@ const atlas = [
     [57.26, 4.93],
     [49.63, 5.93],
     [46.67, 6.75],
-  ],
-  [
-    'Claude Opus 4.7',
-    'Claude Code · effort not specified',
-    [40.32, 5.06],
-    [38.52, 5.93],
-    [48.57, 6.73],
   ],
   ['GPT-5.6 Sol', 'Codex · xHigh', [46, 5], [45.9, 6], null],
   ['GPT-5.5', 'Codex · xHigh', [45.43, 5.08], [42.59, 5.96], [44.79, 6.76]],
@@ -305,8 +291,12 @@ get('Claude Haiku 4.5').evidence.pro = {
   source: sources.pro,
 }
 for (const m of models) {
-  if (m.name.startsWith('Gemini 3.') && !m.name.includes('3.5'))
+  if (m.name.startsWith('Gemini 3.'))
     m.notes.push('Promotional Copilot pricing through December 31, 2026.')
+  if (m.name === 'Gemini 4 Argon')
+    m.notes.push(
+      'Promotional Copilot pricing until December 1, 2026. GitHub lists it as GA (Powerful) but not on Copilot Pro and not on GitHub.com.',
+    )
   if (m.utility)
     m.notes.push('Utility model: powers background features; not a selectable model in the picker.')
   if (m.name.includes('fast mode'))
@@ -316,18 +306,6 @@ for (const m of models) {
       'Scale reports elevated refusal-related failures for this model on parts of SWE Atlas; included in published scores.',
     )
   if (m.name === 'GPT-5.3-Codex') m.notes.push('Scale abbreviates this entry as “GPT 5.3 (Codex)”.')
-  for (const [retired, alt] of [
-    ['Claude Opus 4.7', 'Claude Opus 5'],
-    ['Gemini 3.5 Flash', 'Gemini 3.8 Flash'],
-    ['Gemini 3.6 Flash', 'Gemini 3.8 Flash'],
-    ['Kimi K2.7 Code', 'Kimi K3'],
-  ])
-    if (m.name === retired)
-      m.notes.push(
-        'GitHub retirement schedule: scheduled for retirement on October 2, 2026; suggested alternative is ' +
-          alt +
-          '.',
-      )
   if (m.name === 'Claude Sonnet 4.6')
     m.notes.push(
       'GitHub lists retirement on September 1, 2026; the model remains available to individual subscribers on annual Copilot Pro and Pro+ plans.',

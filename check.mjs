@@ -43,8 +43,8 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 21)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 21)
+assert.equal(benchmarks.length, 22)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 22)
 const old = migratePreferences({
   weights: {
     coding: 100,
@@ -102,6 +102,12 @@ assert.equal(
   0,
 )
 assert.equal(score(astra, { completion: 1 }).value, null)
+const argon = models.find((m) => m.name === 'Gemini 4 Argon')
+assert.equal(score(argon, defaults).value, null)
+assert.equal(
+  score(argon, { verified: 1 }, { ...defaultSelections, verified: 'livebench2' }).value,
+  89.7,
+)
 assert.deepEqual(awards(models, { terminal: 1 }).best, ['claude-opus-5-5'])
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {

@@ -13,7 +13,7 @@ export const capabilities = [
   { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
-  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified'] },
+  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified', 'livebench2'] },
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
 ]
 export const defaults = Object.fromEntries(

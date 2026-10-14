@@ -157,4 +157,4 @@ npm run release:deploy   # refuses on dirty/unpushed tree → stamps released (U
 git add dist/ && git commit -m "Stamp release <ISO timestamp>" && git push origin main
 ```
 
-`check.mjs` enforces: `checked` is YYYY-MM-DD; `released` is an ISO date-time with `Z`; `released ≥ checked`; `version.json` matches both and carries the commit hash; the `index.html` footer contains the release stamp. So the stamps cannot silently drift — a stale `version.json` fails the suite.
+`check.mjs` enforces: `checked` is YYYY-MM-DD; `released` is an ISO date-time with `Z`; `released ≥ checked`; `version.json` matches both and carries the commit hash; the `index.html` footer contains the release stamp; every JS/CSS URL in `index.html` (including the import map for `data.js`/`scoring.js`/`expanded.js`) carries `?v=`, which the release rewrites to the stamp, because the custom domain caches JS/CSS for 4 hours. So the stamps cannot silently drift — a stale `version.json` fails the suite.

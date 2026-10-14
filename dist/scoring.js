@@ -113,15 +113,40 @@ export function awards(
   }
 }
 export const topics = [
-  { id: 'writing', short: 'Writing code', benchmarks: ['livebench2', 'ioi', 'migration'] },
+  {
+    id: 'writing',
+    short: 'Writing code',
+    description:
+      'One focused coding job: fix a specific bug, solve a hard algorithm, port a program to another language.',
+    benchmarks: ['livebench2', 'ioi', 'migration'],
+  },
   {
     id: 'agents',
     short: 'Agents & issue fixing',
+    description:
+      'Working on its own for many steps: resolve real repository issues, terminal tasks, long-running agent jobs.',
     benchmarks: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'rebench'],
   },
-  { id: 'building', short: 'Building software', benchmarks: ['vibecode', 'program', 'vcb100'] },
-  { id: 'codebase', short: 'Working in a codebase', benchmarks: ['qna', 'tests', 'refactor'] },
-  { id: 'quality', short: 'Quality & security', benchmarks: ['cyber', 'optimization'] },
+  {
+    id: 'building',
+    short: 'Building software',
+    description:
+      'A whole product end to end: build a web app from a spec, extend it request by request, rebuild a program.',
+    benchmarks: ['vibecode', 'program', 'vcb100'],
+  },
+  {
+    id: 'codebase',
+    short: 'Working in a codebase',
+    description:
+      'Understanding existing code: answer questions about it, write tests for it, refactor it safely.',
+    benchmarks: ['qna', 'tests', 'refactor'],
+  },
+  {
+    id: 'quality',
+    short: 'Quality & security',
+    description: 'Making code safer and faster: find and patch security bugs, speed up slow code.',
+    benchmarks: ['cyber', 'optimization'],
+  },
 ]
 export const minTopicModels = 8
 export const topicDefaults = Object.fromEntries(topics.map((t) => [t.id, 100]))

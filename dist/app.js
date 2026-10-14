@@ -86,7 +86,7 @@ function weightControls() {
   $('weights').innerHTML = lensItems()
     .map(
       (b) =>
-        `<div class="weight"><label for="weight-${b.id}">${b.short}<output id="out-${b.id}"></output></label><input type="range" min="0" max="100" step="1" id="weight-${b.id}" value="${weights[b.id]}" aria-label="${b.short} weight">${topicMode() ? `<small>${b.benchmarks.map((id) => benchmarks.find((x) => x.id === id).name).join(' · ')}</small>` : b.benchmarks.length > 1 ? `<select data-capability="${b.id}" aria-label="${b.short} benchmark">${b.benchmarks.map((id) => `<option value="${id}" ${state.selections[b.id] === id ? 'selected' : ''}>${benchmarks.find((x) => x.id === id).name}</option>`).join('')}</select>` : `<small>${benchmarks.find((x) => x.id === b.benchmarks[0]).name}</small>`}</div>`,
+        `<div class="weight"><label for="weight-${b.id}">${b.short}<output id="out-${b.id}"></output></label><input type="range" min="0" max="100" step="1" id="weight-${b.id}" value="${weights[b.id]}" aria-label="${b.short} weight">${topicMode() ? `<small class="topic-desc" title="Benchmarks: ${b.benchmarks.map((id) => benchmarks.find((x) => x.id === id).name).join(' · ')}">${b.description}</small>` : b.benchmarks.length > 1 ? `<select data-capability="${b.id}" aria-label="${b.short} benchmark">${b.benchmarks.map((id) => `<option value="${id}" ${state.selections[b.id] === id ? 'selected' : ''}>${benchmarks.find((x) => x.id === id).name}</option>`).join('')}</select>` : `<small>${benchmarks.find((x) => x.id === b.benchmarks[0]).name}</small>`}</div>`,
     )
     .join('')
   $('lensMode').textContent = topicMode()
@@ -207,7 +207,7 @@ function companyCell(s) {
   if (!state.weighted) return ''
   return (
     `<td class="company" title="${s.present} of ${s.active} weighted ${topicMode() ? 'topics' : 'capabilities'} available">` +
-    `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}<small>/100</small></span></td>`
+    `<span class="benchmark-value">${s.value === null ? '—' : `${s.value.toFixed(1)}<small>/100</small>`}</span></td>`
   )
 }
 function priceCell(m) {
@@ -326,7 +326,7 @@ function topicDetails(modelId, topicId) {
     })
     .join('')
   $('detailBody').innerHTML =
-    `<h2 id="detailTitle">${escape(m.name)} · ${t.short}</h2><p class="detail-meta">Topic score ${r.value === null ? 'not available' : r.value.toFixed(0) + '/100'} · ${r.present} of ${r.eligible.length} counted benchmarks. Standing is relative to the other selectable Copilot models with a result (100 = best, 0 = lowest); it is not an absolute skill score. External agents and settings, not Copilot.</p>${rows}<p><button class="model-button" data-detail-model="${m.id}">All evidence for ${escape(m.name)} →</button></p>`
+    `<h2 id="detailTitle">${escape(m.name)} · ${t.short}</h2><p class="detail-meta">${t.description}</p><p class="detail-meta">Topic score ${r.value === null ? 'not available' : r.value.toFixed(0) + '/100'} · ${r.present} of ${r.eligible.length} counted benchmarks. Standing is relative to the other selectable Copilot models with a result (100 = best, 0 = lowest); it is not an absolute skill score. External agents and settings, not Copilot.</p>${rows}<p><button class="model-button" data-detail-model="${m.id}">All evidence for ${escape(m.name)} →</button></p>`
   $('detailBody')
     .querySelector('[data-detail-model]')
     .addEventListener('click', () => details(m.id))

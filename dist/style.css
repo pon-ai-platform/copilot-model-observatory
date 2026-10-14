@@ -489,6 +489,14 @@ p {
   font-family: var(--font-mono);
   font-size: 13px;
 }
+.topic-desc {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fg-muted);
+  cursor: help;
+}
 input[type='range'] {
   width: 100%;
   accent-color: var(--mint);

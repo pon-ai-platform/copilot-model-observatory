@@ -1,10 +1,10 @@
 {
-  "commit": "fe5bd77e5dcce9bc7cb31e086483822a4dffc78c",
+  "commit": "5830271e0f053d26c89f806f99b0d76a1739b85b",
   "branch": "main",
   "checked": "2026-10-14",
-  "released": "2026-10-14T08:55:16Z",
+  "released": "2026-10-14T09:37:44Z",
   "models": 35,
   "withEvidence": 33,
   "defaultScored": 25,
-  "benchmarks": 21
+  "benchmarks": 25
 }

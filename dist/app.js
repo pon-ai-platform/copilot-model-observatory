@@ -25,7 +25,7 @@ const state = {
   weighted: true,
   query: '',
   provider: '',
-  view: 'engineering',
+  view: 'overview',
   sort: 'company',
   ascending: false,
 }
@@ -198,7 +198,7 @@ function evidenceCell(b, m) {
   )
 }
 function companyCell(s) {
-  if (!state.weighted || overview()) return ''
+  if (!state.weighted) return ''
   return (
     `<td class="company">` +
     `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}</span>` +
@@ -256,7 +256,7 @@ function render() {
     ? 'Weights normalized to 100%'
     : 'Choose at least one capability'
   const columns = overview() ? [] : visibleBenchmarks()
-  const showCompany = state.weighted && !overview()
+  const showCompany = state.weighted
   $('viewNote').textContent = overview()
     ? `Topic score = average standing (0–100) across the topic's benchmarks, relative to the other selectable Copilot models — not an absolute skill score. A benchmark counts once at least ${minTopicModels} models have a result; a topic needs results on at least half of its benchmarks. Click a score for the raw results.`
     : columns
@@ -283,9 +283,7 @@ function render() {
     heading('price', 'USD / 1M tokens', 'Input / output') +
     '</tr>'
   const selected = filtered()
-  winners = overview()
-    ? { best: [], cheapest: [], value: [] }
-    : awards(selected, state.weights, state.selections, (m) => lens(m).value)
+  winners = awards(selected, state.weights, state.selections, (m) => lens(m).value)
   rowColumns = columns
   $('count').textContent =
     `${selected.length} of ${models.length} models · ${selected.filter((m) => Object.keys(m.evidence).length).length} with captured evidence`
@@ -445,10 +443,7 @@ $('provider').addEventListener('change', (e) => {
 })
 $('view').addEventListener('change', (e) => {
   state.view = e.target.value
-  if (overview()) {
-    state.sort = 'topic:' + topics[0].id
-    state.ascending = false
-  } else if (state.sort !== 'company') {
+  if (state.sort !== 'company') {
     state.sort = 'name'
     state.ascending = true
   }

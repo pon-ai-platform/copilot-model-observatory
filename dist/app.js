@@ -89,7 +89,7 @@ function weightControls() {
   )
 }
 const views = {
-  engineering: ['livebench2', 'architecture', 'qna', 'tests', 'refactor'],
+  engineering: ['livebench2', 'qna', 'tests', 'refactor'],
   coding: ['algorithmic', 'libraries', 'polyglot', 'completion'],
   quality: ['features', 'security', 'review', 'optimization'],
   issues: ['terminal4', 'verified', 'pro2'],

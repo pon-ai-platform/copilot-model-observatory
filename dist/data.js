@@ -4,7 +4,6 @@ export const checked = '2026-10-14'
 export const released = '2026-10-14T08:52:01Z'
 export const sources = {
   coding: 'https://livebench.ai/v1/',
-  architecture: 'https://arxiv.org/html/2604.06683v1#S4.T3',
   availability: 'https://docs.github.com/en/copilot/reference/ai-models/supported-models',
   pricing: 'https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing',
   qna: 'https://labs.scale.com/leaderboard/sweatlas-qna',
@@ -25,17 +24,6 @@ export const benchmarks = [
       'Historical edition: writing new code and completing existing code. Uses the LiveBench 1.0 Coding category average.',
     version: 'LiveBench-2026-06-25',
     note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. LiveBench 1.0 moved to livebench.ai/v1/ when LiveBench 2.0 launched on 2026-10-13 and no longer receives new models; General coding now uses the LiveBench 2.0 Coding suite, which is not comparable.',
-  },
-  {
-    id: 'architecture',
-    short: 'Architecture',
-    name: 'R2ABench · Architecture diagrams',
-    unit: '/100',
-    subtitle: 'R2ABench · Node F1',
-    description:
-      'Generate architecture diagrams from full product requirements. Shows component-recognition Node F1 × 100.',
-    version: 'Paper v1 · Table 3 · Full PRD · Direct',
-    note: 'Narrow architecture-generation measure, not an overall system-design score. Only Sonnet 4.6 overlaps this catalog. Node F1 is scaled from 0–1 to 0–100; relationship quality and other metrics are in model evidence. Architecture understanding remains a separate Codebase Q&A column.',
   },
   {
     id: 'qna',
@@ -181,15 +169,6 @@ for (const [name, value, setting] of [
     date: null,
     source: sources.coding,
   }
-get('Claude Sonnet 4.6').evidence.architecture = {
-  value: 54.13,
-  agent: 'Direct generation from full PRD · Node F1 × 100',
-  date: null,
-  source: sources.architecture,
-}
-get('Claude Sonnet 4.6').notes.push(
-  'R2ABench, Full PRD / Direct: Node F1 0.5413; Edge F1 0.0855; layer accuracy 0.7209; syntactic validity 0.8235. The table shows Node F1 × 100 only, not an overall architecture score. MetaGPT and OpenHands results are different evaluation setups.',
-)
 const atlasIds = ['qna', 'tests', 'refactor']
 const atlas = [
   ['GPT-6 Astra', 'Codex · xHigh', [59.14, 4.88], [50.74, 5.91], [59.05, 6.43]],

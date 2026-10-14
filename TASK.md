@@ -3,7 +3,7 @@
 Living task document. Update it in the same commit as any data change.
 
 - **Snapshot checked:** 2026-10-14 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":25,"benchmarks":22,"checks":"passed"}` — 22 benchmark measures/editions (General coding switched to LiveBench 2.0 on 2026-10-14; it was 26 on LiveBench 1.0)
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":25,"benchmarks":21,"checks":"passed"}` — 21 benchmark measures/editions (General coding switched to LiveBench 2.0 on 2026-10-14; it was 26 on LiveBench 1.0. R2ABench dropped the same day: only Sonnet 4.6 had a result)
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-10-14 refresh): `{"models":38,"withEvidence":36,"defaultScored":30,"benchmarks":21,"checks":"passed"}` (2026-10-08 pass, after Haiku 5.5: same; 2026-09-30 pass: `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}`; pre-2026-09-29: `{"models":35,"withEvidence":33,"defaultScored":27,"benchmarks":21,"checks":"passed"}`).
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -41,7 +41,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | GPT-4.1                     | OpenAI      | ✅      | security, polyglot                                                                            |
 | Claude Haiku 4.5            | Anthropic   | —       | verified, review, pro (original), multilingual, program, livebench2                           |
 | Claude Haiku 5.5            | Anthropic   | —       | coding, pro2, livebench2                                                                      |
-| Claude Sonnet 4.6           | Anthropic   | —       | coding, architecture, qna, tests, refactor, review, terminal (2.1), program, livebench2       |
+| Claude Sonnet 4.6           | Anthropic   | —       | coding, qna, tests, refactor, review, terminal (2.1), program, livebench2                     |
 | Claude Sonnet 5             | Anthropic   | —       | coding, optimization, rebench, terminal4, pro2, livebench2                                    |
 | Claude Sonnet 5.5           | Anthropic   | —       | coding, terminal4, pro2, livebench2                                                           |
 | Claude Opus 4.8             | Anthropic   | —       | coding, qna, tests, refactor, optimization, program, terminal4, livebench2                    |
@@ -61,14 +61,13 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 
 Notes carried in `dist/data.js`: Gemini 3.7/3.8 Flash promotional Copilot pricing through 2026-12-31; Gemini 4 Argon promotional pricing until 2026-12-01 (GA, Powerful; GitHub lists it as not on Copilot Pro and not on GitHub.com); utility models power background features and are not selectable; `fast mode` is GA-listed but keeps "preview" in its name; Fable 5, Fable 5.1 and GPT-5.6 Sol have elevated refusal-related failures on parts of SWE Atlas; Scale abbreviates GPT-5.3-Codex as "GPT 5.3 (Codex)". Sonnet 4.6 remains for annual-plan individuals. Claude Sonnet 5.5 was added 2026-09-29, GPT-6.1 Sol 2026-09-30, Claude Haiku 5.5 2026-10-08 and Gemini 4 Argon 2026-10-14, each after GitHub listed it as GA. **Removed 2026-10-14:** Claude Opus 4.7, Gemini 3.5 Flash, Gemini 3.6 Flash and Kimi K2.7 Code — retired 2026-10-02 and no longer in GitHub's supported-models or pricing tables; their evidence rows were dropped with them (git history keeps them).
 
-## 3. Benchmark inventory (22 measures / editions)
+## 3. Benchmark inventory (21 measures / editions)
 
 Main-lens selection is one benchmark per capability (`dist/scoring.js`). Historical editions stay in the historical view.
 
 | id           | Benchmark                                             | Capability            | Main lens?             | Scale                        | Coverage today          |
 | ------------ | ----------------------------------------------------- | --------------------- | ---------------------- | ---------------------------- | ----------------------- |
 | coding       | LiveBench 1.0 · Coding (LiveBench-2026-06-25, /v1/)   | General coding        | historical             | /100, category avg           | 26 models               |
-| architecture | R2ABench (Paper v1 · Table 3 · Full PRD · Direct)     | Architecture          | ✅                     | Node F1 × 100                | 1 model (Sonnet 4.6) ⏳ |
 | qna          | SWE Atlas · Codebase QnA                              | Codebase Q&A          | ✅ (equal-weight trio) | task resolve %               | 11 models               |
 | tests        | SWE Atlas · Test Writing                              | Test writing          | ✅ (trio)              | %                            | 11 models               |
 | refactor     | SWE Atlas · Refactoring                               | Refactoring           | ✅ (trio)              | %                            | 9 models ⏳             |

@@ -1,7 +1,6 @@
 const equalWeighted = ['qna', 'tests', 'refactor']
 export const capabilities = [
   { id: 'coding', short: 'General coding', benchmarks: ['livebench2'] },
-  { id: 'architecture', short: 'Architecture', benchmarks: ['architecture'] },
   { id: 'qna', short: 'Codebase Q&A', benchmarks: ['qna'] },
   { id: 'tests', short: 'Test writing', benchmarks: ['tests'] },
   { id: 'refactor', short: 'Refactoring', benchmarks: ['refactor'] },
@@ -26,7 +25,10 @@ export function validSelections(s) {
   return !!s && capabilities.every((c) => c.benchmarks.includes(s[c.id]))
 }
 export function migratePreferences(p) {
-  const weights = { ...defaults, ...p?.weights }
+  // Ignore saved weights for capabilities that were removed (e.g. architecture).
+  const weights = Object.fromEntries(
+    capabilities.map((c) => [c.id, p?.weights?.[c.id] ?? defaults[c.id]]),
+  )
   if (
     !validWeights(
       weights,

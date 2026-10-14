@@ -43,8 +43,8 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 22)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 22)
+assert.equal(benchmarks.length, 21)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 21)
 const old = migratePreferences({
   weights: {
     coding: 100,
@@ -59,6 +59,7 @@ const old = migratePreferences({
   weighted: true,
 })
 assert.equal(old.weights.features, 0)
+assert.equal('architecture' in old.weights, false)
 assert.equal(old.selections.terminal, 'terminal4')
 assert.equal(old.selections.pro, 'pro2')
 assert.equal(old.selections.coding, 'livebench2')

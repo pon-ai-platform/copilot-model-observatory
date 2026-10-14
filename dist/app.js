@@ -193,16 +193,14 @@ function evidenceCell(b, m) {
   return (
     `<td title="${tip}">` +
     `<span class="benchmark-value">${e.value.toFixed(1)}<small>${b.unit || '%'}</small></span>` +
-    `<div class="bar"><span style="width:${e.value}%"></span></div>` +
     '</td>'
   )
 }
 function companyCell(s) {
   if (!state.weighted) return ''
   return (
-    `<td class="company">` +
-    `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}</span>` +
-    `<span class="coverage">${s.present}/${s.active} active ${topicMode() ? 'topics' : 'capabilities'}</span></td>`
+    `<td class="company" title="${s.present} of ${s.active} weighted ${topicMode() ? 'topics' : 'capabilities'} available">` +
+    `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}<small>/100</small></span></td>`
   )
 }
 function priceCell(m) {
@@ -217,10 +215,8 @@ function topicCell(t, m) {
   if (r.value === null)
     return `<td class="absent" title="${m.utility ? 'Utility model: not ranked' : `Limited evidence: ${r.present} of ${r.eligible.length} benchmarks`}">—</td>`
   return (
-    `<td><button class="topic-button" data-topic="${t.id}" data-topic-model="${m.id}" title="Show the ${r.present} benchmark results behind this score">` +
-    `<span class="benchmark-value">${r.value.toFixed(0)}</span>` +
-    `<span class="coverage">${r.present}/${r.eligible.length} benchmarks</span></button>` +
-    `<div class="bar"><span style="width:${r.value}%"></span></div></td>`
+    `<td><button class="topic-button" data-topic="${t.id}" data-topic-model="${m.id}" title="Based on ${r.present} of ${r.eligible.length} benchmarks — click for the raw results">` +
+    `<span class="benchmark-value">${r.value.toFixed(1)}<small>/100</small></span></button></td>`
   )
 }
 function rowFor(m) {
@@ -269,15 +265,7 @@ function render() {
     '<tr>' +
     heading('name', 'Model', 'Provider / availability') +
     (overview()
-      ? topics
-          .map((t) =>
-            heading(
-              'topic:' + t.id,
-              t.short,
-              t.benchmarks.map((id) => benchmarks.find((b) => b.id === id).name).join(' · '),
-            ),
-          )
-          .join('')
+      ? topics.map((t) => heading('topic:' + t.id, t.short, 'Standing /100')).join('')
       : columns.map((b) => heading(b.id, b.short, b.subtitle)).join('')) +
     (showCompany ? heading('company', 'Company score', 'Exploratory · /100') : '') +
     heading('price', 'USD / 1M tokens', 'Input / output') +

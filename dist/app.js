@@ -37,8 +37,7 @@ try {
   if (p) {
     const migrated = migratePreferences(p)
     if (migrated) Object.assign(state, migrated)
-    // Preferences saved before topic weights existed were per-benchmark weights.
-    state.mode = p.mode === 'topics' ? 'topics' : 'advanced'
+    state.mode = p.mode === 'advanced' ? 'advanced' : 'topics'
     if (validWeights(p.topicWeights, topicIds)) state.topicWeights = { ...p.topicWeights }
   }
 } catch {}

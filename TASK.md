@@ -3,7 +3,7 @@
 Living task document. Update it in the same commit as any data change.
 
 - **Snapshot checked:** 2026-10-14 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":26,"benchmarks":22,"checks":"passed"}` — 22 benchmark measures/editions
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":33,"defaultScored":25,"benchmarks":22,"checks":"passed"}` — 22 benchmark measures/editions (General coding switched to LiveBench 2.0 on 2026-10-14; it was 26 on LiveBench 1.0)
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-10-14 refresh): `{"models":38,"withEvidence":36,"defaultScored":30,"benchmarks":21,"checks":"passed"}` (2026-10-08 pass, after Haiku 5.5: same; 2026-09-30 pass: `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}`; pre-2026-09-29: `{"models":35,"withEvidence":33,"defaultScored":27,"benchmarks":21,"checks":"passed"}`).
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -67,7 +67,7 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 
 | id           | Benchmark                                             | Capability            | Main lens?             | Scale                        | Coverage today          |
 | ------------ | ----------------------------------------------------- | --------------------- | ---------------------- | ---------------------------- | ----------------------- |
-| coding       | LiveBench 1.0 · Coding (LiveBench-2026-06-25, /v1/)   | General coding        | ✅ default             | /100, category avg           | 26 models               |
+| coding       | LiveBench 1.0 · Coding (LiveBench-2026-06-25, /v1/)   | General coding        | historical             | /100, category avg           | 26 models               |
 | architecture | R2ABench (Paper v1 · Table 3 · Full PRD · Direct)     | Architecture          | ✅                     | Node F1 × 100                | 1 model (Sonnet 4.6) ⏳ |
 | qna          | SWE Atlas · Codebase QnA                              | Codebase Q&A          | ✅ (equal-weight trio) | task resolve %               | 11 models               |
 | tests        | SWE Atlas · Test Writing                              | Test writing          | ✅ (trio)              | %                            | 11 models               |
@@ -75,7 +75,7 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | terminal     | Terminal-Bench 2.1 (Terminus 2)                       | Terminal              | historical             | %                            | 4 models                |
 | terminal4    | Terminal-Bench 4.0 (native agents)                    | Terminal              | ✅ (selected)          | % + 95% CI                   | 19 models               |
 | verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | ✅                     | %                            | 2 models ⏳             |
-| livebench2   | LiveBench 2.0 · Coding (release 2026-10-13, 29 tasks) | Fixing bugs           | selectable (not lens)  | /100, mean task score        | 25 models               |
+| livebench2   | LiveBench 2.0 · Coding (release 2026-10-13, 29 tasks) | General coding        | ✅ default             | /100, mean task score        | 25 models               |
 | pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                            | 2 models                |
 | pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                       | 11 models               |
 | rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI                   | 6 models                |
@@ -90,14 +90,14 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | optimization | GSO (102 tasks · Opt@1 · updated 2026-09-27)          | Making code faster    | ✅                     | Opt@1 %                      | 9 models (1 utility)    |
 | completion   | CrossCodeEval (NeurIPS 2023)                          | Cross-file completion | ✅ but **gap**         | —                            | 0 models ⏳             |
 
-Scoring defaults: only `coding` starts at weight 100; every other capability defaults to 0 and new capabilities join at 0. Version-1 → version-2 preference migration forces selections `coding`/`terminal4`/`pro2`. Cost never enters the score.
+Scoring defaults: only General coding (`coding` capability → `livebench2`) starts at weight 100; every other capability defaults to 0 and new capabilities join at 0. Version-1 → version-2 preference migration forces selections `livebench2`/`terminal4`/`pro2`. Cost never enters the score.
 
 ## 4. ⏳ Open gaps / next actions
 
 Ordered by value-to-effort. Each item names the blocker, not just the wish.
 
-1. **Zero-evidence models:** MAI-Code-1.1-Flash and Claude Opus 4.8 (fast mode). Search LiveBench (1.0 and 2.0), Terminal-Bench 4.0, SWE-Bench Pro V2, SWE-rebench and SWE Atlas for new entries. Do **not** backfill from a different model version. Gemini 4 Argon has only LiveBench 2.0 Coding so far (no LiveBench 1.0 row), so it is not scored by the default lens.
-2. **LiveBench 2.0 launched 2026-10-13** at livebench.ai; LiveBench 1.0 (the General coding lens, edition 2026-06-25) moved to livebench.ai/v1/ and is no longer where new models appear. 2.0 Coding (29 bug-fix tasks) is captured as `livebench2`, selectable under Fixing bugs. Decision pending: whether to move the default General coding lens to 2.0 once 1.0 stops receiving rows. 2.0 also publishes Agentic, Browser Use, Research and Design suites (not captured).
+1. **Zero-evidence models:** MAI-Code-1.1-Flash and Claude Opus 4.8 (fast mode). Search LiveBench (1.0 and 2.0), Terminal-Bench 4.0, SWE-Bench Pro V2, SWE-rebench and SWE Atlas for new entries. Do **not** backfill from a different model version. GPT-5.4, GPT-5.4 mini and GPT-5.4 nano have LiveBench 1.0 but no 2.0 row, so they are not scored by the default lens.
+2. **LiveBench 2.0 launched 2026-10-13** at livebench.ai and became the General coding lens (`livebench2`) on 2026-10-14; LiveBench 1.0 (edition 2026-06-25) moved to livebench.ai/v1/ and sits in the historical view. 2.0 also publishes Agentic, Browser Use, Research and Design suites (not captured).
 3. **SWE-rebench window drift:** the captured values come from the 2026-05-15 → 2026-07-01 window (111 tasks). The leaderboard rolls monthly — re-capture the whole window at every refresh and record the window dates in the benchmark version string; never mix windows. New catalog models can appear here first (this is where GPT-5.6 Sol/Luna and Sonnet 5 surfaced).
 4. **ProgramBench is growing:** 10 catalog models captured on the 2026-09-28 update (the full 25-row table, including several 0% results). Fable 5/5.1 and GPT-6 rows are not yet published there.
 5. **GSO elicitation changed on 2026-09-27:** the leaderboard now asks models to keep measuring and improving after their first speedup. The four rows captured that day (Fable 5.1, GPT-6 Astra, Fable 5, GPT-5.6 Sol) are not directly comparable to earlier-dated rows; the version string records the update date.

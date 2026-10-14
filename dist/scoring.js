@@ -1,6 +1,6 @@
 const equalWeighted = ['qna', 'tests', 'refactor']
 export const capabilities = [
-  { id: 'coding', short: 'General coding', benchmarks: ['coding'] },
+  { id: 'coding', short: 'General coding', benchmarks: ['livebench2'] },
   { id: 'architecture', short: 'Architecture', benchmarks: ['architecture'] },
   { id: 'qna', short: 'Codebase Q&A', benchmarks: ['qna'] },
   { id: 'tests', short: 'Test writing', benchmarks: ['tests'] },
@@ -13,7 +13,7 @@ export const capabilities = [
   { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
-  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified', 'livebench2'] },
+  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified'] },
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
 ]
 export const defaults = Object.fromEntries(
@@ -37,7 +37,7 @@ export function migratePreferences(p) {
   const selections = {
     ...defaultSelections,
     ...p?.selections,
-    coding: 'coding',
+    coding: 'livebench2',
     terminal: 'terminal4',
     pro: 'pro2',
   }

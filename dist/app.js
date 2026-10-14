@@ -89,11 +89,11 @@ function weightControls() {
   )
 }
 const views = {
-  engineering: ['coding', 'architecture', 'qna', 'tests', 'refactor'],
+  engineering: ['livebench2', 'architecture', 'qna', 'tests', 'refactor'],
   coding: ['algorithmic', 'libraries', 'polyglot', 'completion'],
   quality: ['features', 'security', 'review', 'optimization'],
-  issues: ['terminal4', 'verified', 'livebench2', 'pro2'],
-  history: ['terminal', 'pro'],
+  issues: ['terminal4', 'verified', 'pro2'],
+  history: ['coding', 'terminal', 'pro'],
 }
 function visibleBenchmarks() {
   return views[state.view].map((id) => benchmarks.find((b) => b.id === id))

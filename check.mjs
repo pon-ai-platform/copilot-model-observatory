@@ -12,7 +12,7 @@ import {
 } from './dist/scoring.js'
 const example = {
   evidence: {
-    coding: { value: 40 },
+    livebench2: { value: 40 },
     qna: { value: 60 },
     tests: { value: 30 },
     refactor: { value: 0 },
@@ -61,9 +61,10 @@ const old = migratePreferences({
 assert.equal(old.weights.features, 0)
 assert.equal(old.selections.terminal, 'terminal4')
 assert.equal(old.selections.pro, 'pro2')
+assert.equal(old.selections.coding, 'livebench2')
 assert.equal(old.weights.coding, 100)
 const choice = {
-  evidence: { coding: { value: 80 }, algorithmic: { value: 20 }, qna: { value: 60 } },
+  evidence: { livebench2: { value: 80 }, algorithmic: { value: 20 }, qna: { value: 60 } },
 }
 assert.equal(score(choice, { coding: 50, qna: 50 }).value, 70)
 assert.equal(
@@ -103,11 +104,8 @@ assert.equal(
 )
 assert.equal(score(astra, { completion: 1 }).value, null)
 const argon = models.find((m) => m.name === 'Gemini 4 Argon')
-assert.equal(score(argon, defaults).value, null)
-assert.equal(
-  score(argon, { verified: 1 }, { ...defaultSelections, verified: 'livebench2' }).value,
-  89.7,
-)
+assert.equal(score(argon, defaults).value, 89.7)
+assert.equal(score(argon, { coding: 1 }, { ...defaultSelections, coding: 'coding' }).value, null)
 assert.deepEqual(awards(models, { terminal: 1 }).best, ['claude-opus-5-5'])
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {

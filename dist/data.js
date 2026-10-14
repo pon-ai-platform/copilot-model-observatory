@@ -18,13 +18,13 @@ export const benchmarks = [
   {
     id: 'coding',
     short: 'General coding',
-    name: 'LiveBench · Coding',
+    name: 'LiveBench 1.0 · Coding',
     unit: '/100',
-    subtitle: 'LiveBench · Coding',
+    subtitle: 'LiveBench 1.0 · Coding',
     description:
-      'General coding: writing new code and completing existing code. Uses the LiveBench Coding category average.',
+      'Historical edition: writing new code and completing existing code. Uses the LiveBench 1.0 Coding category average.',
     version: 'LiveBench-2026-06-25',
-    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. This is not a repository-level feature implementation benchmark. LiveBench 1.0 moved to livebench.ai/v1/ when LiveBench 2.0 launched on 2026-10-13; the 2.0 Coding suite is a different benchmark and is tracked separately under Fixing bugs.',
+    note: 'Published coding category average on a 0–100 scale. Reasoning settings are retained per model. LiveBench 1.0 moved to livebench.ai/v1/ when LiveBench 2.0 launched on 2026-10-13 and no longer receives new models; General coding now uses the LiveBench 2.0 Coding suite, which is not comparable.',
   },
   {
     id: 'architecture',

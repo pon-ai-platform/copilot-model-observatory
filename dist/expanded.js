@@ -120,12 +120,12 @@ export function expandCatalog(benchmarks, sources, models) {
     ],
     [
       'livebench2',
-      'Fixing bugs',
+      'General coding',
       'LiveBench 2.0 · Coding',
       'LiveBench 2.0 · release 2026-10-13 · 29 tasks',
       'https://livebench.ai/',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
-      'New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (the General coding column). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
+      'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
     ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {

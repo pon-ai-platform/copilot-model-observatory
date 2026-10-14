@@ -661,6 +661,18 @@ tbody tr:hover {
   color: var(--navy-700);
   text-decoration: underline;
 }
+.topic-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.topic-button:hover .benchmark-value,
+.topic-button:focus-visible .benchmark-value {
+  color: var(--navy-700);
+  text-decoration: underline;
+}
 .provider {
   display: flex;
   align-items: center;

@@ -4,10 +4,13 @@ export const capabilities = [
   { id: 'qna', short: 'Codebase Q&A', benchmarks: ['qna'] },
   { id: 'tests', short: 'Test writing', benchmarks: ['tests'] },
   { id: 'refactor', short: 'Refactoring', benchmarks: ['refactor'] },
-  { id: 'features', short: 'Implementing features', benchmarks: ['features'] },
-  { id: 'security', short: 'Secure coding', benchmarks: ['security'] },
+  { id: 'features', short: 'Implementing features', benchmarks: ['vcb100', 'features'] },
+  { id: 'apps', short: 'Building apps', benchmarks: ['vibecode'] },
+  { id: 'migration', short: 'Migrating code', benchmarks: ['migration'] },
+  { id: 'algorithmic', short: 'Algorithmic coding', benchmarks: ['ioi', 'algorithmic'] },
+  { id: 'security', short: 'Secure coding', benchmarks: ['cyber', 'security'] },
   { id: 'review', short: 'Code review', benchmarks: ['review'] },
-  { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['polyglot', 'multilingual'] },
+  { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['multilingual'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
@@ -37,8 +40,12 @@ export function migratePreferences(p) {
   )
     return null
   const selections = {
-    ...defaultSelections,
-    ...p?.selections,
+    ...Object.fromEntries(
+      capabilities.map((c) => [
+        c.id,
+        c.benchmarks.includes(p?.selections?.[c.id]) ? p.selections[c.id] : c.benchmarks[0],
+      ]),
+    ),
     coding: 'livebench2',
     terminal: 'terminal4',
     pro: 'pro2',
@@ -101,4 +108,56 @@ export function awards(models, weights, selections = defaultSelections) {
       'max',
     ),
   }
+}
+export const topics = [
+  { id: 'writing', short: 'Writing code', benchmarks: ['livebench2', 'ioi', 'migration'] },
+  { id: 'agents', short: 'Agents & issue fixing', benchmarks: ['terminal4', 'pro2', 'rebench'] },
+  { id: 'building', short: 'Building software', benchmarks: ['vibecode', 'program', 'vcb100'] },
+  { id: 'codebase', short: 'Working in a codebase', benchmarks: ['qna', 'tests', 'refactor'] },
+  { id: 'quality', short: 'Quality & security', benchmarks: ['cyber', 'optimization'] },
+]
+export const minTopicModels = 8
+// Standing: 0 = lowest, 100 = best among selectable models with a result; ties share the midpoint.
+export function standings(models, benchmarkId) {
+  const scored = models.filter((m) => !m.utility && Number.isFinite(m.evidence[benchmarkId]?.value))
+  if (scored.length < minTopicModels) return null
+  const values = scored.map((m) => m.evidence[benchmarkId].value)
+  const n = values.length
+  return new Map(
+    scored.map((m) => {
+      const v = m.evidence[benchmarkId].value
+      const below = values.filter((x) => x < v).length
+      const above = values.filter((x) => x > v).length
+      const equal = n - below - above
+      return [m.id, { standing: (100 * (below + (equal - 1) / 2)) / (n - 1), rank: above + 1, n }]
+    }),
+  )
+}
+export function topicScores(models) {
+  const table = Object.fromEntries(
+    topics.flatMap((t) => t.benchmarks).map((id) => [id, standings(models, id)]),
+  )
+  return new Map(
+    models.map((m) => [
+      m.id,
+      Object.fromEntries(
+        topics.map((t) => {
+          const eligible = t.benchmarks.filter((id) => table[id])
+          const parts = eligible
+            .filter((id) => table[id].has(m.id))
+            .map((id) => ({ benchmark: id, ...table[id].get(m.id) }))
+          const enough = !m.utility && parts.length > 0 && parts.length * 2 >= eligible.length
+          return [
+            t.id,
+            {
+              value: enough ? parts.reduce((s, p) => s + p.standing, 0) / parts.length : null,
+              present: parts.length,
+              eligible,
+              parts,
+            },
+          ]
+        }),
+      ),
+    ]),
+  )
 }

@@ -9,6 +9,9 @@ import {
   defaultSelections,
   migratePreferences,
   awards,
+  topics,
+  standings,
+  topicScores,
 } from './dist/scoring.js'
 const example = {
   evidence: {
@@ -43,8 +46,28 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 21)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 21)
+assert.equal(benchmarks.length, 25)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 25)
+for (const c of capabilities)
+  for (const id of c.benchmarks)
+    assert.ok(
+      benchmarks.some((b) => b.id === id),
+      id,
+    )
+for (const t of topics)
+  for (const id of t.benchmarks)
+    assert.ok(
+      benchmarks.some((b) => b.id === id),
+      id,
+    )
+const stale = migratePreferences({
+  weights: { coding: 100, polyglot: 10 },
+  selections: { polyglot: 'polyglot', features: 'features', security: 'nope' },
+})
+assert.equal(stale.weights.polyglot, 10)
+assert.equal(stale.selections.polyglot, 'multilingual')
+assert.equal(stale.selections.features, 'features')
+assert.equal(stale.selections.security, 'cyber')
 const old = migratePreferences({
   weights: {
     coding: 100,
@@ -108,6 +131,33 @@ const argon = models.find((m) => m.name === 'Gemini 4 Argon')
 assert.equal(score(argon, defaults).value, 89.7)
 assert.equal(score(argon, { coding: 1 }, { ...defaultSelections, coding: 'coding' }).value, null)
 assert.deepEqual(awards(models, { terminal: 1 }).best, ['claude-opus-5-5'])
+// Topic standings: rank-based, ties share the midpoint, utility models and missing results excluded.
+const fake = [10, 20, 20, 30, 40, 50, 60, 70].map((v, i) => ({
+  id: 'm' + i,
+  evidence: { x: { value: v } },
+}))
+const st = standings(
+  [...fake, { id: 'u', utility: true, evidence: { x: { value: 99 } } }, { id: 'n', evidence: {} }],
+  'x',
+)
+assert.equal(st.get('m0').standing, 0)
+assert.equal(st.get('m7').standing, 100)
+assert.equal(st.get('m1').standing, st.get('m2').standing)
+assert.equal(st.get('m1').rank, 6)
+assert.equal(st.get('u'), undefined)
+assert.equal(st.get('n'), undefined)
+assert.equal(standings(fake.slice(1), 'x'), null)
+const topicTable = topicScores(models)
+assert.equal(topicTable.get('gpt-4o').writing.value, null)
+assert.equal(topicTable.get('mai-code-1-1-flash').writing.value, null)
+for (const t of topics)
+  for (const [, r] of topicTable)
+    if (r[t.id].value !== null) {
+      assert.ok(r[t.id].value >= 0 && r[t.id].value <= 100)
+      assert.ok(r[t.id].present * 2 >= r[t.id].eligible.length)
+    }
+assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
+assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 1)
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {
   for (const [id, e] of Object.entries(m.evidence)) {

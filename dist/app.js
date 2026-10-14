@@ -8,6 +8,9 @@ import {
   capabilities,
   defaultSelections,
   migratePreferences,
+  topics,
+  topicScores,
+  minTopicModels,
 } from './scoring.js'
 const $ = (id) => document.getElementById(id),
   ids = capabilities.map((b) => b.id)
@@ -90,11 +93,14 @@ function weightControls() {
 }
 const views = {
   engineering: ['livebench2', 'qna', 'tests', 'refactor'],
-  coding: ['algorithmic', 'libraries', 'polyglot', 'completion'],
-  quality: ['features', 'security', 'review', 'optimization'],
-  issues: ['terminal4', 'verified', 'pro2'],
+  coding: ['ioi', 'algorithmic', 'migration', 'multilingual', 'libraries', 'completion'],
+  building: ['vibecode', 'vcb100', 'features', 'program'],
+  quality: ['cyber', 'security', 'review', 'optimization'],
+  issues: ['terminal4', 'verified', 'pro2', 'rebench'],
   history: ['coding', 'terminal', 'pro'],
 }
+const topicTable = topicScores(models)
+const overview = () => state.view === 'overview'
 function visibleBenchmarks() {
   return views[state.view].map((id) => benchmarks.find((b) => b.id === id))
 }
@@ -102,6 +108,7 @@ function sortValue(m) {
   if (state.sort === 'name') return m.name
   if (state.sort === 'price') return m.price.input
   if (state.sort === 'company') return score(m, state.weights, state.selections).value
+  if (state.sort.startsWith('topic:')) return topicTable.get(m.id)[state.sort.slice(6)].value
   return m.evidence[state.sort]?.value
 }
 function compare(a, b) {
@@ -167,7 +174,7 @@ function evidenceCell(b, m) {
   )
 }
 function companyCell(s) {
-  if (!state.weighted) return ''
+  if (!state.weighted || overview()) return ''
   return (
     `<td class="company">` +
     `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}</span>` +
@@ -181,12 +188,25 @@ function priceCell(m) {
       : `${money(m.price.input)} <span class="absent">/</span> ${money(m.price.output)}`
   return `<td class="price">${listed}</td>`
 }
+function topicCell(t, m) {
+  const r = topicTable.get(m.id)[t.id]
+  if (r.value === null)
+    return `<td class="absent" title="${m.utility ? 'Utility model: not ranked' : `Limited evidence: ${r.present} of ${r.eligible.length} benchmarks`}">—</td>`
+  return (
+    `<td><button class="topic-button" data-topic="${t.id}" data-topic-model="${m.id}" title="Show the ${r.present} benchmark results behind this score">` +
+    `<span class="benchmark-value">${r.value.toFixed(0)}</span>` +
+    `<span class="coverage">${r.present}/${r.eligible.length} benchmarks</span></button>` +
+    `<div class="bar"><span style="width:${r.value}%"></span></div></td>`
+  )
+}
 function rowFor(m) {
   const s = score(m, state.weights, state.selections)
   return (
     '<tr>' +
     modelCell(m) +
-    rowColumns.map((b) => evidenceCell(b, m)).join('') +
+    (overview()
+      ? topics.map((t) => topicCell(t, m)).join('')
+      : rowColumns.map((b) => evidenceCell(b, m)).join('')) +
     companyCell(s) +
     priceCell(m) +
     '</tr>'
@@ -210,28 +230,43 @@ function render() {
   $('weightTotal').textContent = total
     ? 'Weights normalized to 100%'
     : 'Choose at least one capability'
-  const columns = visibleBenchmarks()
-  $('viewNote').textContent = columns
-    .map(
-      (b) =>
-        `${b.short}: ${models.filter((m) => Number.isFinite(m.evidence[b.id]?.value)).length}/${models.length} models with evidence`,
-    )
-    .join(' · ')
+  const columns = overview() ? [] : visibleBenchmarks()
+  const showCompany = state.weighted && !overview()
+  $('viewNote').textContent = overview()
+    ? `Topic score = average standing (0–100) across the topic's benchmarks, relative to the other selectable Copilot models — not an absolute skill score. A benchmark counts once at least ${minTopicModels} models have a result; a topic needs results on at least half of its benchmarks. Click a score for the raw results.`
+    : columns
+        .map(
+          (b) =>
+            `${b.short}: ${models.filter((m) => Number.isFinite(m.evidence[b.id]?.value)).length}/${models.length} models with evidence`,
+        )
+        .join(' · ')
   $('thead').innerHTML =
     '<tr>' +
     heading('name', 'Model', 'Provider / availability') +
-    columns.map((b) => heading(b.id, b.short, b.subtitle)).join('') +
-    (state.weighted ? heading('company', 'Company score', 'Exploratory · /100') : '') +
+    (overview()
+      ? topics
+          .map((t) =>
+            heading(
+              'topic:' + t.id,
+              t.short,
+              t.benchmarks.map((id) => benchmarks.find((b) => b.id === id).name).join(' · '),
+            ),
+          )
+          .join('')
+      : columns.map((b) => heading(b.id, b.short, b.subtitle)).join('')) +
+    (showCompany ? heading('company', 'Company score', 'Exploratory · /100') : '') +
     heading('price', 'USD / 1M tokens', 'Input / output') +
     '</tr>'
   const selected = filtered()
-  winners = awards(selected, state.weights, state.selections)
+  winners = overview()
+    ? { best: [], cheapest: [], value: [] }
+    : awards(selected, state.weights, state.selections)
   rowColumns = columns
   $('count').textContent =
     `${selected.length} of ${models.length} models · ${selected.filter((m) => Object.keys(m.evidence).length).length} with captured evidence`
   $('tbody').innerHTML = selected.length
     ? selected.map(rowFor).join('')
-    : `<tr><td class="empty" colspan="${columns.length + 2 + (state.weighted ? 1 : 0)}">No models match. Try another name or provider.</td></tr>`
+    : `<tr><td class="empty" colspan="${(overview() ? topics.length : columns.length) + 2 + (showCompany ? 1 : 0)}">No models match. Try another name or provider.</td></tr>`
   document.querySelectorAll('[data-sort]').forEach((b) =>
     b.addEventListener('click', () => {
       const key = b.dataset.sort
@@ -243,6 +278,35 @@ function render() {
   document
     .querySelectorAll('[data-model]')
     .forEach((b) => b.addEventListener('click', () => details(b.dataset.model)))
+  document
+    .querySelectorAll('[data-topic]')
+    .forEach((b) =>
+      b.addEventListener('click', () => topicDetails(b.dataset.topicModel, b.dataset.topic)),
+    )
+}
+function topicDetails(modelId, topicId) {
+  const m = models.find((x) => x.id === modelId)
+  const t = topics.find((x) => x.id === topicId)
+  const r = topicTable.get(modelId)[topicId]
+  const rows = t.benchmarks
+    .map((id) => {
+      const b = benchmarks.find((x) => x.id === id)
+      const e = m.evidence[id]
+      const p = r.parts.find((x) => x.benchmark === id)
+      const status = !r.eligible.includes(id)
+        ? `Not counted: fewer than ${minTopicModels} models have a result.`
+        : p
+          ? `Rank ${p.rank} of ${p.n} · standing ${p.standing.toFixed(0)}/100`
+          : 'No result for this model.'
+      return `<article class="evidence"><div class="evidence-head"><strong>${b.name}</strong><span class="number">${e ? e.value.toFixed(2) + (b.unit || '%') : '—'}</span></div><p>${status}</p>${e ? `<p>${escape(e.agent)}${e.uncertainty != null ? ` · published uncertainty ±${e.uncertainty.toFixed(2)} points` : ''}</p>${e.context ? `<p>${escape(e.context)}</p>` : ''}` : ''}<p>${b.version}</p><a href="${sources[id]}" target="_blank" rel="noopener">Original result & methodology ↗</a></article>`
+    })
+    .join('')
+  $('detailBody').innerHTML =
+    `<h2 id="detailTitle">${escape(m.name)} · ${t.short}</h2><p class="detail-meta">Topic score ${r.value === null ? 'not available' : r.value.toFixed(0) + '/100'} · ${r.present} of ${r.eligible.length} counted benchmarks. Standing is relative to the other selectable Copilot models with a result (100 = best, 0 = lowest); it is not an absolute skill score. External agents and settings, not Copilot.</p>${rows}<p><button class="model-button" data-detail-model="${m.id}">All evidence for ${escape(m.name)} →</button></p>`
+  $('detailBody')
+    .querySelector('[data-detail-model]')
+    .addEventListener('click', () => details(m.id))
+  if (!$('details').open) $('details').showModal()
 }
 function rates(p) {
   return `<div class="rates">${[
@@ -294,7 +358,7 @@ function details(id) {
             .join(' + ')}</p>`
         : ''
     }`
-  $('details').showModal()
+  if (!$('details').open) $('details').showModal()
 }
 for (const p of [...new Set(models.map((m) => m.provider))].sort())
   $('provider').add(new Option(p, p))
@@ -342,7 +406,10 @@ $('provider').addEventListener('change', (e) => {
 })
 $('view').addEventListener('change', (e) => {
   state.view = e.target.value
-  if (state.sort !== 'company') {
+  if (overview()) {
+    state.sort = 'topic:' + topics[0].id
+    state.ascending = false
+  } else if (state.sort !== 'company') {
     state.sort = 'name'
     state.ascending = true
   }

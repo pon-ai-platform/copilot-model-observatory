@@ -38,15 +38,6 @@ export function expandCatalog(benchmarks, sources, models) {
       'Full set of 1,140 tasks. Hard and Complete variants are not mixed in. Captured matches are older utility models.',
     ],
     [
-      'polyglot',
-      'Multilingual editing',
-      'Aider Polyglot',
-      '225 exercises · pass rate 2',
-      'https://aider.chat/docs/leaderboards/',
-      'Successful editing across C++, Go, Java, JavaScript, Python and Rust.',
-      'Uses the second-attempt pass rate, not first-attempt success. Aider version and edit format matter. Captured overlap is a utility model.',
-    ],
-    [
       'algorithmic',
       'Algorithmic coding',
       'LiveCodeBench',
@@ -116,7 +107,7 @@ export function expandCatalog(benchmarks, sources, models) {
       '300 tasks · 42 repos · 9 languages · mini-SWE-agent',
       'https://www.swebench.com/multilingual.html',
       'Resolve real GitHub issues across C, C++, Go, Java, JS, TS, PHP, Ruby and Rust.',
-      'Common mini-SWE-agent harness, single rollout per instance. Captured catalog entries come from the February batch (mini-SWE-agent 2.0.0a0). Kept separate from Aider Polyglot, which measures editing exercises, not issue resolution.',
+      'Common mini-SWE-agent harness, single rollout per instance. Captured catalog entries come from the February batch (mini-SWE-agent 2.0.0a0).',
     ],
     [
       'livebench2',
@@ -126,6 +117,51 @@ export function expandCatalog(benchmarks, sources, models) {
       'https://livebench.ai/',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
       'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
+    ],
+    [
+      'vibecode',
+      'Building apps',
+      'Vibe Code Bench',
+      'v1.1 · 50 apps · updated 2026-10-12',
+      'https://www.vals.ai/benchmarks/vibe-code',
+      'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
+      'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
+    ],
+    [
+      'migration',
+      'Migrating code',
+      'Code Migration',
+      '130 tasks · updated 2026-10-12',
+      'https://www.vals.ai/benchmarks/code-migration',
+      'Re-implement working programs in another language (30 CLI repositories into 4 target languages, plus 10 COBOL to Java); scored on hidden behaviour tests.',
+      'Run by Vals AI on a private test set. Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published.',
+    ],
+    [
+      'cyber',
+      'Secure coding',
+      'CyberBench',
+      'v1.1 · 116 tasks · updated 2026-10-12',
+      'https://www.vals.ai/benchmarks/cyber',
+      'Reproduce and patch OSS-Fuzz-style crashes (mostly memory safety) in real open-source native-code projects.',
+      'Run by Vals AI. Provider refusals count as failures: several frontier models refuse about half of the tasks (GPT-6 Astra, GPT-6.1 Sol, Gemini 3.7 and 3.8 Flash), so these scores mix capability with safety policy. Special-access variants (Opus 5.5 CVP, Sonnet 5 Cyber Range) are kept as alternative setups.',
+    ],
+    [
+      'ioi',
+      'Algorithmic coding',
+      'IOI',
+      'IOI 2024–2026 · 18 problems · updated 2026-10-12',
+      'https://www.vals.ai/benchmarks/ioi',
+      'International Olympiad in Informatics problems, graded with the official subtask tests (100 points per problem).',
+      'Run by Vals AI on public olympiad problems with withheld test data. Two models reach 100%, so the top of the scale is saturated; published uncertainty is wide for several entries.',
+    ],
+    [
+      'vcb100',
+      'Implementing features',
+      'Vibe Code Bench 1-100',
+      '50 tasks · updated 2026-10-13',
+      'https://www.vals.ai/benchmarks/vcb-1-100',
+      'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
+      'Run by Vals AI on a private test set; only 24 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
     ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
@@ -170,9 +206,6 @@ export function expandCatalog(benchmarks, sources, models) {
   add('GPT-4o mini', 'libraries', 46.1, 'GPT-4o-mini-2024-07-18 · chat · Full / Instruct')
   add('GPT-4o', 'libraries', 48, 'GPT-4o-2024-11-20 · chat · Full / Instruct', null, {
     context: 'Historical dated variant; not evidence for every GPT-4o deployment.',
-  })
-  add('GPT-4.1', 'polyglot', 52.4, 'Aider 0.81.4.dev · diff · pass rate 2', '2025-04-14', {
-    context: 'First-attempt pass rate: 20.0%. Main score allows a second attempt.',
   })
   add('GPT-4o', 'algorithmic', 29.5, 'GPT-4o-2024-08-06 · fixed 454-problem window')
   add('GPT-4o mini', 'algorithmic', 27.5, 'GPT-4o-mini-2024-07-18 · fixed 454-problem window')
@@ -295,4 +328,187 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Haiku 4.5', 48.1],
   ])
     add(name, 'livebench2', value, 'LiveBench 2.0 · single run · highest supported effort')
+  // Vals AI rows: [name, value, uncertainty, fallback/refusal note, setting]
+  const vals = (id, agent, rows) => {
+    for (const [name, value, uncertainty, flag, setting] of rows)
+      add(name, id, value, setting ? `${agent} · ${setting}` : agent, null, {
+        uncertainty,
+        ...(flag ? { context: `Vals AI flag: ${flag}` } : {}),
+      })
+  }
+  const alt = (name, benchmark, value, uncertainty, agent, context) =>
+    get(name).alternatives.push({
+      benchmark,
+      value,
+      uncertainty,
+      agent,
+      date: null,
+      source: sources[benchmark],
+      ...(context ? { context } : {}),
+    })
+  vals('vibecode', 'OpenHands · Vals harness', [
+    ['Claude Sonnet 5.5', 92.39, 1.26],
+    ['Gemini 4 Argon', 91.91, 1.9],
+    ['Claude Haiku 5.5', 90.44, 1.73],
+    ['Claude Fable 5', 90.35, 2.1],
+    ['Claude Opus 5.5', 90.29, 1.53, '4 fallbacks to another model on 50 tasks (8.00%).'],
+    ['Claude Fable 5.1', 90.26, 1.57],
+    ['GPT-6 Astra', 89.59, 2.17],
+    ['GPT-6.1 Sol', 88.93, 1.89],
+    ['Claude Opus 5', 88.4, 3.0],
+    ['GPT-6 Sol', 87.82, 2.53],
+    ['Grok 4.7', 86.17, 2.18],
+    ['Kimi K3', 84.97, 2.75],
+    ['Claude Opus 4.8', 82.72, 3.08],
+    ['GPT-6 Luna', 81.65, 3.38],
+    ['Claude Sonnet 5', 81.33, 3.05],
+    ['GPT-5.6 Sol', 80.5, 3.72],
+    ['Gemini 3.8 Flash', 78.65, 3.88],
+    ['GPT-5.6 Luna', 77.06, 3.07],
+    ['Grok 4.6', 76.24, 3.82],
+    ['GPT-5.6 Terra', 74.59, 4.2],
+    ['Gemini 3.7 Flash', 70.39, 4.84],
+    ['GPT-5.5', 69.85, 4.54],
+    ['Grok 4.5', 69.0, 4.48],
+    ['GPT-5.4', 67.42, 4.84, null, 'xhigh'],
+    ['GPT-5.3-Codex', 61.77, 4.71],
+    ['Claude Sonnet 4.6', 51.48, 4.64],
+    ['GPT-5.4 mini', 47.97, 5.61],
+    ['GPT-5.4 nano', 26.1, 5.08],
+    ['GPT-5 mini', 14.17, 3.54],
+    ['Claude Haiku 4.5', 11.39, 3.13, null, 'thinking'],
+  ])
+  alt('Claude Opus 4.8', 'vibecode', 77.48, 3.74, 'Claude Code · Vals harness')
+  alt('Claude Sonnet 4.6', 'vibecode', 55.77, 4.68, 'Claude Code · Vals harness')
+  alt('GPT-5.5', 'vibecode', 67.39, 4.75, 'Factory · Vals harness')
+  alt('GPT-5.5', 'vibecode', 58.19, 4.93, 'Codex · Vals harness')
+  alt('GPT-5.4', 'vibecode', 48.47, 5.07, 'Codex · Vals harness')
+  vals('migration', 'Vals harness', [
+    ['Claude Sonnet 5.5', 69.83, 4.26],
+    ['Gemini 4 Argon', 68.17, 4.35],
+    ['GPT-6 Astra', 67.74, 4.22],
+    ['Claude Opus 5.5', 66.65, 4.33, '106 fallbacks to another model on 130 tasks (81.54%).'],
+    ['GPT-6.1 Sol', 65.12, 4.36],
+    ['Claude Opus 5', 57.47, 4.37],
+    ['GPT-6 Sol', 57.2, 4.21],
+    [
+      'Claude Fable 5',
+      55.06,
+      4.61,
+      '24 fallbacks on 130 tasks (18.46%); 24 provider refusals scored as failures.',
+    ],
+    [
+      'Claude Fable 5.1',
+      54.61,
+      4.81,
+      '2 fallbacks on 130 tasks (1.54%); 2 provider refusals scored as failures.',
+    ],
+    ['GPT-5.6 Sol', 52.92, 4.35],
+    ['GPT-5.6 Terra', 47.8, 4.28],
+    ['Claude Opus 4.8', 47.25, 4.18],
+    ['GPT-5.5', 45.16, 4.16],
+    ['Grok 4.7', 44.82, 4.21],
+    ['Grok 4.6', 44.57, 4.48],
+    ['Claude Haiku 5.5', 44.57, 4.23],
+    ['GPT-5.6 Luna', 44.55, 4.24],
+    ['Claude Sonnet 5', 44.39, 4.25],
+    ['GPT-6 Luna', 42.55, 4.42],
+    ['Claude Sonnet 4.6', 39.89, 4.14],
+    ['Grok 4.5', 36.6, 4.14],
+    ['Gemini 3.8 Flash', 36.55, 4.18],
+    ['GPT-5.4', 34.98, 4.11, null, 'xhigh'],
+    ['Gemini 3.7 Flash', 34.8, 4.22],
+    ['Kimi K3', 16.1, 4.1],
+    ['GPT-5.4 nano', 14.47, 4.03],
+    ['GPT-5.4 mini', 12.94, 3.64],
+    ['Claude Haiku 4.5', 7.55, 1.06, null, 'thinking'],
+  ])
+  vals('cyber', 'Vals harness', [
+    ['GPT-6 Sol', 77.98, 5.11],
+    ['Gemini 4 Argon', 77.86, 5.3],
+    ['GPT-5.6 Sol', 76.31, 5.18],
+    ['GPT-6 Luna', 76.25, 5.29],
+    ['Claude Haiku 5.5', 75.48, 5.21],
+    ['Kimi K3', 75.24, 5.56],
+    ['GPT-5.6 Luna', 73.63, 5.56],
+    ['GPT-5.6 Terra', 72.08, 5.41],
+    ['Grok 4.5', 71.01, 5.79],
+    ['Claude Fable 5.1', 70.42, 5.43, '62 fallbacks to another model on 116 tasks (53.45%).'],
+    ['Grok 4.7', 69.46, 5.67],
+    ['Grok 4.6', 67.68, 5.87],
+    ['Claude Opus 5', 65.36, 5.55, '37 fallbacks to another model on 116 tasks (31.90%).'],
+    ['Claude Sonnet 5', 61.91, 5.74, '1 provider refusal on 116 tasks (0.86%), scored as failure.'],
+    [
+      'Claude Sonnet 5.5',
+      59.58,
+      5.21,
+      '54 fallbacks on 116 tasks (46.55%); 8 provider refusals (6.90%) scored as failures.',
+    ],
+    ['Claude Opus 5.5', 55.36, 5.13, '61 fallbacks to another model on 116 tasks (52.59%).'],
+    [
+      'Gemini 3.7 Flash',
+      43.75,
+      2.21,
+      '61 provider refusals on 116 tasks (52.59%), scored as failures.',
+    ],
+    [
+      'Gemini 3.8 Flash',
+      43.75,
+      2.21,
+      '59 provider refusals on 116 tasks (50.86%), scored as failures.',
+    ],
+    ['GPT-6 Astra', 41.07, 2.56, '61 provider refusals on 116 tasks (52.59%), scored as failures.'],
+    ['GPT-6.1 Sol', 39.29, 2.74, '60 provider refusals on 116 tasks (51.72%), scored as failures.'],
+  ])
+  alt(
+    'Claude Opus 5.5',
+    'cyber',
+    74.58,
+    5.35,
+    'Vals harness · Cyber Verification Program access',
+    'Vals AI flag: 61 fallbacks to another model on 116 tasks (52.59%).',
+  )
+  alt('Claude Sonnet 5', 'cyber', 70.3, 5.65, 'Vals harness · Cyber Range access')
+  vals('ioi', 'Vals harness', [
+    ['Gemini 4 Argon', 100, 0],
+    ['GPT-6 Astra', 100, 0],
+    ['GPT-6.1 Sol', 96.89, 3.11],
+    ['Claude Opus 5.5', 95.06, 4.94, '1 fallback to another model on 18 tasks (5.56%).'],
+    ['GPT-5.6 Sol', 91.17, 4.51],
+    ['Claude Fable 5.1', 90.78, 4.65, '4 fallbacks to another model on 18 tasks (22.22%).'],
+    ['GPT-5.6 Terra', 87.61, 6.53],
+    ['Claude Opus 5', 84.33, 9.96],
+    ['Claude Sonnet 5.5', 83.06, 3.74],
+    ['GPT-6 Sol', 82.61, 9.24],
+    ['Gemini 3.7 Flash', 67.83, 3.61],
+    ['GPT-5.6 Luna', 61.78, 11.61],
+    ['Grok 4.7', 57.72, 1.99],
+    ['Gemini 3.8 Flash', 56.94, 2.26],
+    ['GPT-6 Luna', 55.56, 8.87],
+    ['GPT-5.3-Codex', 53.83, 6.31],
+    ['Kimi K3', 48.94, 9.82],
+    ['Grok 4.6', 47.61, 2.09],
+    ['Claude Haiku 5.5', 47.28, 10.72],
+    ['Claude Sonnet 5', 45.0, 2.75],
+    ['Grok 4.5', 40.56, 3.95],
+  ])
+  vals('vcb100', 'Vals harness', [
+    ['Claude Opus 5.5', 30.36, 4.83, '8 fallbacks to another model on 50 tasks (16.00%).'],
+    ['Claude Opus 5', 28.53, 4.33],
+    [
+      'Claude Fable 5.1',
+      28.0,
+      4.49,
+      '14 fallbacks on 50 tasks (28.00%); 14 provider refusals scored as failures.',
+    ],
+    ['GPT-6 Astra', 27.64, 4.08],
+    ['GPT-5.6 Luna', 22.59, 4.0],
+    ['Claude Haiku 5.5', 20.41, 3.79],
+    ['GPT-5.6 Sol', 20.01, 3.63],
+    ['Gemini 3.8 Flash', 18.77, 3.31],
+    ['Kimi K3', 18.24, 3.92],
+    ['GPT-5.6 Terra', 14.82, 3.12],
+    ['Grok 4.6', 14.75, 3.17],
+    ['Claude Sonnet 5', 13.82, 2.98],
+  ])
 }

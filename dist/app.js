@@ -116,7 +116,7 @@ const views = {
   coding: ['ioi', 'algorithmic', 'migration', 'multilingual', 'libraries', 'completion'],
   building: ['vibecode', 'vcb100', 'features', 'program'],
   quality: ['cyber', 'security', 'review', 'optimization'],
-  issues: ['terminal4', 'verified', 'pro2', 'rebench'],
+  issues: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
   history: ['coding', 'terminal', 'pro'],
 }
 const topicTable = topicScores(models)

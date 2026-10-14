@@ -163,6 +163,24 @@ export function expandCatalog(benchmarks, sources, models) {
       'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
       'Run by Vals AI on a private test set; only 24 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
     ],
+    [
+      'lbagentic',
+      'Long-running agent work',
+      'LiveBench 2.0 · Agentic',
+      'LiveBench 2.0 · release 2026-10-13 · 18 tasks',
+      'https://livebench.ai/',
+      'Long-running work where early decisions must hold up: extending apps through changing requirements, running a codebase through simulated months of operations, building a compiler, performance optimisation. Mean task score 0–100.',
+      'Deterministic grading against hidden reference data, test programs or simulated outcomes. One run per model at its highest supported effort unless the source row says otherwise. Same LiveBench 2.0 release as the General coding suite.',
+    ],
+    [
+      'multimodal',
+      'Fixing bugs',
+      'SWE-bench Multimodal',
+      'Test split · 480 tasks · Vals AI run · updated 2026-10-13',
+      'https://www.vals.ai/benchmarks/swebench-multimodal',
+      'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
+      'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',
+    ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
     sources[id] = url
@@ -174,7 +192,7 @@ export function expandCatalog(benchmarks, sources, models) {
       subtitle: name,
       description,
       note,
-      ...(id === 'review' || id === 'livebench2' ? { unit: '/100' } : {}),
+      ...(['review', 'livebench2', 'lbagentic'].includes(id) ? { unit: '/100' } : {}),
     })
   }
   const get = (name) => models.find((m) => m.name === name)
@@ -511,4 +529,45 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Grok 4.6', 14.75, 3.17],
     ['Claude Sonnet 5', 13.82, 2.98],
   ])
+  vals('multimodal', 'mini-SWE-agent · no network · Vals harness', [
+    ['Claude Opus 5.5', 70.21, 2.09],
+    ['Claude Fable 5.1', 61.25, 2.23],
+    ['Claude Sonnet 5.5', 58.33, 2.25],
+    ['Gemini 4 Argon', 56.04, 2.27],
+    ['Claude Haiku 5.5', 43.96, 2.27],
+    ['GPT-6.1 Sol', 43.54, 2.27],
+    ['GPT-6 Astra', 43.33, 2.26],
+    ['Grok 4.7', 42.92, 2.26],
+    ['Gemini 3.8 Flash', 40.83, 2.25],
+    ['GPT-6 Luna', 37.5, 2.21],
+    ['Kimi K3', 35.83, 2.19],
+  ])
+  for (const [name, value] of [
+    ['Claude Opus 5.5', 85.0],
+    ['GPT-6 Astra', 82.4],
+    ['Claude Fable 5.1', 80.8],
+    ['Claude Sonnet 5.5', 78.8],
+    ['GPT-6.1 Sol', 73.0],
+    ['Gemini 4 Argon', 69.9],
+    ['GPT-6 Sol', 66.9],
+    ['Claude Opus 5', 62.1],
+    ['Claude Haiku 5.5', 56.6],
+    ['Claude Fable 5', 53.2],
+    ['Grok 4.7', 50.1],
+    ['GPT-5.6 Sol', 48.5],
+    ['GPT-5.6 Terra', 48.4],
+    ['Claude Opus 4.8', 48.3],
+    ['GPT-6 Luna', 48.1],
+    ['GPT-5.5', 44.6],
+    ['Kimi K3', 42.8],
+    ['Grok 4.6', 40.7],
+    ['Claude Sonnet 5', 39.0],
+    ['GPT-5.6 Luna', 30.4],
+    ['Gemini 3.8 Flash', 30.1],
+    ['Gemini 3.7 Flash', 28.3],
+    ['Grok 4.5', 27.9],
+    ['Claude Sonnet 4.6', 23.1],
+    ['Claude Haiku 4.5', 11.1],
+  ])
+    add(name, 'lbagentic', value, 'LiveBench 2.0 · single run · highest supported effort')
 }

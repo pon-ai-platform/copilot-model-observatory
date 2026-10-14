@@ -12,6 +12,8 @@ export const capabilities = [
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
+  { id: 'agentic', short: 'Long-running agent work', benchmarks: ['lbagentic'] },
+  { id: 'verified', short: 'Fixing bugs', benchmarks: ['multimodal', 'verified'] },
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
 ]
 export const defaults = Object.fromEntries(
@@ -112,7 +114,11 @@ export function awards(
 }
 export const topics = [
   { id: 'writing', short: 'Writing code', benchmarks: ['livebench2', 'ioi', 'migration'] },
-  { id: 'agents', short: 'Agents & issue fixing', benchmarks: ['terminal4', 'pro2', 'rebench'] },
+  {
+    id: 'agents',
+    short: 'Agents & issue fixing',
+    benchmarks: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'rebench'],
+  },
   { id: 'building', short: 'Building software', benchmarks: ['vibecode', 'program', 'vcb100'] },
   { id: 'codebase', short: 'Working in a codebase', benchmarks: ['qna', 'tests', 'refactor'] },
   { id: 'quality', short: 'Quality & security', benchmarks: ['cyber', 'optimization'] },

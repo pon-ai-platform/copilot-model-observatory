@@ -48,8 +48,8 @@ assert.equal(
   ),
   false,
 )
-assert.equal(benchmarks.length, 25)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 25)
+assert.equal(benchmarks.length, 27)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 27)
 for (const c of capabilities)
   for (const id of c.benchmarks)
     assert.ok(
@@ -67,11 +67,12 @@ const stale = migratePreferences({
   selections: { polyglot: 'polyglot', features: 'features', security: 'nope' },
 })
 assert.equal('polyglot' in stale.weights, false)
-assert.equal('verified' in stale.weights, false)
+assert.equal(stale.weights.verified, 5)
+assert.equal(stale.selections.verified, 'multimodal')
 assert.equal('polyglot' in stale.selections, false)
 assert.equal(stale.selections.features, 'features')
 assert.equal(stale.selections.security, 'cyber')
-assert.equal(capabilities.length, 13)
+assert.equal(capabilities.length, 15)
 assert.deepEqual(
   topicLens({ a: { value: 80 }, b: { value: null }, c: { value: 40 } }, { a: 1, b: 1, c: 2 }),
   { value: 160 / 3, coverage: 0.75, active: 3, present: 2 },

@@ -9,13 +9,9 @@ export const capabilities = [
   { id: 'migration', short: 'Migrating code', benchmarks: ['migration'] },
   { id: 'algorithmic', short: 'Algorithmic coding', benchmarks: ['ioi', 'algorithmic'] },
   { id: 'security', short: 'Secure coding', benchmarks: ['cyber', 'security'] },
-  { id: 'review', short: 'Code review', benchmarks: ['review'] },
-  { id: 'polyglot', short: 'Multilingual editing', benchmarks: ['multilingual'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
-  { id: 'completion', short: 'Cross-file completion', benchmarks: ['completion'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
-  { id: 'verified', short: 'Fixing bugs', benchmarks: ['verified'] },
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
 ]
 export const defaults = Object.fromEntries(
@@ -85,11 +81,16 @@ export function workloadCost(model) {
     ? p.input * 0.05 + p.output * 0.01
     : null
 }
-export function awards(models, weights, selections = defaultSelections) {
+export function awards(
+  models,
+  weights,
+  selections = defaultSelections,
+  scoreOf = (m) => score(m, weights, selections).value,
+) {
   const eligible = models.filter((m) => !m.utility)
   const scored = eligible.map((m) => ({
     id: m.id,
-    score: score(m, weights, selections).value,
+    score: scoreOf(m),
     cost: workloadCost(m),
   }))
   const winners = (rows, metric, direction) => {
@@ -117,6 +118,23 @@ export const topics = [
   { id: 'quality', short: 'Quality & security', benchmarks: ['cyber', 'optimization'] },
 ]
 export const minTopicModels = 8
+export const topicDefaults = Object.fromEntries(topics.map((t) => [t.id, 100]))
+// Weighted mean of the topic standings a model has; needs at least half of the weight covered.
+export function topicLens(result, weights) {
+  const entries = Object.entries(weights).filter(([, w]) => Number.isFinite(w) && w > 0)
+  const total = entries.reduce((s, [, w]) => s + w, 0)
+  const covered = entries.filter(([id]) => result[id]?.value != null)
+  const coveredWeight = covered.reduce((s, [, w]) => s + w, 0)
+  return {
+    value:
+      total && coveredWeight * 2 >= total
+        ? covered.reduce((s, [id, w]) => s + result[id].value * w, 0) / coveredWeight
+        : null,
+    coverage: total ? coveredWeight / total : 0,
+    active: entries.length,
+    present: covered.length,
+  }
+}
 // Standing: 0 = lowest, 100 = best among selectable models with a result; ties share the midpoint.
 export function standings(models, benchmarkId) {
   const scored = models.filter((m) => !m.utility && Number.isFinite(m.evidence[benchmarkId]?.value))

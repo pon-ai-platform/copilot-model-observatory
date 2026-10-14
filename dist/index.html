@@ -55,12 +55,10 @@
           <p class="muted">Explore your priorities. No company policy is applied.</p>
           <button id="sortLens" class="lens-sort" type="button">Sort by company lens ↓</button>
           <div id="weights"></div>
+          <button id="lensMode" class="secondary" type="button"></button>
           <div class="formula">
             <strong id="weightTotal">Weights normalized to 100%</strong>
-            <p>
-              Weight each capability once. Each uses the benchmark named below its slider. Every
-              active capability needs the selected result. New capabilities start at 0%.
-            </p>
+            <p id="lensHelp"></p>
             <p>
               Published agents and budgets differ. This is an exploratory index, not a controlled
               model ranking.
@@ -140,14 +138,17 @@
           <article>
             <h3>How the company score works</h3>
             <p>
-              Σ(capability weight × selected benchmark score) ÷ Σ(capability weights). Each
-              capability uses one fixed benchmark, so adding benchmarks does not add votes. Task
-              success rates use percentages; LiveBench Coding (1.0 and 2.0) uses its 0–100 score.
-              These measure different things. No min–max rescaling. A missing selected result
-              suppresses the score. Versions, subsets and prompt settings stay separate. Review uses
-              the published overall score × 100; false-positive rates are displayed separately and
-              never rewarded. Cost is separate. Equal weights are a starting point, not an approved
-              policy.
+              By default the lens weights five topics. Each topic score is a model's average
+              standing (0–100, rank-based among the selectable Copilot models with a result) on that
+              topic's benchmarks, as in the Overview; the company score is the weighted mean of the
+              topic scores a model has, and needs scores covering at least half of the weight.
+              Advanced mode weights individual benchmarks on their raw scale instead: Σ(capability
+              weight × selected benchmark score) ÷ Σ(capability weights). Each capability uses one
+              fixed benchmark, so adding benchmarks does not add votes. Task success rates use
+              percentages; LiveBench Coding (1.0 and 2.0) uses its 0–100 score. These measure
+              different things; advanced mode applies no rescaling. A missing selected result
+              suppresses the score. Versions, subsets and prompt settings stay separate. Cost is
+              separate. Equal weights are a starting point, not an approved policy.
             </p>
           </article>
           <article>

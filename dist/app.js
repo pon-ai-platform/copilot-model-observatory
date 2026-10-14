@@ -11,10 +11,15 @@ import {
   topics,
   topicScores,
   minTopicModels,
+  topicDefaults,
+  topicLens,
 } from './scoring.js'
 const $ = (id) => document.getElementById(id),
-  ids = capabilities.map((b) => b.id)
+  ids = capabilities.map((b) => b.id),
+  topicIds = topics.map((t) => t.id)
 const state = {
+  mode: 'topics',
+  topicWeights: { ...topicDefaults },
   weights: { ...defaults },
   selections: { ...defaultSelections },
   weighted: true,
@@ -32,6 +37,9 @@ try {
   if (p) {
     const migrated = migratePreferences(p)
     if (migrated) Object.assign(state, migrated)
+    // Preferences saved before topic weights existed were per-benchmark weights.
+    state.mode = p.mode === 'topics' ? 'topics' : 'advanced'
+    if (validWeights(p.topicWeights, topicIds)) state.topicWeights = { ...p.topicWeights }
   }
 } catch {}
 const escape = (s) =>
@@ -60,6 +68,8 @@ function save() {
     localStorage.setItem(
       'copilot-observatory-v2',
       JSON.stringify({
+        mode: state.mode,
+        topicWeights: state.topicWeights,
         weights: state.weights,
         selections: state.selections,
         weighted: state.weighted,
@@ -69,13 +79,23 @@ function save() {
     $('localNote').textContent = 'Browser storage unavailable; preferences last for this visit.'
   }
 }
+const topicMode = () => state.mode === 'topics'
+const lensItems = () => (topicMode() ? topics : capabilities)
+const lensWeights = () => (topicMode() ? state.topicWeights : state.weights)
 function weightControls() {
-  $('weights').innerHTML = capabilities
+  const weights = lensWeights()
+  $('weights').innerHTML = lensItems()
     .map(
       (b) =>
-        `<div class="weight"><label for="weight-${b.id}">${b.short}<output id="out-${b.id}"></output></label><input type="range" min="0" max="100" step="1" id="weight-${b.id}" value="${state.weights[b.id]}" aria-label="${b.short} weight">${b.benchmarks.length > 1 ? `<select data-capability="${b.id}" aria-label="${b.short} benchmark">${b.benchmarks.map((id) => `<option value="${id}" ${state.selections[b.id] === id ? 'selected' : ''}>${benchmarks.find((x) => x.id === id).name}</option>`).join('')}</select>` : `<small>${benchmarks.find((x) => x.id === b.benchmarks[0]).name}</small>`}</div>`,
+        `<div class="weight"><label for="weight-${b.id}">${b.short}<output id="out-${b.id}"></output></label><input type="range" min="0" max="100" step="1" id="weight-${b.id}" value="${weights[b.id]}" aria-label="${b.short} weight">${topicMode() ? `<small>${b.benchmarks.map((id) => benchmarks.find((x) => x.id === id).name).join(' · ')}</small>` : b.benchmarks.length > 1 ? `<select data-capability="${b.id}" aria-label="${b.short} benchmark">${b.benchmarks.map((id) => `<option value="${id}" ${state.selections[b.id] === id ? 'selected' : ''}>${benchmarks.find((x) => x.id === id).name}</option>`).join('')}</select>` : `<small>${benchmarks.find((x) => x.id === b.benchmarks[0]).name}</small>`}</div>`,
     )
     .join('')
+  $('lensMode').textContent = topicMode()
+    ? 'Advanced: weight individual benchmarks'
+    : '← Back to topic weights'
+  $('lensHelp').textContent = topicMode()
+    ? 'Each topic score is the average standing (0–100) of a model among the selectable Copilot models on that topic’s benchmarks — the same scores as the Overview. Topics a model has no score for are left out; it needs scores covering at least half of the weight.'
+    : 'Weight each capability once. Each uses the benchmark named below its slider, on its raw scale. Every active capability needs the selected result. New capabilities start at 0%.'
   document.querySelectorAll('[data-capability]').forEach((el) =>
     el.addEventListener('change', () => {
       state.selections[el.dataset.capability] = el.value
@@ -83,9 +103,9 @@ function weightControls() {
       render()
     }),
   )
-  ids.forEach((id) =>
+  lensItems().forEach(({ id }) =>
     $(`weight-${id}`).addEventListener('input', (e) => {
-      state.weights[id] = Number(e.target.value)
+      weights[id] = Number(e.target.value)
       save()
       render()
     }),
@@ -101,13 +121,17 @@ const views = {
 }
 const topicTable = topicScores(models)
 const overview = () => state.view === 'overview'
+const lens = (m) =>
+  topicMode()
+    ? topicLens(topicTable.get(m.id), state.topicWeights)
+    : score(m, state.weights, state.selections)
 function visibleBenchmarks() {
   return views[state.view].map((id) => benchmarks.find((b) => b.id === id))
 }
 function sortValue(m) {
   if (state.sort === 'name') return m.name
   if (state.sort === 'price') return m.price.input
-  if (state.sort === 'company') return score(m, state.weights, state.selections).value
+  if (state.sort === 'company') return lens(m).value
   if (state.sort.startsWith('topic:')) return topicTable.get(m.id)[state.sort.slice(6)].value
   return m.evidence[state.sort]?.value
 }
@@ -178,7 +202,7 @@ function companyCell(s) {
   return (
     `<td class="company">` +
     `<span class="benchmark-value">${s.value === null ? '—' : s.value.toFixed(1)}</span>` +
-    `<span class="coverage">${s.present}/${s.active} active capabilities</span></td>`
+    `<span class="coverage">${s.present}/${s.active} active ${topicMode() ? 'topics' : 'capabilities'}</span></td>`
   )
 }
 function priceCell(m) {
@@ -200,7 +224,7 @@ function topicCell(t, m) {
   )
 }
 function rowFor(m) {
-  const s = score(m, state.weights, state.selections)
+  const s = lens(m)
   return (
     '<tr>' +
     modelCell(m) +
@@ -219,12 +243,13 @@ function render() {
   const lensSorted = state.sort === 'company' && !state.ascending
   $('sortLens').setAttribute('aria-pressed', String(lensSorted))
   $('sortLens').textContent = lensSorted ? 'Sorted by company lens ↓' : 'Sort by company lens ↓'
-  const total = Object.values(state.weights).reduce((a, b) => a + b, 0)
-  ids.forEach((id) => {
-    $(`out-${id}`).textContent = total ? `${((state.weights[id] / total) * 100).toFixed(1)}%` : '0%'
+  const weights = lensWeights()
+  const total = Object.values(weights).reduce((a, b) => a + b, 0)
+  lensItems().forEach(({ id }) => {
+    $(`out-${id}`).textContent = total ? `${((weights[id] / total) * 100).toFixed(1)}%` : '0%'
     $(`weight-${id}`).setAttribute(
       'aria-valuetext',
-      `${total ? ((state.weights[id] / total) * 100).toFixed(1) : 0} percent normalized weight`,
+      `${total ? ((weights[id] / total) * 100).toFixed(1) : 0} percent normalized weight`,
     )
   })
   $('weightTotal').textContent = total
@@ -260,7 +285,7 @@ function render() {
   const selected = filtered()
   winners = overview()
     ? { best: [], cheapest: [], value: [] }
-    : awards(selected, state.weights, state.selections)
+    : awards(selected, state.weights, state.selections, (m) => lens(m).value)
   rowColumns = columns
   $('count').textContent =
     `${selected.length} of ${models.length} models · ${selected.filter((m) => Object.keys(m.evidence).length).length} with captured evidence`
@@ -327,7 +352,20 @@ function evidenceCard(b, e, alternative = false) {
 function details(id) {
   const m = models.find((m) => m.id === id)
   if (!m) return
-  const s = score(m, state.weights, state.selections)
+  const s = lens(m)
+  const lensParts = topicMode()
+    ? topicIds
+        .filter((id) => state.topicWeights[id] > 0)
+        .map(
+          (id) =>
+            `${topics.find((t) => t.id === id).short}: weight ${state.topicWeights[id]} × standing ${topicTable.get(m.id)[id].value?.toFixed(0) ?? 'missing'}`,
+        )
+    : ids
+        .filter((id) => state.weights[id] > 0)
+        .map(
+          (id) =>
+            `${capabilities.find((b) => b.id === id).short} (${benchmarks.find((b) => b.id === state.selections[id]).name}): weight ${state.weights[id]} × ${m.evidence[state.selections[id]]?.value ?? 'missing'}`,
+        )
   $('detailBody').innerHTML =
     `<h2 id="detailTitle">${escape(m.name)}</h2><p class="detail-meta">${m.provider} · ${m.utility ? 'Background utility model' : 'Listed by GitHub Copilot'} · Checked ${checked} · Released ${released}</p><p class="detail-meta">Plan, IDE and organization policy can restrict access. <a href="${sources.availability}" target="_blank" rel="noopener">Availability matrix ↗</a></p>${m.notes.map((n) => `<p class="notes">${escape(n)}</p>`).join('')}<h3>Copilot pricing <span class="detail-meta">USD / 1M tokens</span></h3>${rates(m.price)}${m.long ? `<p class="detail-meta">Long-context tier: above ${m.long.threshold.toLocaleString()} input tokens</p>${rates(m.long)}` : ''}<p class="detail-meta">— means no separate rate listed. <a href="${sources.pricing}" target="_blank" rel="noopener">Official rate table ↗</a></p><h3>Published benchmark evidence</h3><p class="detail-meta">External agents, not Copilot. Uncertainty is reproduced as reported; no composite confidence interval is inferred.</p>${
       benchmarks
@@ -349,13 +387,7 @@ function details(id) {
         .join(' · ') || 'None in this catalog'
     }</p>${
       state.weighted
-        ? `<h3>Company score: ${s.value === null ? 'not available' : s.value.toFixed(2) + '/100'}</h3><p class="detail-meta">${s.present} of ${s.active} weighted capabilities available. ${s.value === null ? 'Missing active results suppress the score.' : 'Exploratory average; different agents and budgets are not controlled.'}</p><p class="detail-meta">${ids
-            .filter((id) => state.weights[id] > 0)
-            .map(
-              (id) =>
-                `${capabilities.find((b) => b.id === id).short} (${benchmarks.find((b) => b.id === state.selections[id]).name}): weight ${state.weights[id]} × ${m.evidence[state.selections[id]]?.value ?? 'missing'}`,
-            )
-            .join(' + ')}</p>`
+        ? `<h3>Company score: ${s.value === null ? 'not available' : s.value.toFixed(2) + '/100'}</h3><p class="detail-meta">${s.present} of ${s.active} weighted ${topicMode() ? 'topics (relative standing among selectable Copilot models)' : 'capabilities'} available. ${s.value === null ? 'Missing active results suppress the score.' : 'Exploratory average; different agents and budgets are not controlled.'}</p><p class="detail-meta">${lensParts.join(' + ')}</p>`
         : ''
     }`
   if (!$('details').open) $('details').showModal()
@@ -390,8 +422,15 @@ $('sortLens').addEventListener('click', () => {
   render()
 })
 $('reset').addEventListener('click', () => {
+  state.topicWeights = { ...topicDefaults }
   state.weights = { ...defaults }
   state.selections = { ...defaultSelections }
+  save()
+  weightControls()
+  render()
+})
+$('lensMode').addEventListener('click', () => {
+  state.mode = topicMode() ? 'advanced' : 'topics'
   save()
   weightControls()
   render()
@@ -449,6 +488,8 @@ if (context?.registerTool) {
     annotations: { readOnlyHint: true },
     execute: () => ({
       checked,
+      mode: state.mode,
+      topicWeights: state.topicWeights,
       weights: state.weights,
       selections: state.selections,
       weighted: state.weighted,
@@ -456,7 +497,8 @@ if (context?.registerTool) {
         name: m.name,
         price: m.price,
         evidence: m.evidence,
-        companyScore: score(m, state.weights, state.selections),
+        topicScores: Object.fromEntries(topicIds.map((id) => [id, topicTable.get(m.id)[id].value])),
+        companyScore: lens(m),
       })),
     }),
   })
@@ -484,6 +526,7 @@ if (context?.registerTool) {
       if (!input || !validWeights(input.weights, ids))
         throw new Error('Provide all capability weights between 0 and 100.')
       state.weights = { ...input.weights }
+      state.mode = 'advanced'
       state.weighted = true
       save()
       weightControls()

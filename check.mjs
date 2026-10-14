@@ -12,6 +12,8 @@ import {
   topics,
   standings,
   topicScores,
+  topicLens,
+  topicDefaults,
 } from './dist/scoring.js'
 const example = {
   evidence: {
@@ -61,13 +63,21 @@ for (const t of topics)
       id,
     )
 const stale = migratePreferences({
-  weights: { coding: 100, polyglot: 10 },
+  weights: { coding: 100, polyglot: 10, verified: 5 },
   selections: { polyglot: 'polyglot', features: 'features', security: 'nope' },
 })
-assert.equal(stale.weights.polyglot, 10)
-assert.equal(stale.selections.polyglot, 'multilingual')
+assert.equal('polyglot' in stale.weights, false)
+assert.equal('verified' in stale.weights, false)
+assert.equal('polyglot' in stale.selections, false)
 assert.equal(stale.selections.features, 'features')
 assert.equal(stale.selections.security, 'cyber')
+assert.equal(capabilities.length, 13)
+assert.deepEqual(
+  topicLens({ a: { value: 80 }, b: { value: null }, c: { value: 40 } }, { a: 1, b: 1, c: 2 }),
+  { value: 160 / 3, coverage: 0.75, active: 3, present: 2 },
+)
+assert.equal(topicLens({ a: { value: 80 }, b: { value: null } }, { a: 1, b: 2 }).value, null)
+assert.equal(topicLens({ a: { value: 80 } }, { a: 0 }).value, null)
 const old = migratePreferences({
   weights: {
     coding: 100,
@@ -158,6 +168,13 @@ for (const t of topics)
     }
 assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
 assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 1)
+const lensBest = awards(
+  models,
+  {},
+  defaultSelections,
+  (m) => topicLens(topicTable.get(m.id), topicDefaults).value,
+).best
+assert.equal(lensBest.length, 1)
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {
   for (const [id, e] of Object.entries(m.evidence)) {

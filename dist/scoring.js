@@ -149,6 +149,8 @@ export const topics = [
   },
 ]
 export const minTopicModels = 8
+export const awardCoverage = 0.8
+export const awardScore = (s) => (s.coverage >= awardCoverage ? s.value : null)
 export const topicDefaults = Object.fromEntries(topics.map((t) => [t.id, 100]))
 // Weighted mean of the topic standings a model has; needs at least half of the weight covered.
 export function topicLens(result, weights) {

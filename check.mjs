@@ -14,6 +14,7 @@ import {
   topicScores,
   topicLens,
   topicDefaults,
+  awardScore,
 } from './dist/scoring.js'
 const astraRefusals = () => models.find((m) => m.name === 'GPT-6 Astra').evidence.cyber.refusals
 const example = {
@@ -172,13 +173,13 @@ for (const t of topics)
     }
 assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
 assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 1)
-const lensBest = awards(
-  models,
-  {},
-  defaultSelections,
-  (m) => topicLens(topicTable.get(m.id), topicDefaults).value,
+const lensBest = awards(models, {}, defaultSelections, (m) =>
+  awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best
 assert.equal(lensBest.length, 1)
+assert.ok(!lensBest.includes('gemini-4-argon'))
+assert.equal(awardScore({ value: 90, coverage: 0.6 }), null)
+assert.equal(awardScore({ value: 90, coverage: 0.8 }), 90)
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)
 for (const m of models) {
   for (const [id, e] of Object.entries(m.evidence)) {

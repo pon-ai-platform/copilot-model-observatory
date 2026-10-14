@@ -13,6 +13,8 @@ import {
   minTopicModels,
   topicDefaults,
   topicLens,
+  awardScore,
+  awardCoverage,
 } from './scoring.js'
 const $ = (id) => document.getElementById(id),
   ids = capabilities.map((b) => b.id),
@@ -164,7 +166,7 @@ function modelCell(m) {
       'best',
       m.id,
       'Best in lens',
-      'Highest complete lens score among the filtered selectable models. Point estimates only; uncertainty may overlap.',
+      `Highest lens score among the filtered selectable models with scores covering at least ${awardCoverage * 100}% of the weight. Point estimates only; uncertainty may overlap.`,
     ) +
     badge(
       'cheapest',
@@ -176,7 +178,7 @@ function modelCell(m) {
       'value',
       m.id,
       'Best value',
-      'Highest complete lens score per dollar of example token usage among filtered selectable models. Not measured cost per successful task.',
+      `Highest lens score (with at least ${awardCoverage * 100}% of the weight covered) per dollar of example token usage among filtered selectable models. Not measured cost per successful task.`,
     )
   return (
     `<td><button class="model-button" data-model="${m.id}">${escape(m.name)}</button>` +
@@ -284,7 +286,7 @@ function render() {
     heading('price', 'USD / 1M tokens', 'Input / output') +
     '</tr>'
   const selected = filtered()
-  winners = awards(selected, state.weights, state.selections, (m) => lens(m).value)
+  winners = awards(selected, state.weights, state.selections, (m) => awardScore(lens(m)))
   rowColumns = columns
   $('count').textContent =
     `${selected.length} of ${models.length} models · ${selected.filter((m) => Object.keys(m.evidence).length).length} with captured evidence`

@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-10-14. No imputed model results.
+// Curated primary-source results, checked 2026-10-15. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -77,7 +77,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'livebench2',
       'General coding',
       'LiveBench 2.0 · Coding',
-      'LiveBench 2.0 · release 2026-10-13 · 29 tasks',
+      'LiveBench 2.0 · release 2026-10-14 · 29 tasks',
       'https://livebench.ai/',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
       'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
@@ -113,7 +113,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'ioi',
       'Algorithmic coding',
       'IOI',
-      'IOI 2024–2026 · 18 problems · updated 2026-10-12',
+      'IOI 2024–2026 · 18 problems · updated 2026-10-14',
       'https://www.vals.ai/benchmarks/ioi',
       'International Olympiad in Informatics problems, graded with the official subtask tests (100 points per problem).',
       'Run by Vals AI on public olympiad problems with withheld test data. Two models reach 100%, so the top of the scale is saturated; published uncertainty is wide for several entries.',
@@ -122,16 +122,16 @@ export function expandCatalog(benchmarks, sources, models) {
       'vcb100',
       'Implementing features',
       'Vibe Code Bench 1-100',
-      '50 tasks · updated 2026-10-13',
+      '50 tasks · updated 2026-10-14',
       'https://www.vals.ai/benchmarks/vcb-1-100',
       'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
-      'Run by Vals AI on a private test set; only 24 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
+      'Run by Vals AI on a private test set; only 25 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
     ],
     [
       'lbagentic',
       'Long-running agent work',
       'LiveBench 2.0 · Agentic',
-      'LiveBench 2.0 · release 2026-10-13 · 18 tasks',
+      'LiveBench 2.0 · release 2026-10-14 · 18 tasks',
       'https://livebench.ai/',
       'Long-running work where early decisions must hold up: extending apps through changing requirements, running a codebase through simulated months of operations, building a compiler, performance optimisation. Mean task score 0–100.',
       'Deterministic grading against hidden reference data, test programs or simulated outcomes. One run per model at its highest supported effort unless the source row says otherwise. Same LiveBench 2.0 release as the General coding suite.',
@@ -260,6 +260,7 @@ export function expandCatalog(benchmarks, sources, models) {
     add(name, 'terminal4', value, agent, null, { uncertainty })
   for (const [name, value, uncertainty, agent] of [
     ['Claude Opus 5', 99.4, 0.4, 'Claude Code · xhigh'],
+    ['Gemini 4 Argon', 99.22, 0.45, 'mini-swe-agent · high'],
     ['Claude Fable 5.1', 99.1, 0.5, 'Claude Code · high'],
     ['Kimi K3', 97.7, 0.9, 'mini-swe-agent · max'],
     ['GPT-6 Astra', 96.9, 1.1, 'Codex · high'],
@@ -480,6 +481,7 @@ export function expandCatalog(benchmarks, sources, models) {
       '14 fallbacks on 50 tasks (28.00%); 14 provider refusals scored as failures.',
     ],
     ['GPT-6 Astra', 27.64, 4.08],
+    ['Gemini 4 Argon', 21.2, 3.81],
     ['GPT-5.6 Luna', 22.59, 4.0],
     ['Claude Haiku 5.5', 20.41, 3.79],
     ['GPT-5.6 Sol', 20.01, 3.63],

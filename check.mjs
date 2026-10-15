@@ -176,8 +176,8 @@ assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 1)
 const lensBest = awards(models, {}, defaultSelections, (m) =>
   awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best
-assert.equal(lensBest.length, 1)
-assert.ok(!lensBest.includes('gemini-4-argon'))
+assert.deepEqual(lensBest, ['gemini-4-argon'])
+assert.ok(!lensBest.includes('gpt-6-sol'))
 assert.equal(awardScore({ value: 90, coverage: 0.6 }), null)
 assert.equal(awardScore({ value: 90, coverage: 0.8 }), 90)
 assert.equal(new Set(models.map((m) => m.id)).size, models.length)

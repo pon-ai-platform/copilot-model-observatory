@@ -2,8 +2,8 @@
 
 Living task document. Update it in the same commit as any data change.
 
-- **Snapshot checked:** 2026-10-14 (`checked` in `dist/data.js`)
-- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":32,"defaultScored":25,"benchmarks":23,"checks":"passed"}` — 23 benchmark measures/editions (2026-10-14: General coding switched to LiveBench 2.0; R2ABench, Aider Polyglot, BaxBench, BigCodeBench, LiveCodeBench and CrossCodeEval dropped; five Vals AI benchmarks, LiveBench 2.0 Agentic and Vals SWE-bench Multimodal added)
+- **Snapshot checked:** 2026-10-15 (`checked` in `dist/data.js`)
+- **Acceptance baseline:** `node check.mjs` → `{"models":35,"withEvidence":32,"defaultScored":25,"benchmarks":23,"checks":"passed"}` — 23 benchmark measures/editions (2026-10-15: Gemini 4 Argon added to SWE-Bench Pro V2 Full and Vibe Code Bench 1-100; 2026-10-14: General coding switched to LiveBench 2.0; R2ABench, Aider Polyglot, BaxBench, BigCodeBench, LiveCodeBench and CrossCodeEval dropped; five Vals AI benchmarks, LiveBench 2.0 Agentic and Vals SWE-bench Multimodal added)
   - Capture this line **before** editing; a refactor may only change data, not these counts, unless the change itself adds/removes rows or evidence.
   - Previous baseline (before the 2026-10-14 refresh): `{"models":38,"withEvidence":36,"defaultScored":30,"benchmarks":21,"checks":"passed"}` (2026-10-08 pass, after Haiku 5.5: same; 2026-09-30 pass: `{"models":37,"withEvidence":35,"defaultScored":29,"benchmarks":21,"checks":"passed"}`; pre-2026-09-29: `{"models":35,"withEvidence":33,"defaultScored":27,"benchmarks":21,"checks":"passed"}`).
 - **Status:** task is open-ended. Sections marked ⏳ are known gaps.
@@ -52,7 +52,7 @@ Nothing ships without primary-source attribution; no backend, no auto-refresh.
 | Claude Fable 5.1            | Anthropic   | —       | coding (LB 1.0), qna, tests, refactor, optimization, terminal4, pro2, livebench2, vibecode, migration, cyber, ioi, vcb100         |
 | Gemini 3.7 Flash            | Google      | —       | coding (LB 1.0), program, terminal4, livebench2, vibecode, migration, cyber, ioi                                                  |
 | Gemini 3.8 Flash            | Google      | —       | coding (LB 1.0), qna, tests, refactor, terminal4, pro2, livebench2, vibecode, migration, cyber, ioi, vcb100                       |
-| Gemini 4 Argon              | Google      | —       | livebench2, vibecode, migration, cyber, ioi                                                                                       |
+| Gemini 4 Argon              | Google      | —       | pro2, livebench2, lbagentic, vibecode, migration, cyber, ioi, vcb100, multimodal                                                  |
 | MAI-Code-1.1-Flash          | Microsoft   | —       | ⏳                                                                                                                                |
 | Kimi K3                     | Moonshot AI | —       | coding (LB 1.0), pro2, livebench2, vibecode, migration, cyber, ioi, vcb100                                                        |
 | Grok 4.5                    | xAI         | —       | coding (LB 1.0), rebench, terminal4, livebench2, vibecode, migration, cyber, ioi                                                  |
@@ -78,13 +78,13 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | verified     | SWE-bench Verified · Bash Only (mini-SWE-agent 2.0.0) | Fixing bugs           | selectable             | %                        | 2 models ⏳             |
 | multimodal   | SWE-bench Multimodal (Vals AI run, 480 tasks)         | Fixing bugs           | ✅ default             | %, ± published           | 11 models               |
 | lbagentic    | LiveBench 2.0 · Agentic (18 tasks)                    | Long-running agents   | ✅ new capability      | /100, mean task score    | 25 models               |
-| livebench2   | LiveBench 2.0 · Coding (release 2026-10-13, 29 tasks) | General coding        | ✅ default             | /100, mean task score    | 25 models               |
+| livebench2   | LiveBench 2.0 · Coding (release 2026-10-14, 29 tasks) | General coding        | ✅ default             | /100, mean task score    | 25 models               |
 | pro          | SWE-Bench Pro · Public (original)                     | Complex code changes  | historical             | %                        | 2 models                |
-| pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                   | 11 models               |
+| pro2         | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                   | 12 models               |
 | rebench      | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI               | 6 models                |
 | program      | ProgramBench (200 tasks · 2026-09-28)                 | Building programs     | ✅ new capability      | % resolved               | 10 models               |
 | features     | FeatureBench (Lite · v1.0 · resolved)                 | Implementing features | selectable             | whole-task %             | 2 models ⏳             |
-| vcb100       | Vibe Code Bench 1-100 (Vals AI, 50 tasks)             | Implementing features | ✅ default             | %, ± published           | 12 models               |
+| vcb100       | Vibe Code Bench 1-100 (Vals AI, 50 tasks)             | Implementing features | ✅ default             | %, ± published           | 13 models               |
 | vibecode     | Vibe Code Bench v1.1 (Vals AI, OpenHands, 50 apps)    | Building apps         | ✅ new capability      | %, ± published           | 30 models (1 utility)   |
 | migration    | Code Migration (Vals AI, 130 tasks)                   | Migrating code        | ✅ new capability      | hidden-test pass %       | 28 models (1 utility)   |
 | cyber        | CyberBench v1.1 (Vals AI, 116 tasks)                  | Secure coding         | ✅ default             | %, refusals = failures ⚠ | 20 models               |

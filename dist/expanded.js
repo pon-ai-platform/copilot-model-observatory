@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-10-15. No imputed model results.
+// Curated primary-source results, checked 2026-10-19. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -86,7 +86,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-10-12',
+      'v1.1 · 50 apps · updated 2026-10-18',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -95,7 +95,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'migration',
       'Migrating code',
       'Code Migration',
-      '130 tasks · updated 2026-10-12',
+      '130 tasks · updated 2026-10-18',
       'https://www.vals.ai/benchmarks/code-migration',
       'Re-implement working programs in another language (30 CLI repositories into 4 target languages, plus 10 COBOL to Java); scored on hidden behaviour tests.',
       'Run by Vals AI on a private test set. Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published.',
@@ -140,7 +140,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'multimodal',
       'Fixing bugs',
       'SWE-bench Multimodal',
-      'Test split · 480 tasks · Vals AI run · updated 2026-10-13',
+      'Test split · 480 tasks · Vals AI run · updated 2026-10-16',
       'https://www.vals.ai/benchmarks/swebench-multimodal',
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
       'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',
@@ -481,8 +481,8 @@ export function expandCatalog(benchmarks, sources, models) {
       '14 fallbacks on 50 tasks (28.00%); 14 provider refusals scored as failures.',
     ],
     ['GPT-6 Astra', 27.64, 4.08],
-    ['Gemini 4 Argon', 21.2, 3.81],
     ['GPT-5.6 Luna', 22.59, 4.0],
+    ['Gemini 4 Argon', 21.2, 3.81],
     ['Claude Haiku 5.5', 20.41, 3.79],
     ['GPT-5.6 Sol', 20.01, 3.63],
     ['Gemini 3.8 Flash', 18.77, 3.31],
@@ -496,13 +496,13 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Fable 5.1', 61.25, 2.23],
     ['Claude Sonnet 5.5', 58.33, 2.25],
     ['Gemini 4 Argon', 56.04, 2.27],
+    ['Kimi K3', 44.17, 2.27],
     ['Claude Haiku 5.5', 43.96, 2.27],
     ['GPT-6.1 Sol', 43.54, 2.27],
     ['GPT-6 Astra', 43.33, 2.26],
     ['Grok 4.7', 42.92, 2.26],
     ['Gemini 3.8 Flash', 40.83, 2.25],
     ['GPT-6 Luna', 37.5, 2.21],
-    ['Kimi K3', 35.83, 2.19],
   ])
   for (const [name, value] of [
     ['Claude Opus 5.5', 85.0],

@@ -122,17 +122,33 @@ assert.equal(
 )
 assert.equal(
   score(
-    models.find((m) => m.name === 'GPT-5.4'),
+    models.find((m) => m.name === 'Claude Opus 4.8'),
     { optimization: 1 },
   ).value,
-  31.4,
+  47.1,
+)
+assert.equal(
+  score(
+    models.find((m) => m.name === 'GPT-5.6 Sol'),
+    { program: 1 },
+  ).value,
+  1,
 )
 assert.ok(
   models
-    .find((m) => m.name === 'GPT-5.4')
+    .find((m) => m.name === 'GPT-5.6 Sol')
     .alternatives.some(
-      (a) => a.benchmark === 'optimization' && a.value === 25.5 && a.agent.includes('High'),
+      (a) => a.benchmark === 'program' && a.value === 0.5 && a.agent.includes('default effort'),
     ),
+)
+const terra = models.find((m) => m.name === 'GPT-6.1 Terra')
+assert.equal(score(terra, defaults).value, 90.8)
+assert.equal(score(terra, { vibecode: 1 }).value, 84)
+assert.equal(score(terra, { agentic: 1 }).value, 39.6)
+assert.ok(
+  terra.alternatives.some(
+    (a) => a.benchmark === 'livebench2' && a.value === 94.3 && a.agent.includes('2026-10-25'),
+  ),
 )
 assert.equal(
   score(

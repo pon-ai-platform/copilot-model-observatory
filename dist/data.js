@@ -1,7 +1,7 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-10-19'
+export const checked = '2026-10-27'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
-export const released = '2026-10-19T11:03:42Z'
+export const released = '2026-10-27T00:00:00Z'
 export const sources = {
   coding: 'https://livebench.ai/v1/',
   availability: 'https://docs.github.com/en/copilot/reference/ai-models/supported-models',
@@ -77,18 +77,14 @@ export const benchmarks = [
     subtitle: 'SWE-Bench Pro · original',
     description: 'Challenging software issue resolution on the public dataset.',
     version: 'Original public leaderboard (not V2)',
-    note: 'GPT-5.4 uses mini-SWE-agent; Haiku uses a different setup. Version and agent differences must be considered.',
+    note: 'Original public split (superseded by SWE-Bench Pro V2). GPT-5.4 (59.1%) left the catalog when GitHub retired it on 2026-10-19.',
   },
 ]
 // Prices: USD / 1M tokens. No inferred API-to-Copilot price mapping.
 const utilityModels = ['GPT-5.4 nano', 'GPT-4o', 'GPT-4o mini', 'GPT-4.1']
 const rows = [
-  ['GPT-5 mini', 'OpenAI', 0.25, 0.025, null, 2],
   ['GPT-5.3-Codex', 'OpenAI', 1.75, 0.175, null, 14],
-  ['GPT-5.4', 'OpenAI', 2.5, 0.25, null, 15, 272, 5, 0.5, null, 22.5],
-  ['GPT-5.4 mini', 'OpenAI', 0.75, 0.075, null, 4.5],
   ['GPT-5.4 nano', 'OpenAI', 0.2, 0.02, null, 1.25],
-  ['GPT-5.5', 'OpenAI', 5, 0.5, null, 30, 272, 10, 1, null, 45],
   ['GPT-5.6 Luna', 'OpenAI', 0.2, 0.02, 0.25, 1.2, 200, 0.4, 0.04, 0.5, 1.8],
   ['GPT-5.6 Sol', 'OpenAI', 4, 0.4, 5, 20, 272, 8, 0.8, 10, 30],
   ['GPT-5.6 Terra', 'OpenAI', 2, 0.2, 2.5, 12, 272, 4, 0.4, 5, 18],
@@ -96,6 +92,7 @@ const rows = [
   ['GPT-6 Luna', 'OpenAI', 0.1, 0.01, 0.125, 0.5, 272, 0.2, 0.02, 0.25, 0.75],
   ['GPT-6 Sol', 'OpenAI', 2, 0.2, 2.5, 10, 272, 4, 0.4, 5, 15],
   ['GPT-6.1 Sol', 'OpenAI', 2, 0.1, 2.5, 10, 272, 4, 0.2, 5, 15],
+  ['GPT-6.1 Terra', 'OpenAI', 1, 0.05, 1.25, 5, 272, 2, 0.1, 2.5, 7.5],
   ['Claude Haiku 4.5', 'Anthropic', 1, 0.1, 1.25, 5],
   ['Claude Haiku 5.5', 'Anthropic', 0.1, 0.01, 0.125, 0.5, 100, 0.5, 0.05, 0.625, 2.5],
   ['Claude Sonnet 4.6', 'Anthropic', 3, 0.3, 3.75, 15],
@@ -107,7 +104,6 @@ const rows = [
   ['Claude Opus 5.5', 'Anthropic', 4, 0.2, 5, 20],
   ['Claude Fable 5', 'Anthropic', 10, 1, 12.5, 50],
   ['Claude Fable 5.1', 'Anthropic', 10, 0.25, 12.5, 50],
-  ['Gemini 3.7 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 3.8 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 4 Argon', 'Google', 2, 0.1, null, 10],
   ['MAI-Code-1.1-Flash', 'Microsoft', 0.2, 0.02, null, 1.2],
@@ -143,7 +139,6 @@ for (const [name, value, setting] of [
   ['Claude Fable 5', 86, 'Max Effort'],
   ['GPT-5.6 Luna', 82.9, 'Max Effort'],
   ['GPT-5.6 Sol', 83.9, 'Max Effort'],
-  ['GPT-5.5', 82.1, 'Thinking xHigh Effort'],
   ['Claude Opus 4.8', 81.8, 'Thinking Max Effort'],
   ['GPT-6 Sol', 81.8, 'Max Effort'],
   ['GPT-6.1 Sol', 80.4, 'Max Effort'],
@@ -152,8 +147,6 @@ for (const [name, value, setting] of [
   ['Kimi K3', 81.4, 'not specified'],
   ['GPT-6 Luna', 79, 'Max Effort'],
   ['Claude Sonnet 4.6', 79.3, 'Thinking Medium Effort'],
-  ['Gemini 3.7 Flash', 78.9, 'High'],
-  ['GPT-5.4', 77.5, 'Thinking xHigh Effort'],
   ['GPT-5.6 Terra', 78.2, 'Max Effort'],
   ['Grok 4.6', 76.8, 'xHigh'],
   ['Claude Haiku 5.5', 76.4, 'xHigh Effort'],
@@ -161,7 +154,6 @@ for (const [name, value, setting] of [
   ['Grok 4.7', 77.2, 'xHigh'],
   ['GPT-5.4 nano', 70.8, 'xHigh'],
   ['Grok 4.5', 68.6, 'not specified'],
-  ['GPT-5.4 mini', 71.6, 'xHigh'],
 ])
   get(name).evidence.coding = {
     value,
@@ -183,8 +175,6 @@ const atlas = [
     [46.67, 6.75],
   ],
   ['GPT-5.6 Sol', 'Codex · xHigh', [46, 5], [45.9, 6], null],
-  ['GPT-5.5', 'Codex · xHigh', [45.43, 5.08], [42.59, 5.96], [44.79, 6.76]],
-  ['GPT-5.4', 'Codex · xHigh', [40.8, 5.1], [44.36, 6.04], [44.29, 6.76]],
   ['GPT-5.3-Codex', 'Codex · xHigh', [32.6, 4.9], [38.98, 6.12], [42.38, 6.76]],
   [
     'Claude Sonnet 4.6',
@@ -214,8 +204,6 @@ for (const [name, agent, ...values] of atlas)
   })
 for (const [name, value, native, agent] of [
   ['GPT-5.3-Codex', 68.5, 79.1, 'Codex CLI'],
-  ['GPT-5.4', 54.8, 77.3, 'Codex CLI'],
-  ['GPT-5.4 mini', 36.9, 66.1, 'Codex CLI'],
   ['Claude Sonnet 4.6', 51.5, 58.5, 'Claude Code'],
 ]) {
   get(name).evidence.terminal = { value, agent: 'Terminus 2', date: null, source: sources.terminal }
@@ -227,40 +215,11 @@ for (const [name, value, native, agent] of [
     source: sources.terminal,
   })
 }
-get('GPT-5.4').alternatives.push(
-  {
-    benchmark: 'qna',
-    value: 36.3,
-    uncertainty: 4.9,
-    agent: 'Mini-SWE-Agent · xHigh',
-    source: sources.qna,
-  },
-  {
-    benchmark: 'tests',
-    value: 40,
-    uncertainty: 6,
-    agent: 'Mini-SWE-Agent · xHigh',
-    source: sources.tests,
-  },
-)
 get('Claude Haiku 4.5').evidence.verified = {
   value: 66.6,
   agent: 'mini-SWE-agent 2.0.0 · high',
   date: '2026-02-17',
   source: sources.verified,
-}
-get('GPT-5 mini').evidence.verified = {
-  value: 56.2,
-  agent: 'mini-SWE-agent 2.0.0',
-  date: '2026-02-17',
-  source: sources.verified,
-}
-get('GPT-5.4').evidence.pro = {
-  value: 59.1,
-  uncertainty: 3.56,
-  agent: 'mini-SWE-agent · xHigh',
-  date: null,
-  source: sources.pro,
 }
 get('Claude Haiku 4.5').evidence.pro = {
   value: 39.45,
@@ -275,6 +234,10 @@ for (const m of models) {
   if (m.name === 'Gemini 4 Argon')
     m.notes.push(
       'Promotional Copilot pricing until December 1, 2026. GitHub lists it as GA (Powerful) but not on Copilot Pro and not on GitHub.com.',
+    )
+  if (m.name === 'GPT-6.1 Terra')
+    m.notes.push(
+      'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; the official tbench.ai leaderboard has not yet published a row.',
     )
   if (m.utility)
     m.notes.push('Utility model: powers background features; not a selectable model in the picker.')

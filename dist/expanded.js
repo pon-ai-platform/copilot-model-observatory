@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-10-19. No imputed model results.
+// Curated primary-source results, checked 2026-10-27. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -8,7 +8,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'Lite · v1.0 · resolved',
       'https://github.com/LiberCoders/FeatureBench',
       'Percentage of complete feature tasks resolved, not individual tests passed.',
-      'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands. Claude Opus 4.7 (46.7%) left the catalog when GitHub retired it on 2026-10-02.',
+      'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands. Claude Opus 4.7 (46.7%), GPT-5.5 (26.7%) and GPT-5.4 (23.3%) left the catalog when GitHub retired them in October 2026.',
     ],
     [
       'review',
@@ -26,7 +26,7 @@ export function expandCatalog(benchmarks, sources, models) {
       '102 tasks · Opt@1 · updated 2026-09-27',
       'https://livecodebench.github.io/gso.html',
       'Single-attempt estimate of tasks achieving at least 95% of human speedup while passing correctness tests.',
-      'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry; the earlier unlabeled GPT-5.4 duplicate is resolved as two reasoning settings and the xHigh run feeds the lens. The 2026-09-27 update improved elicitation (models are explicitly asked to keep measuring and improving after their first speedup); rows from before and after that date are not directly comparable.',
+      'OpenHands only; Opt@10 is excluded. Reasoning settings are labeled per entry. The 2026-09-27 update improved elicitation (models are explicitly asked to keep measuring and improving after their first speedup); rows from before and after that date are not directly comparable.',
     ],
     [
       'terminal4',
@@ -59,10 +59,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'program',
       'Building programs',
       'ProgramBench',
-      '200 tasks · updated 2026-09-28',
+      '200 tasks · updated 2026-10-22',
       'https://programbench.com/',
       'Re-implement a program from its compiled binary and docs; every behavioral test must pass.',
-      'Common mini-SWE-agent scaffold, no internet and no decompilation. Extremely hard: the best catalog model resolves 4.5%. Almost-resolved rates are captured in details. Agent-based fuzzing generates the test suite.',
+      'Common mini-SWE-agent scaffold, no internet and no decompilation. Extremely hard: the best catalog model resolves 18.5%. Almost-resolved rates are captured in details. Agent-based fuzzing generates the test suite.',
     ],
     [
       'multilingual',
@@ -80,13 +80,13 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-10-14 · 29 tasks',
       'https://livebench.ai/',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
-      'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. One run per model at its highest supported effort unless the source row says otherwise.',
+      'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. Release 2026-10-14 covers all 24 evaluated Copilot models on a single consistent edition; the partial 2026-10-25 release only evaluated 14 of them (GPT-6.1 Terra scores 94.3 there, recorded in model details).',
     ],
     [
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-10-18',
+      'v1.1 · 50 apps · updated 2026-10-26',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -104,16 +104,16 @@ export function expandCatalog(benchmarks, sources, models) {
       'cyber',
       'Secure coding',
       'CyberBench',
-      'v1.1 · 116 tasks · updated 2026-10-12',
+      'v1.1 · 116 tasks · updated 2026-10-20',
       'https://www.vals.ai/benchmarks/cyber',
       'Reproduce and patch OSS-Fuzz-style crashes (mostly memory safety) in real open-source native-code projects.',
-      'Run by Vals AI. Provider refusals count as failures: several frontier models refuse about half of the tasks (GPT-6 Astra, GPT-6.1 Sol, Gemini 3.7 and 3.8 Flash), so these scores mix capability with safety policy. Special-access variants (Opus 5.5 CVP, Sonnet 5 Cyber Range) are kept as alternative setups.',
+      'Run by Vals AI. Provider refusals count as failures: several frontier models refuse about half of the tasks (GPT-6 Astra, GPT-6.1 Sol, Gemini 3.8 Flash), so these scores mix capability with safety policy. Special-access variants (Opus 5.5 CVP, Sonnet 5 Cyber Range) are kept as alternative setups.',
     ],
     [
       'ioi',
       'Algorithmic coding',
       'IOI',
-      'IOI 2024–2026 · 18 problems · updated 2026-10-14',
+      'IOI 2024–2026 · 18 problems · updated 2026-10-24',
       'https://www.vals.ai/benchmarks/ioi',
       'International Olympiad in Informatics problems, graded with the official subtask tests (100 points per problem).',
       'Run by Vals AI on public olympiad problems with withheld test data. Two models reach 100%, so the top of the scale is saturated; published uncertainty is wide for several entries.',
@@ -122,10 +122,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'vcb100',
       'Implementing features',
       'Vibe Code Bench 1-100',
-      '50 tasks · updated 2026-10-14',
+      '50 tasks · updated 2026-10-17',
       'https://www.vals.ai/benchmarks/vcb-1-100',
       'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
-      'Run by Vals AI on a private test set; only 25 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
+      'Run by Vals AI on a private test set; only 27 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
     ],
     [
       'lbagentic',
@@ -134,13 +134,13 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-10-14 · 18 tasks',
       'https://livebench.ai/',
       'Long-running work where early decisions must hold up: extending apps through changing requirements, running a codebase through simulated months of operations, building a compiler, performance optimisation. Mean task score 0–100.',
-      'Deterministic grading against hidden reference data, test programs or simulated outcomes. One run per model at its highest supported effort unless the source row says otherwise. Same LiveBench 2.0 release as the General coding suite.',
+      'Deterministic grading against hidden reference data, test programs or simulated outcomes. One run per model at its highest supported effort unless the source row says otherwise. Release 2026-10-14 covers all 24 evaluated Copilot models on a consistent 18-task suite; release 2026-10-25 replaced four tasks with a Delegated Operations subcategory and only re-ran 14 of them (retained in model details).',
     ],
     [
       'multimodal',
       'Fixing bugs',
       'SWE-bench Multimodal',
-      'Test split · 480 tasks · Vals AI run · updated 2026-10-16',
+      'Test split · 480 tasks · Vals AI run · updated 2026-10-25',
       'https://www.vals.ai/benchmarks/swebench-multimodal',
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
       'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',
@@ -163,14 +163,6 @@ export function expandCatalog(benchmarks, sources, models) {
   const add = (name, id, value, agent, date = null, extra = {}) => {
     get(name).evidence[id] = { value, agent, date, source: sources[id], ...extra }
   }
-  for (const [name, value, passed] of [
-    ['GPT-5.5', 26.7, 69.8],
-    ['GPT-5.4', 23.3, 66.2],
-  ]) {
-    add(name, 'features', value, 'OpenHands · Lite split · v1.0', null, {
-      context: `Individual tests passed: ${passed}%. Main score is whole tasks resolved.`,
-    })
-  }
   for (const [name, value, detection, falsePositive] of [
     ['Claude Haiku 4.5', 15.3, 30.6, 34.6],
     ['Claude Sonnet 4.6', 15.2, 29.7, 22.7],
@@ -181,19 +173,13 @@ export function expandCatalog(benchmarks, sources, models) {
       context: `Detection (DR_A): ${detection}% (higher is better). False-positive rate: ${falsePositive}% (lower is better). Overall score is the published composite × 100.`,
     })
   }
-  for (const [name, value, agent, date] of [
-    ['Claude Haiku 4.5', 64.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
-    ['GPT-5 mini', 39.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13'],
-  ])
-    add(name, 'multilingual', value, agent, date)
+  add('Claude Haiku 4.5', 'multilingual', 64.7, 'mini-SWE-agent 2.0.0a0', '2026-02-13')
   for (const [name, value, date] of [
     ['Claude Opus 4.8', 47.1, '2026-07-12'],
-    ['GPT-5.5', 40.2, '2026-04-27'],
     ['Claude Sonnet 5', 37.3, '2026-07-12'],
     ['GPT-4o', 0, '2025-05-30'],
   ])
     add(name, 'optimization', value, 'OpenHands · Opt@1', date)
-  add('GPT-5.4', 'optimization', 31.4, 'OpenHands · Opt@1 · xHigh', '2026-03-10')
   for (const [name, value] of [
     ['Claude Fable 5.1', 88.2],
     ['GPT-6 Astra', 79.4],
@@ -201,16 +187,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Sol', 76.5],
   ])
     add(name, 'optimization', value, 'OpenHands · Opt@1 · xHigh', '2026-09-27')
-  get('GPT-5.4').notes.push(
-    'GSO initially published 31.4% and 25.5% for GPT 5.4 / OpenHands / Opt@1 without reasoning-effort labels; the leaderboard now shows these are two reasoning settings (xHigh and High) on the same date. The xHigh run is used as main evidence and the High run is retained below.',
-  )
-  get('GPT-5.4').alternatives.push({
-    benchmark: 'optimization',
-    value: 25.5,
-    agent: 'OpenHands · Opt@1 · High',
-    date: '2026-03-10',
-    source: sources.optimization,
-  })
   for (const [name, value, uncertainty, agent] of [
     ['Claude Fable 5', 64.5, 1.41, 'raw model · high'],
     ['Grok 4.5', 63.8, 0.6, 'raw model · high'],
@@ -220,22 +196,28 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Luna', 43.6, 1.47, 'raw model · medium'],
   ])
     add(name, 'rebench', value, agent, null, { uncertainty })
-  for (const [name, value, almost] of [
-    ['Claude Opus 5', 4.5, 37.0],
-    ['GPT-5.6 Sol', 1.0, 15.5],
-    ['GPT-5.5', 0.5, 13.5],
-    ['Claude Opus 4.8', 0, 16.5],
-    ['Gemini 3.7 Flash', 0, 5.5],
+  for (const [name, value, almost, effort] of [
+    ['Claude Opus 5.5', 18.5, 70.5, 'xhigh'],
+    ['Claude Fable 5.1', 9.0, 55.5, 'xhigh'],
+    ['GPT-6 Astra', 5.0, 52.5, 'max'],
+    ['Claude Opus 5', 4.5, 37.0, 'xhigh'],
+    ['GPT-5.6 Sol', 1.0, 15.5, 'xhigh'],
+    ['Claude Opus 4.8', 0, 16.5, 'xhigh'],
     ['Claude Sonnet 4.6', 0, 1.0],
-    ['GPT-5.4', 0, 0.0],
     ['Claude Haiku 4.5', 0, 0.0],
-    ['GPT-5.4 mini', 0, 0.0],
-    ['GPT-5 mini', 0, 0.0],
   ]) {
-    add(name, 'program', value, 'mini-SWE-agent', null, {
+    add(name, 'program', value, effort ? `mini-SWE-agent · ${effort}` : 'mini-SWE-agent', null, {
       context: `Almost-resolved (partial test pass): ${almost}%. 0% is a captured result, not a missing one.`,
     })
   }
+  get('GPT-5.6 Sol').alternatives.push({
+    benchmark: 'program',
+    value: 0.5,
+    agent: 'mini-SWE-agent · default effort',
+    date: null,
+    source: sources.program,
+    context: 'Almost-resolved (partial test pass): 2.5%.',
+  })
   for (const [name, value, uncertainty, agent] of [
     ['Claude Opus 5.5', 64.8, 3.1, 'Claude Code · max'],
     ['Claude Sonnet 5.5', 61.8, 2.9, 'Claude Code · max'],
@@ -255,7 +237,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6 Luna', 16.4, 2.7, 'Codex · max'],
     ['Grok 4.5', 12.4, 2.6, 'Grok Build · high'],
     ['Claude Sonnet 5', 12.4, 3.1, 'Claude Code · max'],
-    ['Gemini 3.7 Flash', 11.2, 2.4, 'mini-SWE-agent · high'],
   ])
     add(name, 'terminal4', value, agent, null, { uncertainty })
   for (const [name, value, uncertainty, agent] of [
@@ -282,19 +263,18 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Grok 4.5', 94.3],
     ['GPT-6 Astra', 93.7],
     ['GPT-6 Sol', 93.1],
+    ['Claude Haiku 5.5', 91.4],
     ['Claude Opus 5', 90.8],
+    ['GPT-6.1 Terra', 90.8],
     ['Gemini 4 Argon', 89.7],
     ['GPT-5.6 Sol', 89.7],
     ['Grok 4.6', 89.1],
     ['GPT-5.6 Terra', 86.2],
-    ['GPT-5.5', 85.1],
-    ['Claude Haiku 5.5', 84.5],
     ['Grok 4.7', 84.5],
     ['GPT-6 Luna', 84.5],
-    ['Claude Sonnet 5', 82.2],
     ['Gemini 3.8 Flash', 82.2],
-    ['Gemini 3.7 Flash', 80.5],
     ['Claude Opus 4.8', 77.3],
+    ['Claude Sonnet 5', 74.7],
     ['GPT-5.6 Luna', 73.6],
     ['Claude Sonnet 4.6', 66.6],
     ['Kimi K3', 59.3],
@@ -338,6 +318,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6 Sol', 87.82, 2.53],
     ['Grok 4.7', 86.17, 2.18],
     ['Kimi K3', 84.97, 2.75],
+    ['GPT-6.1 Terra', 84.0, 2.87],
     ['Claude Opus 4.8', 82.72, 3.08],
     ['GPT-6 Luna', 81.65, 3.38],
     ['Claude Sonnet 5', 81.33, 3.05],
@@ -346,22 +327,14 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Luna', 77.06, 3.07],
     ['Grok 4.6', 76.24, 3.82],
     ['GPT-5.6 Terra', 74.59, 4.2],
-    ['Gemini 3.7 Flash', 70.39, 4.84],
-    ['GPT-5.5', 69.85, 4.54],
     ['Grok 4.5', 69.0, 4.48],
-    ['GPT-5.4', 67.42, 4.84, null, 'xhigh'],
     ['GPT-5.3-Codex', 61.77, 4.71],
     ['Claude Sonnet 4.6', 51.48, 4.64],
-    ['GPT-5.4 mini', 47.97, 5.61],
     ['GPT-5.4 nano', 26.1, 5.08],
-    ['GPT-5 mini', 14.17, 3.54],
     ['Claude Haiku 4.5', 11.39, 3.13, null, 'thinking'],
   ])
   alt('Claude Opus 4.8', 'vibecode', 77.48, 3.74, 'Claude Code · Vals harness')
   alt('Claude Sonnet 4.6', 'vibecode', 55.77, 4.68, 'Claude Code · Vals harness')
-  alt('GPT-5.5', 'vibecode', 67.39, 4.75, 'Factory · Vals harness')
-  alt('GPT-5.5', 'vibecode', 58.19, 4.93, 'Codex · Vals harness')
-  alt('GPT-5.4', 'vibecode', 48.47, 5.07, 'Codex · Vals harness')
   vals('migration', 'Vals harness', [
     ['Claude Sonnet 5.5', 69.83, 4.26],
     ['Gemini 4 Argon', 68.17, 4.35],
@@ -385,7 +358,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Sol', 52.92, 4.35],
     ['GPT-5.6 Terra', 47.8, 4.28],
     ['Claude Opus 4.8', 47.25, 4.18],
-    ['GPT-5.5', 45.16, 4.16],
     ['Grok 4.7', 44.82, 4.21],
     ['Grok 4.6', 44.57, 4.48],
     ['Claude Haiku 5.5', 44.57, 4.23],
@@ -395,11 +367,8 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Sonnet 4.6', 39.89, 4.14],
     ['Grok 4.5', 36.6, 4.14],
     ['Gemini 3.8 Flash', 36.55, 4.18],
-    ['GPT-5.4', 34.98, 4.11, null, 'xhigh'],
-    ['Gemini 3.7 Flash', 34.8, 4.22],
     ['Kimi K3', 16.1, 4.1],
     ['GPT-5.4 nano', 14.47, 4.03],
-    ['GPT-5.4 mini', 12.94, 3.64],
     ['Claude Haiku 4.5', 7.55, 1.06, null, 'thinking'],
   ])
   vals('cyber', 'Vals harness', [
@@ -424,12 +393,6 @@ export function expandCatalog(benchmarks, sources, models) {
       '54 fallbacks on 116 tasks (46.55%); 8 provider refusals (6.90%) scored as failures.',
     ],
     ['Claude Opus 5.5', 55.36, 5.13, '61 fallbacks to another model on 116 tasks (52.59%).'],
-    [
-      'Gemini 3.7 Flash',
-      43.75,
-      2.21,
-      '61 provider refusals on 116 tasks (52.59%), scored as failures.',
-    ],
     [
       'Gemini 3.8 Flash',
       43.75,
@@ -459,7 +422,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Opus 5', 84.33, 9.96],
     ['Claude Sonnet 5.5', 83.06, 3.74],
     ['GPT-6 Sol', 82.61, 9.24],
-    ['Gemini 3.7 Flash', 67.83, 3.61],
     ['GPT-5.6 Luna', 61.78, 11.61],
     ['Grok 4.7', 57.72, 1.99],
     ['Gemini 3.8 Flash', 56.94, 2.26],
@@ -513,23 +475,52 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Gemini 4 Argon', 69.9],
     ['GPT-6 Sol', 66.9],
     ['Claude Opus 5', 62.1],
-    ['Claude Haiku 5.5', 56.6],
+    ['Claude Haiku 5.5', 57.6],
     ['Claude Fable 5', 53.2],
     ['Grok 4.7', 50.1],
     ['GPT-5.6 Sol', 48.5],
     ['GPT-5.6 Terra', 48.4],
     ['Claude Opus 4.8', 48.3],
     ['GPT-6 Luna', 48.1],
-    ['GPT-5.5', 44.6],
     ['Kimi K3', 42.8],
     ['Grok 4.6', 40.7],
+    ['GPT-6.1 Terra', 39.6],
     ['Claude Sonnet 5', 39.0],
     ['GPT-5.6 Luna', 30.4],
     ['Gemini 3.8 Flash', 30.1],
-    ['Gemini 3.7 Flash', 28.3],
     ['Grok 4.5', 27.9],
     ['Claude Sonnet 4.6', 23.1],
     ['Claude Haiku 4.5', 11.1],
   ])
     add(name, 'lbagentic', value, 'LiveBench 2.0 · single run · highest supported effort')
+  alt(
+    'GPT-6.1 Terra',
+    'livebench2',
+    94.3,
+    undefined,
+    'LiveBench 2.0 · release 2026-10-25 · highest supported effort',
+  )
+  for (const [name, value] of [
+    ['Claude Fable 5.1', 77.9],
+    ['GPT-6 Astra', 77.5],
+    ['Claude Opus 5.5', 72.8],
+    ['GPT-6.1 Sol', 68.7],
+    ['Claude Sonnet 5.5', 63.4],
+    ['Gemini 4 Argon', 61.2],
+    ['GPT-6.1 Terra', 48.6],
+    ['Grok 4.7', 46.1],
+    ['Claude Haiku 5.5', 40.0],
+    ['GPT-5.6 Terra', 33.1],
+    ['GPT-6 Luna', 30.9],
+    ['Grok 4.6', 28.0],
+    ['Kimi K3', 26.4],
+    ['Gemini 3.8 Flash', 16.5],
+  ])
+    alt(
+      name,
+      'lbagentic',
+      value,
+      undefined,
+      'LiveBench 2.0 · release 2026-10-25 · highest supported effort',
+    )
 }

@@ -1,7 +1,7 @@
 import { expandCatalog } from './expanded.js'
 export const checked = '2026-10-27'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
-export const released = '2026-10-27T00:00:00Z'
+export const released = '2026-10-27T08:29:42Z'
 export const sources = {
   coding: 'https://livebench.ai/v1/',
   availability: 'https://docs.github.com/en/copilot/reference/ai-models/supported-models',

@@ -150,6 +150,19 @@ assert.ok(
     (a) => a.benchmark === 'livebench2' && a.value === 94.3 && a.agent.includes('2026-10-25'),
   ),
 )
+const flare = models.find((m) => m.name === 'GPT Image 2.5 Flare')
+assert.equal(flare.utility, true)
+assert.deepEqual(flare.price, { input: 5, cached: 1.25, write: null, output: 30 })
+assert.ok(
+  models
+    .find((m) => m.name === 'Claude Sonnet 5.5')
+    .alternatives.some(
+      (a) =>
+        a.benchmark === 'migration' &&
+        a.value === 86.88 &&
+        a.source === 'https://www.vals.ai/benchmarks/code-migration-v1-1',
+    ),
+)
 assert.equal(
   score(
     models.find((m) => m.name === 'GPT-4o'),

@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-10-27. No imputed model results.
+// Curated primary-source results, checked 2026-11-02. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -86,7 +86,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-10-26',
+      'v1.1 · 50 apps · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -95,10 +95,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'migration',
       'Migrating code',
       'Code Migration',
-      '130 tasks · updated 2026-10-18',
+      '130 tasks · v1 · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/code-migration',
       'Re-implement working programs in another language (30 CLI repositories into 4 target languages, plus 10 COBOL to Java); scored on hidden behaviour tests.',
-      'Run by Vals AI on a private test set. Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published.',
+      'Run by Vals AI on a private test set (mini-SWE-agent). Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published. Code Migration v1 covers 24 Copilot models on a single consistent edition; Code Migration v1.1 (vals.ai/benchmarks/code-migration-v1-1, Pi agent harness and revised hidden test suites, updated 2026-10-28, 10 Copilot models so far) is recorded in model details.',
     ],
     [
       'cyber',
@@ -113,7 +113,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'ioi',
       'Algorithmic coding',
       'IOI',
-      'IOI 2024–2026 · 18 problems · updated 2026-10-24',
+      'IOI 2024–2026 (v2) · 18 problems · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/ioi',
       'International Olympiad in Informatics problems, graded with the official subtask tests (100 points per problem).',
       'Run by Vals AI on public olympiad problems with withheld test data. Two models reach 100%, so the top of the scale is saturated; published uncertainty is wide for several entries.',
@@ -122,10 +122,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'vcb100',
       'Implementing features',
       'Vibe Code Bench 1-100',
-      '50 tasks · updated 2026-10-17',
+      '50 tasks · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/vcb-1-100',
       'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
-      'Run by Vals AI on a private test set; only 27 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
+      'Run by Vals AI on a private test set; only 26 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
     ],
     [
       'lbagentic',
@@ -140,7 +140,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'multimodal',
       'Fixing bugs',
       'SWE-bench Multimodal',
-      'Test split · 480 tasks · Vals AI run · updated 2026-10-25',
+      'Test split · 480 tasks · Vals AI run · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/swebench-multimodal',
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
       'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',
@@ -295,14 +295,14 @@ export function expandCatalog(benchmarks, sources, models) {
         ...(flag ? { context: `Vals AI flag: ${flag}`, ...refusalRate(flag) } : {}),
       })
   }
-  const alt = (name, benchmark, value, uncertainty, agent, context) =>
+  const alt = (name, benchmark, value, uncertainty, agent, context, source = sources[benchmark]) =>
     get(name).alternatives.push({
       benchmark,
       value,
       uncertainty,
       agent,
       date: null,
-      source: sources[benchmark],
+      source,
       ...(context ? { context } : {}),
     })
   vals('vibecode', 'OpenHands · Vals harness', [
@@ -371,6 +371,32 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.4 nano', 14.47, 4.03],
     ['Claude Haiku 4.5', 7.55, 1.06, null, 'thinking'],
   ])
+  for (const [name, value, uncertainty, context] of [
+    ['Claude Sonnet 5.5', 86.88, 1.52],
+    [
+      'Claude Opus 5.5',
+      81.01,
+      3.21,
+      'Vals AI flag: 42 fallbacks on 130 tasks (32.31%); 4 provider refusals (3.08%) scored as failures.',
+    ],
+    ['GPT-6 Astra', 80.58, 2.34],
+    ['GPT-6.1 Sol', 77.32, 2.98],
+    ['Gemini 4 Argon', 70.8, 3.72],
+    ['Grok 4.7', 53.22, 2.56],
+    ['Claude Haiku 5.5', 52.36, 3.49],
+    ['GPT-6 Luna', 46.67, 3.61],
+    ['Gemini 3.8 Flash', 38.65, 3.65],
+    ['Kimi K3', 28.59, 3.78],
+  ])
+    alt(
+      name,
+      'migration',
+      value,
+      uncertainty,
+      'Code Migration v1.1 · Pi agent harness · Vals AI',
+      context,
+      'https://www.vals.ai/benchmarks/code-migration-v1-1',
+    )
   vals('cyber', 'Vals harness', [
     ['GPT-6 Sol', 77.98, 5.11],
     ['Gemini 4 Argon', 77.86, 5.3],

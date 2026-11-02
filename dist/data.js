@@ -1,7 +1,7 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-10-27'
+export const checked = '2026-11-02'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
-export const released = '2026-10-27T08:29:42Z'
+export const released = '2026-11-02T00:00:00Z'
 export const sources = {
   coding: 'https://livebench.ai/v1/',
   availability: 'https://docs.github.com/en/copilot/reference/ai-models/supported-models',
@@ -81,7 +81,7 @@ export const benchmarks = [
   },
 ]
 // Prices: USD / 1M tokens. No inferred API-to-Copilot price mapping.
-const utilityModels = ['GPT-5.4 nano', 'GPT-4o', 'GPT-4o mini', 'GPT-4.1']
+const utilityModels = ['GPT-5.4 nano', 'GPT Image 2.5 Flare', 'GPT-4o', 'GPT-4o mini', 'GPT-4.1']
 const rows = [
   ['GPT-5.3-Codex', 'OpenAI', 1.75, 0.175, null, 14],
   ['GPT-5.4 nano', 'OpenAI', 0.2, 0.02, null, 1.25],
@@ -93,6 +93,7 @@ const rows = [
   ['GPT-6 Sol', 'OpenAI', 2, 0.2, 2.5, 10, 272, 4, 0.4, 5, 15],
   ['GPT-6.1 Sol', 'OpenAI', 2, 0.1, 2.5, 10, 272, 4, 0.2, 5, 15],
   ['GPT-6.1 Terra', 'OpenAI', 1, 0.05, 1.25, 5, 272, 2, 0.1, 2.5, 7.5],
+  ['GPT Image 2.5 Flare', 'OpenAI', 5, 1.25, null, 30],
   ['Claude Haiku 4.5', 'Anthropic', 1, 0.1, 1.25, 5],
   ['Claude Haiku 5.5', 'Anthropic', 0.1, 0.01, 0.125, 0.5, 100, 0.5, 0.05, 0.625, 2.5],
   ['Claude Sonnet 4.6', 'Anthropic', 3, 0.3, 3.75, 15],
@@ -239,7 +240,11 @@ for (const m of models) {
     m.notes.push(
       'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; the official tbench.ai leaderboard has not yet published a row.',
     )
-  if (m.utility)
+  if (m.name === 'GPT Image 2.5 Flare')
+    m.notes.push(
+      'Public preview image-generation tool model invoked by the session’s reasoning model (not selectable in the chat picker, but managed via organization/enterprise model policy). Billed in AI credits at $5 text input ($1.25 cached), $8 image input ($2 cached) and $30 image output per 1M tokens; no text output price.',
+    )
+  else if (m.utility)
     m.notes.push('Utility model: powers background features; not a selectable model in the picker.')
   if (m.name.includes('fast mode'))
     m.notes.push('GitHub lists GA status while retaining “preview” in the model name.')

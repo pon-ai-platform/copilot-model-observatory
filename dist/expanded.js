@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-02. No imputed model results.
+// Curated primary-source results, checked 2026-11-04. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -80,7 +80,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-10-14 · 29 tasks',
       'https://livebench.ai/',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
-      'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. Release 2026-10-14 covers all 24 evaluated Copilot models on a single consistent edition; the partial 2026-10-25 release only evaluated 14 of them (GPT-6.1 Terra scores 94.3 there, recorded in model details).',
+      'Default General coding benchmark since 2026-10-14. New LiveBench edition with agentic suites; not comparable to LiveBench 1.0 Coding (historical view). Hidden tests check the fix; a fix that breaks existing behaviour scores 0. Release 2026-10-14 covers all 24 evaluated Copilot models on a single consistent edition; the partial 2026-10-25 release only evaluated 14 of them, so all 14 newer Coding scores are preserved as alternatives in model details.',
     ],
     [
       'vibecode',
@@ -519,13 +519,29 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Haiku 4.5', 11.1],
   ])
     add(name, 'lbagentic', value, 'LiveBench 2.0 · single run · highest supported effort')
-  alt(
-    'GPT-6.1 Terra',
-    'livebench2',
-    94.3,
-    undefined,
-    'LiveBench 2.0 · release 2026-10-25 · highest supported effort',
-  )
+  for (const [name, value] of [
+    ['Claude Fable 5.1', 97.7],
+    ['GPT-6 Astra', 93.7],
+    ['Claude Opus 5.5', 96.3],
+    ['GPT-6.1 Sol', 96.0],
+    ['Claude Sonnet 5.5', 94.7],
+    ['Gemini 4 Argon', 89.7],
+    ['GPT-6.1 Terra', 94.3],
+    ['Grok 4.7', 84.5],
+    ['Claude Haiku 5.5', 91.4],
+    ['GPT-5.6 Terra', 86.2],
+    ['Grok 4.6', 89.1],
+    ['GPT-6 Luna', 84.5],
+    ['Kimi K3', 59.3],
+    ['Gemini 3.8 Flash', 82.2],
+  ])
+    alt(
+      name,
+      'livebench2',
+      value,
+      undefined,
+      'LiveBench 2.0 · release 2026-10-25 · highest supported effort',
+    )
   for (const [name, value] of [
     ['Claude Fable 5.1', 77.9],
     ['GPT-6 Astra', 77.5],

@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-11-04'
+export const checked = '2026-11-05'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-11-04T09:52:54Z'
 export const sources = {

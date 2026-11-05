@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-04. No imputed model results.
+// Curated primary-source results, checked 2026-11-05. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -481,15 +481,20 @@ export function expandCatalog(benchmarks, sources, models) {
   ])
   vals('multimodal', 'mini-SWE-agent · no network · Vals harness', [
     ['Claude Opus 5.5', 70.21, 2.09],
-    ['Claude Fable 5.1', 61.25, 2.23],
+    ['Claude Fable 5.1', 61.25, 2.23, '2 fallbacks to another model on 480 tasks (0.42%).'],
     ['Claude Sonnet 5.5', 58.33, 2.25],
-    ['Gemini 4 Argon', 56.04, 2.27],
+    ['Gemini 4 Argon', 56.04, 2.27, '1 provider refusal on 480 tasks (0.21%), scored as failure.'],
     ['Kimi K3', 44.17, 2.27],
     ['Claude Haiku 5.5', 43.96, 2.27],
     ['GPT-6.1 Sol', 43.54, 2.27],
     ['GPT-6 Astra', 43.33, 2.26],
     ['Grok 4.7', 42.92, 2.26],
-    ['Gemini 3.8 Flash', 40.83, 2.25],
+    [
+      'Gemini 3.8 Flash',
+      40.83,
+      2.25,
+      '1 provider refusal on 480 tasks (0.21%), scored as failure.',
+    ],
     ['GPT-6 Luna', 37.5, 2.21],
   ])
   for (const [name, value] of [

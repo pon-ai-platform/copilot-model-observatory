@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-05. No imputed model results.
+// Curated primary-source results, checked 2026-11-09. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -86,7 +86,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-10-29',
+      'v1.1 · 50 apps · updated 2026-11-05',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -98,13 +98,13 @@ export function expandCatalog(benchmarks, sources, models) {
       '130 tasks · v1 · updated 2026-10-29',
       'https://www.vals.ai/benchmarks/code-migration',
       'Re-implement working programs in another language (30 CLI repositories into 4 target languages, plus 10 COBOL to Java); scored on hidden behaviour tests.',
-      'Run by Vals AI on a private test set (mini-SWE-agent). Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published. Code Migration v1 covers 24 Copilot models on a single consistent edition; Code Migration v1.1 (vals.ai/benchmarks/code-migration-v1-1, Pi agent harness and revised hidden test suites, updated 2026-10-28, 10 Copilot models so far) is recorded in model details.',
+      'Run by Vals AI on a private test set (mini-SWE-agent). Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published. Code Migration v1 covers 24 Copilot models on a single consistent edition; Code Migration v1.1 (vals.ai/benchmarks/code-migration-v1-1, Pi agent harness and revised hidden test suites, updated 2026-10-30, 10 Copilot models so far) is recorded in model details.',
     ],
     [
       'cyber',
       'Secure coding',
       'CyberBench',
-      'v1.1 · 116 tasks · updated 2026-10-20',
+      'v1.1 · 116 tasks · updated 2026-11-05',
       'https://www.vals.ai/benchmarks/cyber',
       'Reproduce and patch OSS-Fuzz-style crashes (mostly memory safety) in real open-source native-code projects.',
       'Run by Vals AI. Provider refusals count as failures: several frontier models refuse about half of the tasks (GPT-6 Astra, GPT-6.1 Sol, Gemini 3.8 Flash), so these scores mix capability with safety policy. Special-access variants (Opus 5.5 CVP, Sonnet 5 Cyber Range) are kept as alternative setups.',
@@ -140,7 +140,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'multimodal',
       'Fixing bugs',
       'SWE-bench Multimodal',
-      'Test split · 480 tasks · Vals AI run · updated 2026-10-29',
+      'Test split · 480 tasks · Vals AI run · updated 2026-11-05',
       'https://www.vals.ai/benchmarks/swebench-multimodal',
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
       'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',

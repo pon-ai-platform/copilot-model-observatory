@@ -52,6 +52,21 @@ assert.equal(
 )
 assert.equal(benchmarks.length, 23)
 assert.equal(new Set(benchmarks.map((b) => b.id)).size, 23)
+for (const [name, mainValue, alternativeValue, setting] of [
+  ['Claude Haiku 5.5', 76.4, 77.9, 'Max Effort'],
+  ['Claude Sonnet 5.5', 88.9, 91.4, 'Max Effort'],
+  ['Claude Opus 5.5', 89.3, 89.3, 'xHigh Effort'],
+  ['GPT-6.1 Sol', 80.4, 80.7, 'xHigh Effort'],
+]) {
+  const model = models.find((m) => m.name === name)
+  assert.equal(model.evidence.coding.value, mainValue)
+  const alternative = model.alternatives.find(
+    (a) => a.benchmark === 'coding' && a.agent === 'LiveBench evaluation · ' + setting,
+  )
+  assert.equal(alternative.value, alternativeValue)
+  assert.equal(alternative.source, sources.coding)
+  assert.equal(alternative.date, null)
+}
 assert.equal(Math.round(astraRefusals() * 10000), 5259)
 assert.equal(models.find((m) => m.name === 'GPT-6 Sol').evidence.cyber.refusals, undefined)
 for (const c of capabilities)

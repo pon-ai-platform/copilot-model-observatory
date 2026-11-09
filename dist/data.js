@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-11-05'
+export const checked = '2026-11-09'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-11-05T09:51:12Z'
 export const sources = {
@@ -162,6 +162,20 @@ for (const [name, value, setting] of [
     date: null,
     source: sources.coding,
   }
+for (const [name, value, setting] of [
+  ['Claude Haiku 5.5', 77.9, 'Max Effort'],
+  ['Claude Sonnet 5.5', 91.4, 'Max Effort'],
+  ['Claude Opus 5.5', 89.3, 'xHigh Effort'],
+  ['GPT-6.1 Sol', 80.7, 'xHigh Effort'],
+])
+  get(name).alternatives.push({
+    benchmark: 'coding',
+    value,
+    agent: 'LiveBench evaluation · ' + setting,
+    date: null,
+    source: sources.coding,
+    context: 'LiveBench-2026-06-25 · alternative reasoning setting; main result unchanged.',
+  })
 const atlasIds = ['qna', 'tests', 'refactor']
 const atlas = [
   ['GPT-6 Astra', 'Codex · xHigh', [59.14, 4.88], [50.74, 5.91], [59.05, 6.43]],

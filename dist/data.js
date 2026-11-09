@@ -165,7 +165,7 @@ for (const [name, value, setting] of [
 for (const [name, value, setting] of [
   ['Claude Haiku 5.5', 77.9, 'Max Effort'],
   ['Claude Sonnet 5.5', 91.4, 'Max Effort'],
-  ['Claude Opus 5.5', 89.3, 'xHigh Effort'],
+  ['Claude Opus 5.5', 89.3, 'Thinking xHigh Effort'],
   ['GPT-6.1 Sol', 80.7, 'xHigh Effort'],
 ])
   get(name).alternatives.push({

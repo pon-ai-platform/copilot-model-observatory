@@ -55,7 +55,7 @@ assert.equal(new Set(benchmarks.map((b) => b.id)).size, 23)
 for (const [name, mainValue, alternativeValue, setting] of [
   ['Claude Haiku 5.5', 76.4, 77.9, 'Max Effort'],
   ['Claude Sonnet 5.5', 88.9, 91.4, 'Max Effort'],
-  ['Claude Opus 5.5', 89.3, 89.3, 'xHigh Effort'],
+  ['Claude Opus 5.5', 89.3, 89.3, 'Thinking xHigh Effort'],
   ['GPT-6.1 Sol', 80.4, 80.7, 'xHigh Effort'],
 ]) {
   const model = models.find((m) => m.name === name)
@@ -69,6 +69,20 @@ for (const [name, mainValue, alternativeValue, setting] of [
 }
 assert.equal(Math.round(astraRefusals() * 10000), 5259)
 assert.equal(models.find((m) => m.name === 'GPT-6 Sol').evidence.cyber.refusals, undefined)
+const byName = (name) => models.find((m) => m.name === name)
+assert.equal(byName('Claude Fable 5.1').evidence.vcb100.refusals, undefined)
+assert.equal(byName('Claude Fable 5').evidence.migration.context, undefined)
+assert.deepEqual(
+  models.filter((m) => m.evidence.features).map((m) => [m.name, m.evidence.features.value]),
+  [
+    ['GPT-5.6 Sol', 12],
+    ['Claude Opus 5', 40],
+    ['Kimi K3', 7],
+  ],
+)
+for (const m of models)
+  for (const a of m.alternatives.filter((x) => x.benchmark === 'terminal4'))
+    assert.notEqual(a.agent, m.evidence.terminal4.agent, m.name)
 for (const c of capabilities)
   for (const id of c.benchmarks)
     assert.ok(

@@ -5,10 +5,10 @@ export function expandCatalog(benchmarks, sources, models) {
       'features',
       'Implementing features',
       'FeatureBench',
-      'Lite · v1.0 · resolved',
-      'https://github.com/LiberCoders/FeatureBench',
+      'Fast · v1.1 · 100 tasks · resolved',
+      'https://libercoders.github.io/FeatureBench/leaderboard/',
       'Percentage of complete feature tasks resolved, not individual tests passed.',
-      'Dataset v1.1 exists; the published leaderboard still evaluates v1.0. Main results use OpenHands. Claude Opus 4.7 (46.7%), GPT-5.5 (26.7%) and GPT-5.4 (23.3%) left the catalog when GitHub retired them in October 2026.',
+      'Dataset v1.1 Fast split with Mini-SWE-Agent, the leaderboard default since v1.1 results were added on 2026-09-15; the v1.1 Lite and Full splits have no results yet. The earlier v1.0 Lite (OpenHands) leaderboard is a different edition and has no current catalog models: Claude Opus 4.7 (46.7%), GPT-5.5 (26.7%) and GPT-5.4 (23.3%) left the catalog when GitHub retired them in October 2026.',
     ],
     [
       'review',
@@ -177,9 +177,17 @@ export function expandCatalog(benchmarks, sources, models) {
   for (const [name, value, date] of [
     ['Claude Opus 4.8', 47.1, '2026-07-12'],
     ['Claude Sonnet 5', 37.3, '2026-07-12'],
-    ['GPT-4o', 0, '2025-05-30'],
   ])
-    add(name, 'optimization', value, 'OpenHands · Opt@1', date)
+    add(name, 'optimization', value, 'OpenHands · Opt@1 · xHigh', date)
+  add('GPT-4o', 'optimization', 0, 'OpenHands · Opt@1', '2025-05-30')
+  for (const [name, value, passed, effort] of [
+    ['Claude Opus 5', 40, 67.2, 'high'],
+    ['GPT-5.6 Sol', 12, 49.8, 'medium'],
+    ['Kimi K3', 7, 22.9, 'max'],
+  ])
+    add(name, 'features', value, `Mini-SWE-Agent · ${effort}`, null, {
+      context: `Individual tests passed: ${passed}% (context only; the main value counts whole tasks resolved).`,
+    })
   for (const [name, value] of [
     ['Claude Fable 5.1', 88.2],
     ['GPT-6 Astra', 79.4],
@@ -239,6 +247,48 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Sonnet 5', 12.4, 3.1, 'Claude Code · max'],
   ])
     add(name, 'terminal4', value, agent, null, { uncertainty })
+  for (const [name, agent, settings] of [
+    [
+      'GPT-6 Astra',
+      'Codex',
+      [
+        ['xhigh', 57.9, 2.7],
+        ['high', 57.9, 3.0],
+        ['medium', 54.2, 2.7],
+        ['low', 50.6, 2.8],
+      ],
+    ],
+    [
+      'Claude Fable 5.1',
+      'Claude Code',
+      [
+        ['xhigh', 57.9, 3.4],
+        ['high', 54.5, 3.4],
+        ['medium', 53.9, 3.4],
+        ['low', 43.3, 3.6],
+      ],
+    ],
+    [
+      'Claude Opus 5',
+      'Claude Code',
+      [
+        ['max', 51.8, 3.4],
+        ['high', 50.3, 3.7],
+        ['medium', 44.8, 3.8],
+        ['low', 34.8, 3.9],
+      ],
+    ],
+  ])
+    for (const [effort, value, uncertainty] of settings)
+      get(name).alternatives.push({
+        benchmark: 'terminal4',
+        value,
+        uncertainty,
+        agent: `${agent} · ${effort}`,
+        date: null,
+        source: sources.terminal4,
+        context: 'Terminal-Bench 4.0 · alternative reasoning setting; main result unchanged.',
+      })
   for (const [name, value, uncertainty, agent] of [
     ['Claude Opus 5', 99.4, 0.4, 'Claude Code · xhigh'],
     ['Gemini 4 Argon', 99.22, 0.45, 'mini-swe-agent · high'],
@@ -343,12 +393,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6.1 Sol', 65.12, 4.36],
     ['Claude Opus 5', 57.47, 4.37],
     ['GPT-6 Sol', 57.2, 4.21],
-    [
-      'Claude Fable 5',
-      55.06,
-      4.61,
-      '24 fallbacks on 130 tasks (18.46%); 24 provider refusals scored as failures.',
-    ],
+    ['Claude Fable 5', 55.06, 4.61],
     [
       'Claude Fable 5.1',
       54.61,
@@ -462,12 +507,7 @@ export function expandCatalog(benchmarks, sources, models) {
   vals('vcb100', 'Vals harness', [
     ['Claude Opus 5.5', 30.36, 4.83, '8 fallbacks to another model on 50 tasks (16.00%).'],
     ['Claude Opus 5', 28.53, 4.33],
-    [
-      'Claude Fable 5.1',
-      28.0,
-      4.49,
-      '14 fallbacks on 50 tasks (28.00%); 14 provider refusals scored as failures.',
-    ],
+    ['Claude Fable 5.1', 28.0, 4.49, '14 fallbacks to another model on 50 tasks (28.00%).'],
     ['GPT-6 Astra', 27.64, 4.08],
     ['GPT-5.6 Luna', 22.59, 4.0],
     ['Gemini 4 Argon', 21.2, 3.81],

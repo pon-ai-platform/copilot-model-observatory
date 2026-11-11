@@ -11,7 +11,7 @@ export const capabilities = [
   { id: 'security', short: 'Secure coding', benchmarks: ['cyber'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
-  { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal4'] },
+  { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal41'] },
   { id: 'agentic', short: 'Long-running agent work', benchmarks: ['lbagentic'] },
   { id: 'verified', short: 'Fixing bugs', benchmarks: ['multimodal', 'verified'] },
   { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
@@ -45,7 +45,7 @@ export function migratePreferences(p) {
       ]),
     ),
     coding: 'livebench2',
-    terminal: 'terminal4',
+    terminal: 'terminal41',
     pro: 'pro2',
   }
   return validSelections(selections) ? { weights, selections, weighted: true } : null
@@ -125,7 +125,7 @@ export const topics = [
     short: 'Agents & issue fixing',
     description:
       'Working on its own for many steps: resolve real repository issues, terminal tasks, long-running agent jobs.',
-    benchmarks: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'rebench'],
+    benchmarks: ['terminal41', 'lbagentic', 'pro2', 'multimodal', 'rebench'],
   },
   {
     id: 'building',

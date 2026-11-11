@@ -117,8 +117,8 @@ const views = {
   coding: ['ioi', 'migration', 'multilingual'],
   building: ['vibecode', 'vcb100', 'features', 'program'],
   quality: ['cyber', 'review', 'optimization'],
-  issues: ['terminal4', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
-  history: ['coding', 'terminal', 'pro'],
+  issues: ['terminal41', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
+  history: ['coding', 'livebench2old', 'lbagenticold', 'terminal', 'terminal4', 'pro'],
 }
 const topicTable = topicScores(models)
 const overview = () => state.view === 'overview'
@@ -348,7 +348,7 @@ function rates(p) {
     .join('')}</div>`
 }
 function evidenceCard(b, e, alternative = false) {
-  return `<article class="evidence"><div class="evidence-head"><strong>${b.name}${alternative ? ' · alternative setup' : ''}</strong><span class="number">${e.value.toFixed(2)}${b.unit || '%'}</span></div><p>${escape(e.agent)}${e.uncertainty != null ? ` · published uncertainty ±${e.uncertainty.toFixed(2)} points` : ''}</p>${e.context ? `<p>${escape(e.context)}</p>` : ''}<p>${b.version} · Result date: ${e.date || 'not published in captured table'} · Checked ${checked}</p><a href="${e.source}" target="_blank" rel="noopener">Original result & methodology ↗</a></article>`
+  return `<article class="evidence"><div class="evidence-head"><strong>${b.name}${alternative ? ' · alternative setup' : ''}</strong><span class="number">${e.value.toFixed(2)}${b.unit || '%'}</span></div><p>${escape(e.agent)}${e.uncertainty != null ? ` · published uncertainty ±${e.uncertainty.toFixed(2)} points` : ''}</p>${e.context ? `<p>${escape(e.context)}</p>` : ''}<p>${escape(e.version || b.version)} · Result date: ${e.date || 'not published in captured table'} · Checked ${checked}</p><a href="${e.source}" target="_blank" rel="noopener">Original result & methodology ↗</a></article>`
 }
 function details(id) {
   const m = models.find((m) => m.id === id)

@@ -9,6 +9,7 @@
 import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { pathToFileURL } from 'node:url'
 
 const root = path.resolve('.')
 const deploy = process.argv.includes('--deploy')
@@ -52,31 +53,34 @@ if (data.includes('export const released =')) {
 }
 fs.writeFileSync(dataPath, data)
 
-// 3. Footer text in index.html (static fallback; app.js also renders the live stamp)
+// 3. Import the stamped dataset and update the static date fallbacks.
+const { models, benchmarks, checked: checkedDate } = await import(pathToFileURL(dataPath).href)
+const { score, defaults } = await import(pathToFileURL(path.join(root, 'dist', 'scoring.js')).href)
 const htmlPath = path.join(root, 'dist', 'index.html')
 let html = fs.readFileSync(htmlPath, 'utf8')
-const stampHuman = now.toLocaleDateString('en-GB', {
+const checkedAt = new Date(`${checkedDate}T00:00:00Z`)
+const checkedHuman = checkedAt.toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
   timeZone: 'UTC',
 })
+const snapshotHuman = checkedAt.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
 html = html.replace(
   /(Independent reference · sources checked )[^<]+/,
-  `$1${stampHuman} · released ${released.slice(11, 16)} UTC`,
+  `$1${checkedHuman} · released ${released.slice(11, 16)} UTC`,
 )
+html = html.replace(/(<strong id="snapshotDate">)[^<]+/, `$1${snapshotHuman}`)
 const assetVersion = released.replace(/[-:]/g, '')
 html = html.replace(/(\.(?:js|css))\?v=[^"]+"/g, `$1?v=${assetVersion}"`)
 fs.writeFileSync(htmlPath, html)
 
 // 4. dist/version.json — machine-readable release identity
-// Import the modules directly (check.mjs can't run yet: it would see the new
-// data.js stamp against the old version.json).
-const dataUrl = 'file://' + path.join(root, 'dist', 'data.js').replace(/\\/g, '/')
-const { models, benchmarks, checked: checkedDate } = await import(dataUrl)
-const { score, defaults } = await import(
-  'file://' + path.join(root, 'dist', 'scoring.js').replace(/\\/g, '/')
-)
 const versionJson = {
   commit: head,
   branch,
@@ -99,7 +103,7 @@ console.log(run('node check.mjs'))
 
 if (!deploy) {
   console.log(
-    `✔ Stamped ${released} (commit ${head.slice(0, 7)}). Re-run with --deploy to publish.`,
+    `✔ Stamped ${released} (commit ${head.slice(0, 7)}). Commit and push the stamps before another release.`,
   )
   process.exit(0)
 }

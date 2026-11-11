@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node serve.mjs",
-    "check": "node --check dist/app.js && node --check dist/data.js && node --check dist/scoring.js",
+    "check": "node --check dist/app.js && node --check dist/data.js && node --check dist/scoring.js && node --check dist/expanded.js && node --check check.mjs && node --check release.mjs && node --check serve.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "release": "node release.mjs",

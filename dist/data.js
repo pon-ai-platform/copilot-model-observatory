@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-11-09'
+export const checked = '2026-11-11'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-11-09T10:44:59Z'
 export const sources = {
@@ -105,8 +105,10 @@ const rows = [
   ['Claude Opus 5.5', 'Anthropic', 4, 0.2, 5, 20],
   ['Claude Fable 5', 'Anthropic', 10, 1, 12.5, 50],
   ['Claude Fable 5.1', 'Anthropic', 10, 0.25, 12.5, 50],
+  ['Claude Fable 5.2', 'Anthropic', 8, 0.2, 10, 40],
   ['Gemini 3.8 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 4 Argon', 'Google', 2, 0.1, null, 10],
+  ['Gemini 4 Carbon', 'Google', 2, 0.1, null, 10],
   ['MAI-Code-1.1-Flash', 'Microsoft', 0.2, 0.02, null, 1.2],
   ['Kimi K3', 'Moonshot AI', 3, 0.3, null, 15],
   ['Grok 4.5', 'xAI', 2, 0.5, null, 6, 200, 4, 1, null, 12],
@@ -250,9 +252,13 @@ for (const m of models) {
     m.notes.push(
       'Promotional Copilot pricing until December 1, 2026. GitHub lists it as GA (Powerful) but not on Copilot Pro and not on GitHub.com.',
     )
+  if (m.name === 'Gemini 4 Carbon')
+    m.notes.push(
+      'Promotional Copilot pricing until December 1, 2026; thereafter GitHub lists $4 input, $0.20 cached input and $20 output per 1M tokens.',
+    )
   if (m.name === 'GPT-6.1 Terra')
     m.notes.push(
-      'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; the official tbench.ai leaderboard has not yet published a row.',
+      'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; no official Terminal-Bench 4.1 result is captured.',
     )
   if (m.name === 'GPT Image 2.5 Flare')
     m.notes.push(
@@ -265,6 +271,10 @@ for (const m of models) {
   if (['Claude Fable 5', 'Claude Fable 5.1', 'GPT-5.6 Sol'].includes(m.name))
     m.notes.push(
       'Scale reports elevated refusal-related failures for this model on parts of SWE Atlas; included in published scores.',
+    )
+  if (['Claude Fable 5', 'Claude Fable 5.1', 'Claude Fable 5.2'].includes(m.name))
+    m.notes.push(
+      'GitHub says Anthropic retains prompts and outputs by default for safety monitoring. Eligible enterprises can request zero data retention through 2026; administrator enablement is still required.',
     )
   if (m.name === 'GPT-5.3-Codex') m.notes.push('Scale abbreviates this entry as “GPT 5.3 (Codex)”.')
   if (m.name === 'Claude Sonnet 4.6')

@@ -51,10 +51,14 @@ assert.equal(
   false,
 )
 assert.equal(models.length, 34)
-assert.equal(benchmarks.length, 26)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 26)
+assert.equal(benchmarks.length, 27)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 27)
 assert.equal(models.filter((m) => Object.keys(m.evidence).length).length, 30)
 assert.equal(models.filter((m) => score(m, defaults).value !== null).length, 16)
+assert.equal(benchmarks.find((b) => b.id === 'migration').name, 'Code Migration v1.1')
+assert.equal(benchmarks.find((b) => b.id === 'migrationold').name, 'Code Migration v1.0')
+assert.equal(sources.migration, 'https://www.vals.ai/benchmarks/code-migration-v1-1')
+assert.equal(sources.migrationold, 'https://www.vals.ai/benchmarks/code-migration')
 for (const [name, mainValue, alternativeValue, setting] of [
   ['Claude Haiku 5.5', 76.4, 77.9, 'Max Effort'],
   ['Claude Sonnet 5.5', 88.9, 91.4, 'Max Effort'],
@@ -150,27 +154,27 @@ assert.equal(byName('Claude Fable 5.2').evidence.vibecode.value, 93.77)
 assert.equal(byName('Claude Fable 5.2').evidence.vibecode.uncertainty, 1.15)
 assert.equal(byName('Claude Fable 5.2').evidence.vibecode.date, '2026-11-08')
 assert.equal(byName('Claude Fable 5.2').evidence.multimodal.value, 62.29)
-assert.equal(byName('Claude Fable 5.2').evidence.migration, undefined)
+assert.equal(byName('Claude Fable 5.2').evidence.migration.value, 83.27)
+assert.equal(byName('Claude Fable 5.2').evidence.migration.uncertainty, 3.12)
+assert.equal(byName('Claude Fable 5.2').evidence.migration.date, '2026-11-07')
+assert.equal(byName('Claude Fable 5.2').evidence.migrationold, undefined)
+assert.equal(models.filter((m) => m.evidence.migration).length, 11)
+assert.equal(models.filter((m) => m.evidence.migrationold).length, 24)
+assert.equal(byName('Claude Sonnet 5').evidence.migration, undefined)
+assert.equal(byName('Claude Sonnet 5').evidence.migrationold.value, 44.39)
 assert.equal(byName('GPT-6 Astra').evidence.ioi.date, '2026-09-09')
 assert.equal(byName('Claude Opus 5.5').evidence.vcb100.date, '2026-09-21')
 assert.ok(byName('Claude Opus 5.5').evidence.vcb100.agent.includes('xhigh'))
 assert.equal(byName('Gemini 4 Argon').evidence.multimodal.date, '2026-10-12')
 assert.equal(byName('Grok 4.5').evidence.vibecode.date, null)
-assert.ok(
-  byName('Claude Fable 5.2').alternatives.some(
-    (a) =>
-      a.benchmark === 'migration' &&
-      a.value === 83.27 &&
-      a.uncertainty === 3.12 &&
-      a.date === '2026-11-07' &&
-      a.agent.includes('Pi') &&
-      a.version.includes('v1.1'),
-  ),
-)
+assert.equal(byName('Claude Sonnet 5.5').evidence.migration.value, 86.88)
+assert.equal(byName('Claude Sonnet 5.5').evidence.migration.source, sources.migration)
+assert.ok(byName('Claude Sonnet 5.5').evidence.migration.agent.includes('Pi agent'))
+assert.equal(byName('Claude Sonnet 5.5').evidence.migrationold.value, 69.83)
 assert.equal(byName('Gemini 4 Carbon').evidence.vibecode.value, 89.06)
 assert.equal(byName('Gemini 4 Carbon').evidence.vibecode.date, '2026-10-24')
 assert.equal(byName('Claude Fable 5.1').evidence.vcb100.refusals, undefined)
-assert.equal(byName('Claude Fable 5').evidence.migration.context, undefined)
+assert.equal(byName('Claude Fable 5').evidence.migrationold.context, undefined)
 assert.deepEqual(
   models.filter((m) => m.evidence.features).map((m) => [m.name, m.evidence.features.value]),
   [
@@ -288,16 +292,6 @@ assert.ok(
 const flare = models.find((m) => m.name === 'GPT Image 2.5 Flare')
 assert.equal(flare.utility, true)
 assert.deepEqual(flare.price, { input: 5, cached: 1.25, write: null, output: 30 })
-assert.ok(
-  models
-    .find((m) => m.name === 'Claude Sonnet 5.5')
-    .alternatives.some(
-      (a) =>
-        a.benchmark === 'migration' &&
-        a.value === 86.88 &&
-        a.source === 'https://www.vals.ai/benchmarks/code-migration-v1-1',
-    ),
-)
 assert.equal(
   score(
     models.find((m) => m.name === 'GPT-4o'),
@@ -340,7 +334,7 @@ assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 2)
 const lensBest = awards(models, {}, defaultSelections, (m) =>
   awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best
-assert.deepEqual(lensBest, ['gemini-4-argon'])
+assert.deepEqual(lensBest, ['claude-fable-5-1'])
 assert.ok(!lensBest.includes('gpt-6-sol'))
 assert.equal(awardScore({ value: 90, coverage: 0.6 }), null)
 assert.equal(awardScore({ value: 90, coverage: 0.8 }), 90)

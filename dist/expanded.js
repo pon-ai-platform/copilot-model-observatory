@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-11. No imputed model results.
+// Curated primary-source results, checked 2026-11-13. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -104,7 +104,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-11-09',
+      'v1.1 · 50 apps · updated 2026-11-11',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -112,11 +112,20 @@ export function expandCatalog(benchmarks, sources, models) {
     [
       'migration',
       'Migrating code',
-      'Code Migration',
-      '130 tasks · v1 · updated 2026-10-29',
-      'https://www.vals.ai/benchmarks/code-migration',
+      'Code Migration v1.1',
+      '130 tasks · v1.1 · updated 2026-11-09',
+      'https://www.vals.ai/benchmarks/code-migration-v1-1',
       'Re-implement working programs in another language (30 CLI repositories into 4 target languages, plus 10 COBOL to Java); scored on hidden behaviour tests.',
-      'Run by Vals AI on a private test set (mini-SWE-agent). Score is the hidden-test pass rate; an anti-cheat check zeroes wrappers, copied artifacts and wrong-language submissions. Fallbacks and provider refusals are flagged per result as published. Code Migration v1 covers 24 Copilot models on a single consistent edition; Code Migration v1.1 (vals.ai/benchmarks/code-migration-v1-1, Pi agent harness and revised hidden test suites, updated 2026-11-09, 11 Copilot models so far) is recorded in model details.',
+      'Current Vals AI edition uses the Pi agent harness and revised hidden test suites. Scores are not directly comparable to v1.0; fallback and refusal flags are recorded per result where published.',
+    ],
+    [
+      'migrationold',
+      'Migrating code · v1.0',
+      'Code Migration v1.0',
+      '130 tasks · v1.0 · updated 2026-10-29',
+      'https://www.vals.ai/benchmarks/code-migration',
+      'Historical Vals AI results using the mini-SWE-agent harness.',
+      'Archived by Vals AI when v1.1 superseded it. The benchmark tasks are unchanged, but its harness and hidden test suite differ; do not compare scores directly with v1.1.',
     ],
     [
       'cyber',
@@ -521,7 +530,7 @@ export function expandCatalog(benchmarks, sources, models) {
   ])
   alt('Claude Opus 4.8', 'vibecode', 77.48, 3.74, 'Claude Code · Vals harness')
   alt('Claude Sonnet 4.6', 'vibecode', 55.77, 4.68, 'Claude Code · Vals harness')
-  vals('migration', 'Vals harness', [
+  vals('migrationold', 'Vals harness', [
     ['Claude Sonnet 5.5', 69.83, 4.26, null, 'max', '2026-09-25'],
     ['Gemini 4 Argon', 68.17, 4.35, null, 'high', '2026-09-24'],
     ['GPT-6 Astra', 67.74, 4.22, null, 'max', '2026-09-03'],
@@ -561,14 +570,14 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.4 nano', 14.47, 4.03, null, 'high · model 2026-03-17', '2026-08-11'],
     ['Claude Haiku 4.5', 7.55, 1.06, null, 'thinking · model 2025-10-01', '2026-06-10'],
   ])
-  for (const [name, value, uncertainty, context, setting, date] of [
+  vals('migration', 'Pi agent · Vals harness', [
     ['Claude Sonnet 5.5', 86.88, 1.52, null, 'max', '2026-10-15'],
     ['Claude Fable 5.2', 83.27, 3.12, null, 'high', '2026-11-07'],
     [
       'Claude Opus 5.5',
       81.01,
       3.21,
-      'Vals AI flag: 42 fallbacks on 130 tasks (32.31%); 4 provider refusals (3.08%) scored as failures.',
+      '42 fallbacks on 130 tasks (32.31%); 4 provider refusals (3.08%) scored as failures.',
       'max',
       '2026-10-16',
     ],
@@ -581,17 +590,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Gemini 3.8 Flash', 38.65, 3.65, null, 'high', '2026-10-16'],
     ['Kimi K3', 28.59, 3.78, null, 'max', '2026-10-15'],
   ])
-    alt(
-      name,
-      'migration',
-      value,
-      uncertainty,
-      `Code Migration v1.1 · Pi agent harness · ${setting} · Vals AI`,
-      context,
-      'https://www.vals.ai/benchmarks/code-migration-v1-1',
-      date,
-      'Code Migration v1.1 · 130 tasks · updated 2026-11-09',
-    )
   vals('cyber', 'Vals harness', [
     ['GPT-6 Sol', 77.98, 5.11, null, 'max'],
     ['Gemini 4 Argon', 77.86, 5.3, null, 'high'],
@@ -724,39 +722,39 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Sonnet 5', 13.82, 2.98, null, 'max', '2026-09-13'],
   ])
   vals('multimodal', 'mini-SWE-agent · no network · Vals harness', [
-    ['Claude Opus 5.5', 70.21, 2.09, null, 'max', '2026-10-12'],
-    ['Claude Fable 5.2', 62.29, 2.21, null, 'high', '2026-11-08'],
+    ['Claude Opus 5.5', 70.21, 3.63, null, 'max', '2026-10-12'],
+    ['Claude Fable 5.2', 62.29, 1.84, null, 'high', '2026-11-08'],
     [
       'Claude Fable 5.1',
       61.25,
-      2.23,
+      5.46,
       '2 fallbacks to another model on 480 tasks (0.42%).',
       'max',
       '2026-10-12',
     ],
-    ['Claude Sonnet 5.5', 58.33, 2.25, null, 'max', '2026-10-12'],
+    ['Claude Sonnet 5.5', 58.33, 3.26, null, 'max', '2026-10-12'],
     [
       'Gemini 4 Argon',
       56.04,
-      2.27,
+      11.4,
       '1 provider refusal on 480 tasks (0.21%), scored as failure.',
       'high',
       '2026-10-12',
     ],
-    ['Kimi K3', 44.17, 2.27, null, 'max', '2026-10-12'],
-    ['Claude Haiku 5.5', 43.96, 2.27, null, 'max', '2026-10-12'],
-    ['GPT-6.1 Sol', 43.54, 2.27, null, 'max', '2026-10-12'],
-    ['GPT-6 Astra', 43.33, 2.26, null, 'max', '2026-10-12'],
-    ['Grok 4.7', 42.92, 2.26, null, 'xhigh', '2026-10-12'],
+    ['Kimi K3', 44.17, 1.65, null, 'max', '2026-10-12'],
+    ['Claude Haiku 5.5', 43.96, 0.7, null, 'max', '2026-10-12'],
+    ['GPT-6.1 Sol', 43.54, 0.35, null, 'max', '2026-10-12'],
+    ['GPT-6 Astra', 43.33, 1.81, null, 'max', '2026-10-12'],
+    ['Grok 4.7', 42.92, 4.66, null, 'xhigh', '2026-10-12'],
     [
       'Gemini 3.8 Flash',
       40.83,
-      2.25,
+      3.69,
       '1 provider refusal on 480 tasks (0.21%), scored as failure.',
       'high',
       '2026-10-08',
     ],
-    ['GPT-6 Luna', 37.5, 2.21, null, 'max', '2026-10-12'],
+    ['GPT-6 Luna', 37.5, 0.03, null, 'max', '2026-10-12'],
   ])
   for (const [name, value] of [
     ['Claude Opus 5.5', 85.0],

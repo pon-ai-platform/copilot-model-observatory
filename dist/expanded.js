@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-13. No imputed model results.
+// Curated primary-source results, checked 2026-11-18. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -89,7 +89,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-11-06 · 24 tasks',
       'https://livebench.ai/data/20261106/table.csv',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
-      'Default General coding benchmark. Release 2026-11-06 replaces part of the task set and covers 16 catalog models, so scores from earlier releases are not mixed into this column. The 2026-10-14 edition and 2026-10-25 results remain in the historical view. Hidden tests check the fix; a fix that breaks existing behaviour scores 0.',
+      'Default General coding benchmark. Release 2026-11-06 replaces part of the task set and covers 18 catalog models, so scores from earlier releases are not mixed into this column. The 2026-10-14 edition and 2026-10-25 results remain in the historical view. Hidden tests check the fix; a fix that breaks existing behaviour scores 0.',
     ],
     [
       'livebench2old',
@@ -98,13 +98,13 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-10-14 · 29 tasks',
       'https://livebench.ai/data/20261014/table.csv',
       'Historical LiveBench 2.0 coding results for the earlier 29-task suite.',
-      'Historical edition covering 24 catalog models. The 2026-10-25 scores are retained as alternative results with their own release label and source; the 2026-11-06 task set is different.',
+      'Historical edition covering 22 catalog models. The 2026-10-25 scores are retained as alternative results with their own release label and source; the 2026-11-06 task set is different.',
     ],
     [
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-11-11',
+      'v1.1 · 50 apps · updated 2026-11-16',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -148,11 +148,20 @@ export function expandCatalog(benchmarks, sources, models) {
     [
       'vcb100',
       'Implementing features',
-      'Vibe Code Bench 1-100',
-      '50 tasks · updated 2026-10-29',
-      'https://www.vals.ai/benchmarks/vcb-1-100',
+      'Vibe Code Bench 1-100 v1.1',
+      '50 tasks · v1.1 · updated 2026-11-17',
+      'https://www.vals.ai/benchmarks/vcb-1-100-v1-1',
       'Extend a working web app through up to ten dependent plain-language product requests without breaking what already works.',
-      'Run by Vals AI on a private test set; only 26 models tested so far. Fallbacks and provider refusals are flagged per result as published.',
+      'Current Vals AI edition uses revised prompts, workflows and failure review. Its private test set covers five catalog models; the archived v1 results remain separate. Fallbacks and provider refusals are flagged per result as published.',
+    ],
+    [
+      'vcb100old',
+      'Implementing features · v1.0',
+      'Vibe Code Bench 1-100 v1.0',
+      '50 tasks · v1.0 · updated 2026-10-29',
+      'https://www.vals.ai/benchmarks/vcb-1-100',
+      'Historical Vals AI results for extending a working web app through dependent product requests.',
+      'Archived by Vals AI when v1.1 revised the prompts, workflows and failure-review policy; scores are kept separate from the current edition.',
     ],
     [
       'lbagentic',
@@ -170,7 +179,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-10-14 · 18 tasks',
       'https://livebench.ai/data/20261014/table.csv',
       'Historical LiveBench 2.0 long-running agent results for the earlier 18-task suite.',
-      'Historical edition covering 24 catalog models. The 2026-10-25 release changed four tasks; those results are retained as alternatives with their own release label and source.',
+      'Historical edition covering 22 catalog models. The 2026-10-25 release changed four tasks; those results are retained as alternatives with their own release label and source.',
     ],
     [
       'multimodal',
@@ -179,7 +188,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'Test split · 480 tasks · Vals AI run · updated 2026-11-09',
       'https://www.vals.ai/benchmarks/swebench-multimodal',
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
-      'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). The official SWE-bench leaderboard has no current catalog-model rows.',
+      'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). Uncertainties are standard errors. The official SWE-bench leaderboard has no current catalog-model rows.',
     ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
@@ -219,7 +228,6 @@ export function expandCatalog(benchmarks, sources, models) {
     add(name, 'optimization', value, 'OpenHands · Opt@1 · xHigh', date)
   add('GPT-4o', 'optimization', 0, 'OpenHands · Opt@1', '2025-05-30')
   for (const [name, value, passed, effort] of [
-    ['Claude Opus 5', 40, 67.2, 'high'],
     ['GPT-5.6 Sol', 12, 49.8, 'medium'],
     ['Kimi K3', 7, 22.9, 'max'],
   ])
@@ -236,7 +244,6 @@ export function expandCatalog(benchmarks, sources, models) {
   for (const [name, value, uncertainty, agent] of [
     ['Claude Fable 5', 64.5, 1.41, 'raw model · high'],
     ['Grok 4.5', 63.8, 0.6, 'raw model · high'],
-    ['Claude Opus 5', 63.4, 1.35, 'raw model · high'],
     ['GPT-5.6 Sol', 62.3, 1.83, 'raw model · medium'],
     ['Claude Sonnet 5', 56.8, 0.94, 'raw model · high'],
     ['GPT-5.6 Luna', 43.6, 1.47, 'raw model · medium'],
@@ -246,7 +253,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Opus 5.5', 18.5, 70.5, 'xhigh'],
     ['Claude Fable 5.1', 9.0, 55.5, 'xhigh'],
     ['GPT-6 Astra', 5.0, 52.5, 'max'],
-    ['Claude Opus 5', 4.5, 37.0, 'xhigh'],
     ['GPT-5.6 Sol', 1.0, 15.5, 'xhigh'],
     ['Claude Opus 4.8', 0, 16.5, 'xhigh'],
     ['Claude Sonnet 4.6', 0, 1.0],
@@ -270,13 +276,15 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6 Astra', 58.2, 2.8, 'Codex · max'],
     ['GPT-6.1 Sol', 58.2, 3.1, 'Codex · max'],
     ['Claude Fable 5.1', 57.9, 3.8, 'Claude Code · max'],
-    ['Claude Opus 5', 53.9, 3.2, 'Claude Code · xhigh'],
+    ['Gemini 4 Argon', 54.8, 3.0, 'Antigravity CLI · high'],
+    ['GPT-6.1 Terra', 51.8, 2.8, 'Codex · max'],
     ['GPT-6 Sol', 49.4, 3.2, 'Codex · max'],
     ['Claude Fable 5', 44.5, 3.8, 'Claude Code · max'],
+    ['Claude Haiku 5.5', 40.0, 3.7, 'Claude Code · max'],
     ['Grok 4.7', 37.6, 3.5, 'Grok Build · xhigh'],
     ['GPT-5.6 Sol', 37.3, 3.8, 'Codex · max'],
     ['Claude Opus 4.8', 23.6, 3.6, 'Claude Code · max'],
-    ['GPT-5.6 Terra', 21.5, 3.3, 'Codex · max'],
+    ['Kimi K3', 22.4, 3.8, 'Claude Code · max'],
     ['Grok 4.6', 20.3, 3.1, 'Grok Build · high'],
     ['Gemini 3.8 Flash', 19.1, 3.4, 'mini-SWE-agent · high'],
     ['GPT-5.6 Luna', 17.3, 2.8, 'Codex · max'],
@@ -306,16 +314,6 @@ export function expandCatalog(benchmarks, sources, models) {
         ['low', 43.3, 3.6],
       ],
     ],
-    [
-      'Claude Opus 5',
-      'Claude Code',
-      [
-        ['max', 51.8, 3.4],
-        ['high', 50.3, 3.7],
-        ['medium', 44.8, 3.8],
-        ['low', 34.8, 3.9],
-      ],
-    ],
   ])
     for (const [effort, value, uncertainty] of settings)
       get(name).alternatives.push({
@@ -329,17 +327,24 @@ export function expandCatalog(benchmarks, sources, models) {
       })
   for (const [name, value, uncertainty, agent] of [
     ['Claude Opus 5.5', 65.8, 3.1, 'Claude Code · max'],
+    ['Claude Fable 5.2', 65.8, 2.8, 'Claude Code · max'],
+    ['Gemini 4 Carbon', 64.5, 3.2, 'Antigravity CLI · high'],
     ['Claude Sonnet 5.5', 63.9, 3.0, 'Claude Code · max'],
+    ['GPT-6.2 Astra', 62.1, 2.3, 'Codex · max'],
+    ['GPT-6.2 Sol', 61.5, 2.8, 'Codex · max'],
     ['GPT-6.1 Sol', 60.9, 3.0, 'Codex · max'],
     ['GPT-6 Astra', 60.3, 2.8, 'Codex · max'],
     ['Claude Fable 5.1', 57.6, 3.3, 'Claude Code · xhigh'],
-    ['Claude Opus 5', 53.3, 3.1, 'Claude Code · xhigh'],
+    ['Gemini 4 Hydrogen', 56.4, 3.0, 'Antigravity CLI · high'],
+    ['Gemini 4 Argon', 55.5, 2.8, 'Antigravity CLI · high'],
+    ['GPT-6.1 Terra', 53.3, 3.1, 'Codex · max'],
     ['GPT-6 Sol', 50.3, 3.2, 'Codex · max'],
     ['Claude Fable 5', 44.8, 3.8, 'Claude Code · max'],
+    ['Claude Haiku 5.5', 40.0, 3.6, 'Claude Code · max'],
     ['Grok 4.7', 38.8, 3.6, 'Grok Build · xhigh'],
     ['GPT-5.6 Sol', 38.5, 3.8, 'Codex · max'],
     ['Claude Opus 4.8', 23.6, 3.6, 'Claude Code · max'],
-    ['GPT-5.6 Terra', 21.5, 3.3, 'Codex · max'],
+    ['Kimi K3', 23.0, 3.7, 'Claude Code · max'],
     ['Grok 4.6', 19.7, 3.1, 'Grok Build · high'],
     ['Gemini 3.8 Flash', 18.2, 3.4, 'mini-SWE-agent · high'],
     ['GPT-5.6 Luna', 17.6, 2.9, 'Codex · max'],
@@ -369,16 +374,6 @@ export function expandCatalog(benchmarks, sources, models) {
         ['low', 43.3, 3.6],
       ],
     ],
-    [
-      'Claude Opus 5',
-      'Claude Code',
-      [
-        ['max', 52.1, 3.4],
-        ['high', 49.7, 3.7],
-        ['medium', 45.2, 3.8],
-        ['low', 34.8, 3.9],
-      ],
-    ],
   ])
     for (const [effort, value, uncertainty] of settings)
       get(name).alternatives.push({
@@ -391,7 +386,6 @@ export function expandCatalog(benchmarks, sources, models) {
         context: 'Terminal-Bench 4.1 · alternative reasoning setting; main result unchanged.',
       })
   for (const [name, value, uncertainty, agent] of [
-    ['Claude Opus 5', 99.4, 0.4, 'Claude Code · xhigh'],
     ['Gemini 4 Argon', 99.22, 0.45, 'mini-swe-agent · high'],
     ['Claude Fable 5.1', 99.1, 0.5, 'Claude Code · high'],
     ['Kimi K3', 97.7, 0.9, 'mini-swe-agent · max'],
@@ -401,7 +395,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Sol', 95.5, 1.4, 'Codex · xhigh'],
     ['Gemini 3.8 Flash', 94.86, 1.46, 'mini-swe-agent · high'],
     ['Claude Sonnet 5', 93.15, 1.71, 'Claude Code · xhigh'],
-    ['GPT-5.6 Terra', 92.37, 1.81, 'Codex · xhigh'],
     ['Claude Haiku 5.5', 87.23, 2.36, 'mini-swe-agent · high'],
   ])
     add(name, 'pro2', value, agent, null, { uncertainty })
@@ -415,12 +408,10 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6 Astra', 93.7],
     ['GPT-6 Sol', 93.1],
     ['Claude Haiku 5.5', 91.4],
-    ['Claude Opus 5', 90.8],
     ['GPT-6.1 Terra', 90.8],
     ['Gemini 4 Argon', 89.7],
     ['GPT-5.6 Sol', 89.7],
     ['Grok 4.6', 89.1],
-    ['GPT-5.6 Terra', 86.2],
     ['Grok 4.7', 84.5],
     ['GPT-6 Luna', 84.5],
     ['Gemini 3.8 Flash', 82.2],
@@ -438,14 +429,16 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Haiku 5.5', 77.6],
     ['Claude Opus 5.5', 87.1],
     ['Claude Sonnet 5.5', 77.2],
-    ['Gemini 3.8 Flash', 65.7],
+    ['Gemini 3.8 Flash', 73.3],
     ['Gemini 4 Argon', 85.7],
     ['Gemini 4 Carbon', 91.0],
-    ['GPT-5.6 Terra', 84.2],
+    ['Gemini 4 Hydrogen', 78.5, 'xhigh'],
     ['GPT-6 Astra', 87.5],
     ['GPT-6 Luna', 70.8],
     ['GPT-6.1 Sol', 82.1],
     ['GPT-6.1 Terra', 89.2],
+    ['GPT-6.2 Astra', 91.9],
+    ['GPT-6.2 Sol', 83.7],
     ['Grok 4.6', 76.7],
     ['Grok 4.7', 73.1],
     ['Kimi K3', 53.1],
@@ -506,11 +499,13 @@ export function expandCatalog(benchmarks, sources, models) {
       '2026-09-18',
     ],
     ['Claude Fable 5.1', 90.26, 1.57, null, 'max', '2026-08-29'],
+    ['GPT-6.2 Astra', 89.9, 2.04, null, 'max'],
     ['GPT-6 Astra', 89.59, 2.17, null, 'max', '2026-09-03'],
     ['Gemini 4 Carbon', 89.06, 2.29, null, 'high', '2026-10-24'],
     ['GPT-6.1 Sol', 88.93, 1.89, null, 'max', '2026-09-29'],
-    ['Claude Opus 5', 88.4, 3.0],
+    ['Gemini 4 Hydrogen', 87.78, 2.29, null, 'xhigh'],
     ['GPT-6 Sol', 87.82, 2.53, null, 'max', '2026-09-22'],
+    ['GPT-6.2 Sol', 87.62, 2.2, null, 'max'],
     ['Grok 4.7', 86.17, 2.18, null, 'xhigh', '2026-09-21'],
     ['Kimi K3', 84.97, 2.75, null, 'max', '2026-10-01'],
     ['GPT-6.1 Terra', 84.0, 2.87, null, 'max', '2026-10-26'],
@@ -521,7 +516,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Gemini 3.8 Flash', 78.65, 3.88, null, 'high', '2026-08-27'],
     ['GPT-5.6 Luna', 77.06, 3.07, null, 'max'],
     ['Grok 4.6', 76.24, 3.82, null, 'high'],
-    ['GPT-5.6 Terra', 74.59, 4.2, null, 'max', '2026-08-14'],
     ['Grok 4.5', 69.0, 4.48, null, 'high'],
     ['GPT-5.3-Codex', 61.77, 4.71, null, 'xhigh'],
     ['Claude Sonnet 4.6', 51.48, 4.64, null, 'max'],
@@ -543,7 +537,6 @@ export function expandCatalog(benchmarks, sources, models) {
       '2026-09-22',
     ],
     ['GPT-6.1 Sol', 65.12, 4.36, null, 'max', '2026-09-29'],
-    ['Claude Opus 5', 57.47, 4.37, null, 'max', '2026-07-22'],
     ['GPT-6 Sol', 57.2, 4.21, null, 'max', '2026-09-22'],
     ['Claude Fable 5', 55.06, 4.61, null, 'max', '2026-06-11'],
     [
@@ -555,7 +548,6 @@ export function expandCatalog(benchmarks, sources, models) {
       '2026-09-01',
     ],
     ['GPT-5.6 Sol', 52.92, 4.35, null, 'max', '2026-06-18'],
-    ['GPT-5.6 Terra', 47.8, 4.28, null, 'max', '2026-08-14'],
     ['Claude Opus 4.8', 47.25, 4.18, null, 'max', '2026-06-09'],
     ['Grok 4.7', 44.82, 4.21, null, 'xhigh', '2026-09-21'],
     ['Grok 4.6', 44.57, 4.48, null, 'high', '2026-08-12'],
@@ -572,7 +564,14 @@ export function expandCatalog(benchmarks, sources, models) {
   ])
   vals('migration', 'Pi agent · Vals harness', [
     ['Claude Sonnet 5.5', 86.88, 1.52, null, 'max', '2026-10-15'],
-    ['Claude Fable 5.2', 83.27, 3.12, null, 'high', '2026-11-07'],
+    [
+      'Claude Fable 5.2',
+      83.27,
+      3.12,
+      '26 fallbacks to another model on 130 tasks (20.00%); without fallbacks the score is 73.02%.',
+      'high',
+      '2026-11-07',
+    ],
     [
       'Claude Opus 5.5',
       81.01,
@@ -598,7 +597,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Haiku 5.5', 75.48, 5.21, null, 'max'],
     ['Kimi K3', 75.24, 5.56, null, 'max'],
     ['GPT-5.6 Luna', 73.63, 5.56, null, 'max'],
-    ['GPT-5.6 Terra', 72.08, 5.41, null, 'max'],
     ['Grok 4.5', 71.01, 5.79, null, 'high'],
     [
       'Claude Fable 5.1',
@@ -609,7 +607,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ],
     ['Grok 4.7', 69.46, 5.67, null, 'xhigh'],
     ['Grok 4.6', 67.68, 5.87, null, 'high'],
-    ['Claude Opus 5', 65.36, 5.55, '37 fallbacks to another model on 116 tasks (31.90%).', 'max'],
     [
       'Claude Sonnet 5',
       61.91,
@@ -677,8 +674,6 @@ export function expandCatalog(benchmarks, sources, models) {
       'max',
       '2026-09-10',
     ],
-    ['GPT-5.6 Terra', 87.61, 6.53, null, 'max', '2026-09-08'],
-    ['Claude Opus 5', 84.33, 9.96, null, 'max', '2026-09-10'],
     ['Claude Sonnet 5.5', 83.06, 3.74, null, 'max', '2026-09-25'],
     ['GPT-6 Sol', 82.61, 9.24, null, 'max', '2026-09-22'],
     ['GPT-5.6 Luna', 61.78, 11.61, null, 'max', '2026-09-08'],
@@ -692,7 +687,20 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Sonnet 5', 45.0, 2.75, null, 'max', '2026-09-09'],
     ['Grok 4.5', 40.56, 3.95, null, 'high', '2026-09-09'],
   ])
-  vals('vcb100', 'Vals harness', [
+  vals('vcb100', 'OpenHands · Vals harness', [
+    ['GPT-6.2 Astra', 55.16, 5.78, null, 'max'],
+    ['Gemini 4 Carbon', 49.73, 4.91, null, 'high'],
+    [
+      'Claude Opus 5.5',
+      30.95,
+      3.59,
+      '12 tasks with fallback on 50 tasks (24.00%); capped before the first fallback, the score is 23.55%.',
+      'max',
+    ],
+    ['Grok 4.7', 26.35, 4.22, null, 'xhigh'],
+    ['GPT-6.2 Sol', 40.94, 5.07, null, 'max'],
+  ])
+  vals('vcb100old', 'OpenHands · Vals harness', [
     [
       'Claude Opus 5.5',
       30.36,
@@ -701,7 +709,6 @@ export function expandCatalog(benchmarks, sources, models) {
       'xhigh',
       '2026-09-21',
     ],
-    ['Claude Opus 5', 28.53, 4.33, null, 'max', '2026-09-13'],
     [
       'Claude Fable 5.1',
       28.0,
@@ -717,44 +724,43 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.6 Sol', 20.01, 3.63, null, 'max', '2026-09-13'],
     ['Gemini 3.8 Flash', 18.77, 3.31, null, 'high', '2026-09-13'],
     ['Kimi K3', 18.24, 3.92, null, 'max', '2026-09-13'],
-    ['GPT-5.6 Terra', 14.82, 3.12, null, 'max', '2026-09-13'],
     ['Grok 4.6', 14.75, 3.17, null, 'high', '2026-09-13'],
     ['Claude Sonnet 5', 13.82, 2.98, null, 'max', '2026-09-13'],
   ])
   vals('multimodal', 'mini-SWE-agent · no network · Vals harness', [
-    ['Claude Opus 5.5', 70.21, 3.63, null, 'max', '2026-10-12'],
-    ['Claude Fable 5.2', 62.29, 1.84, null, 'high', '2026-11-08'],
+    ['Claude Opus 5.5', 70.21, 2.09, null, 'max', '2026-10-12'],
+    ['Claude Fable 5.2', 62.29, 2.21, null, 'high', '2026-11-08'],
     [
       'Claude Fable 5.1',
       61.25,
-      5.46,
+      2.23,
       '2 fallbacks to another model on 480 tasks (0.42%).',
       'max',
       '2026-10-12',
     ],
-    ['Claude Sonnet 5.5', 58.33, 3.26, null, 'max', '2026-10-12'],
+    ['Claude Sonnet 5.5', 58.33, 2.25, null, 'max', '2026-10-12'],
     [
       'Gemini 4 Argon',
       56.04,
-      11.4,
+      2.27,
       '1 provider refusal on 480 tasks (0.21%), scored as failure.',
       'high',
       '2026-10-12',
     ],
-    ['Kimi K3', 44.17, 1.65, null, 'max', '2026-10-12'],
-    ['Claude Haiku 5.5', 43.96, 0.7, null, 'max', '2026-10-12'],
-    ['GPT-6.1 Sol', 43.54, 0.35, null, 'max', '2026-10-12'],
-    ['GPT-6 Astra', 43.33, 1.81, null, 'max', '2026-10-12'],
-    ['Grok 4.7', 42.92, 4.66, null, 'xhigh', '2026-10-12'],
+    ['Kimi K3', 44.17, 2.27, null, 'max', '2026-10-12'],
+    ['Claude Haiku 5.5', 43.96, 2.27, null, 'max', '2026-10-12'],
+    ['GPT-6.1 Sol', 43.54, 2.27, null, 'max', '2026-10-12'],
+    ['GPT-6 Astra', 43.33, 2.26, null, 'max', '2026-10-12'],
+    ['Grok 4.7', 42.92, 2.26, null, 'xhigh', '2026-10-12'],
     [
       'Gemini 3.8 Flash',
       40.83,
-      3.69,
+      2.25,
       '1 provider refusal on 480 tasks (0.21%), scored as failure.',
       'high',
       '2026-10-08',
     ],
-    ['GPT-6 Luna', 37.5, 0.03, null, 'max', '2026-10-12'],
+    ['GPT-6 Luna', 37.5, 2.21, null, 'max', '2026-10-12'],
   ])
   for (const [name, value] of [
     ['Claude Opus 5.5', 85.0],
@@ -764,12 +770,10 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6.1 Sol', 73.0],
     ['Gemini 4 Argon', 69.9],
     ['GPT-6 Sol', 66.9],
-    ['Claude Opus 5', 62.1],
     ['Claude Haiku 5.5', 57.6],
     ['Claude Fable 5', 53.2],
     ['Grok 4.7', 50.1],
     ['GPT-5.6 Sol', 48.5],
-    ['GPT-5.6 Terra', 48.4],
     ['Claude Opus 4.8', 48.3],
     ['GPT-6 Luna', 48.1],
     ['Kimi K3', 42.8],
@@ -792,11 +796,13 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Gemini 3.8 Flash', 16.5],
     ['Gemini 4 Argon', 58.5],
     ['Gemini 4 Carbon', 72.7],
-    ['GPT-5.6 Terra', 25.9],
+    ['Gemini 4 Hydrogen', 61.8, 'xhigh'],
     ['GPT-6 Astra', 75.6],
     ['GPT-6 Luna', 24.7],
     ['GPT-6.1 Sol', 65.6],
     ['GPT-6.1 Terra', 56.2],
+    ['GPT-6.2 Astra', 70.8],
+    ['GPT-6.2 Sol', 63.6],
     ['Grok 4.6', 18.7],
     ['Grok 4.7', 45.3],
     ['Kimi K3', 36.0],
@@ -817,7 +823,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6.1 Terra', 94.3],
     ['Grok 4.7', 84.5],
     ['Claude Haiku 5.5', 91.4],
-    ['GPT-5.6 Terra', 86.2],
     ['Grok 4.6', 89.1],
     ['GPT-6 Luna', 84.5],
     ['Kimi K3', 59.3],
@@ -844,7 +849,6 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-6.1 Terra', 48.6],
     ['Grok 4.7', 46.1],
     ['Claude Haiku 5.5', 40.0],
-    ['GPT-5.6 Terra', 33.1],
     ['GPT-6 Luna', 30.9],
     ['Grok 4.6', 28.0],
     ['Kimi K3', 26.4],

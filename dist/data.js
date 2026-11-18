@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-11-13'
+export const checked = '2026-11-18'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-11-13T10:25:06Z'
 export const sources = {
@@ -87,12 +87,13 @@ const rows = [
   ['GPT-5.4 nano', 'OpenAI', 0.2, 0.02, null, 1.25],
   ['GPT-5.6 Luna', 'OpenAI', 0.2, 0.02, 0.25, 1.2, 200, 0.4, 0.04, 0.5, 1.8],
   ['GPT-5.6 Sol', 'OpenAI', 4, 0.4, 5, 20, 272, 8, 0.8, 10, 30],
-  ['GPT-5.6 Terra', 'OpenAI', 2, 0.2, 2.5, 12, 272, 4, 0.4, 5, 18],
   ['GPT-6 Astra', 'OpenAI', 10, 1, 12.5, 50, 272, 20, 2, 25, 75],
   ['GPT-6 Luna', 'OpenAI', 0.1, 0.01, 0.125, 0.5, 272, 0.2, 0.02, 0.25, 0.75],
   ['GPT-6 Sol', 'OpenAI', 2, 0.2, 2.5, 10, 272, 4, 0.4, 5, 15],
   ['GPT-6.1 Sol', 'OpenAI', 2, 0.1, 2.5, 10, 272, 4, 0.2, 5, 15],
   ['GPT-6.1 Terra', 'OpenAI', 1, 0.05, 1.25, 5, 272, 2, 0.1, 2.5, 7.5],
+  ['GPT-6.2 Astra', 'OpenAI', 8, 0.4, 10, 40, 272, 16, 0.8, 20, 60],
+  ['GPT-6.2 Sol', 'OpenAI', 2, 0.1, 2.5, 10, 272, 4, 0.2, 5, 15],
   ['GPT Image 2.5 Flare', 'OpenAI', 5, 1.25, null, 30],
   ['Claude Haiku 4.5', 'Anthropic', 1, 0.1, 1.25, 5],
   ['Claude Haiku 5.5', 'Anthropic', 0.1, 0.01, 0.125, 0.5, 100, 0.5, 0.05, 0.625, 2.5],
@@ -101,7 +102,6 @@ const rows = [
   ['Claude Sonnet 5.5', 'Anthropic', 2, 0.1, 2.5, 10],
   ['Claude Opus 4.8', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 4.8 (fast mode)', 'Anthropic', 10, 1, 12.5, 50],
-  ['Claude Opus 5', 'Anthropic', 5, 0.5, 6.25, 25],
   ['Claude Opus 5.5', 'Anthropic', 4, 0.2, 5, 20],
   ['Claude Fable 5', 'Anthropic', 10, 1, 12.5, 50],
   ['Claude Fable 5.1', 'Anthropic', 10, 0.25, 12.5, 50],
@@ -109,7 +109,10 @@ const rows = [
   ['Gemini 3.8 Flash', 'Google', 0.75, 0.075, null, 3.75],
   ['Gemini 4 Argon', 'Google', 2, 0.1, null, 10],
   ['Gemini 4 Carbon', 'Google', 2, 0.1, null, 10],
+  ['Gemini 4 Hydrogen', 'Google', 1.5, 0.075, null, 7.5],
   ['MAI-Code-1.1-Flash', 'Microsoft', 0.2, 0.02, null, 1.2],
+  ['MAI Code 2', 'Microsoft', 0.5, 0.025, null, 2.5],
+  ['MAI Code 2 Flash', 'Microsoft', 0.05, 0.005, null, 0.25],
   ['Kimi K3', 'Moonshot AI', 3, 0.3, null, 15],
   ['Grok 4.5', 'xAI', 2, 0.5, null, 6, 200, 4, 1, null, 12],
   ['Grok 4.6', 'xAI', 2, 0.5, null, 6, 200, 4, 1, null, 12],
@@ -146,11 +149,9 @@ for (const [name, value, setting] of [
   ['GPT-6 Sol', 81.8, 'Max Effort'],
   ['GPT-6.1 Sol', 80.4, 'Max Effort'],
   ['Claude Sonnet 5', 80.7, 'xHigh Effort'],
-  ['Claude Opus 5', 81.4, 'Thinking Max Effort'],
   ['Kimi K3', 81.4, 'not specified'],
   ['GPT-6 Luna', 79, 'Max Effort'],
   ['Claude Sonnet 4.6', 79.3, 'Thinking Medium Effort'],
-  ['GPT-5.6 Terra', 78.2, 'Max Effort'],
   ['Grok 4.6', 76.8, 'xHigh'],
   ['Claude Haiku 5.5', 76.4, 'xHigh Effort'],
   ['Gemini 3.8 Flash', 72.5, 'High'],
@@ -183,7 +184,6 @@ const atlas = [
   ['GPT-6 Astra', 'Codex · xHigh', [59.14, 4.88], [50.74, 5.91], [59.05, 6.43]],
   ['Claude Fable 5.1', 'Claude Code · xHigh', [59.95, 4.85], [67.04, 5.33], [56.67, 6.52]],
   ['Claude Fable 5', 'Claude Code · xHigh', [39, 5], [55.6, 5.8], [54.76, 6.76]],
-  ['Claude Opus 5', 'Claude Code · xHigh', [63.17, 5.01], [62.22, 5.58], null],
   [
     'Claude Opus 4.8',
     'Claude Code · xHigh where specified',
@@ -258,7 +258,7 @@ for (const m of models) {
     )
   if (m.name === 'GPT-6.1 Terra')
     m.notes.push(
-      'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; no official Terminal-Bench 4.1 result is captured.',
+      'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; the official Terminal-Bench 4.0 (51.8%) and 4.1 Codex results are listed separately.',
     )
   if (m.name === 'GPT Image 2.5 Flare')
     m.notes.push(
@@ -280,6 +280,24 @@ for (const m of models) {
   if (m.name === 'Claude Sonnet 4.6')
     m.notes.push(
       'GitHub lists retirement on September 1, 2026; the model remains available to individual subscribers on annual Copilot Pro and Pro+ plans.',
+    )
+  if (m.name === 'Claude Opus 4.8')
+    m.notes.push(
+      'GitHub retired this model on November 16, 2026; it remains available to individual subscribers on annual Copilot plans.',
+    )
+  if (m.name === 'MAI Code 2')
+    m.notes.push(
+      'Promotional Copilot pricing until May 17, 2027; thereafter GitHub lists $1 input, $0.05 cached input and $5 output per 1M tokens.',
+      'Microsoft’s launch post (microsoft.ai/news/introducing-mai-code-2-and-mai-code-2-flash) reports vendor-run results at max effort through Copilot CLI: DeepSWE 1.1 73.2, Terminal-Bench 2.1 84.6, SWE Atlas 43.1. Not independently published; not scored.',
+    )
+  if (m.name === 'MAI Code 2 Flash')
+    m.notes.push(
+      'Promotional Copilot pricing until May 17, 2027; thereafter GitHub lists $0.10 input, $0.01 cached input and $0.50 output per 1M tokens.',
+      'Microsoft’s launch post (microsoft.ai/news/introducing-mai-code-2-and-mai-code-2-flash) reports vendor-run results at max effort through Copilot CLI: DeepSWE 1.1 59.9, Terminal-Bench 2.1 78.3, SWE Atlas 44.8. Not independently published; not scored.',
+    )
+  if (m.provider === 'Microsoft')
+    m.notes.push(
+      'GitHub describes MAI models as continuously improving: behavior and performance may change as new checkpoints are released.',
     )
 }
 expandCatalog(benchmarks, sources, models)

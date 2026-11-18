@@ -118,7 +118,7 @@ const views = {
   building: ['vibecode', 'vcb100', 'features', 'program'],
   quality: ['cyber', 'review', 'optimization'],
   issues: ['terminal41', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
-  history: ['coding', 'livebench2old', 'lbagenticold', 'terminal', 'terminal4', 'pro'],
+  history: ['coding', 'livebench2old', 'lbagenticold', 'terminal', 'terminal4', 'pro', 'vcb100old'],
 }
 const topicTable = topicScores(models)
 const overview = () => state.view === 'overview'

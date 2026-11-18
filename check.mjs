@@ -51,8 +51,21 @@ assert.equal(
   false,
 )
 assert.equal(models.length, 37)
-assert.equal(benchmarks.length, 28)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 28)
+assert.equal(benchmarks.length, 30)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 30)
+assert.equal(models.filter((m) => m.evidence.frontierswe).length, 15)
+assert.equal(models.filter((m) => m.evidence.frontiercode).length, 22)
+{
+  const fable = models.find((m) => m.name === 'Claude Fable 5.2')
+  assert.equal(fable.evidence.frontierswe.value, 69.9)
+  assert.equal(fable.evidence.frontierswe.uncertainty, 8.6)
+  assert.equal(fable.evidence.frontierswe.date, null)
+  assert.equal(fable.evidence.frontiercode.value, 48.8)
+  assert.equal(fable.evidence.frontiercode.agent, 'Stirrup · max')
+  assert.ok(fable.alternatives.some((a) => a.benchmark === 'frontiercode' && a.value === 49.1))
+  for (const name of ['MAI Code 2', 'MAI Code 2 Flash'])
+    assert.equal(Object.keys(models.find((m) => m.name === name).evidence).length, 0)
+}
 assert.equal(models.filter((m) => Object.keys(m.evidence).length).length, 31)
 assert.equal(models.filter((m) => score(m, defaults).value !== null).length, 18)
 assert.equal(benchmarks.find((b) => b.id === 'migration').name, 'Code Migration v1.1')
@@ -382,15 +395,20 @@ for (const t of topics)
   for (const [, r] of topicTable)
     if (r[t.id].value !== null) {
       assert.ok(r[t.id].value >= 0 && r[t.id].value <= 100)
-      assert.ok(r[t.id].present * 2 >= r[t.id].eligible.length)
+      assert.ok(r[t.id].present * 2 >= r[t.id].eligible.length - 1)
     }
+// Relaxed rule: 2 of 5 agents benchmarks suffice; FrontierSWE has not run GPT-6.2 Astra.
+assert.equal(topicTable.get('gpt-6-2-astra').agents.present, 2)
+assert.ok(topicTable.get('gpt-6-2-astra').agents.value !== null)
+assert.equal(topicTable.get('gpt-6-2-astra').codebase.eligible.length, 3)
+assert.equal(topicTable.get('mai-code-2').agents.value, null)
 assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
 assert.deepEqual(topicTable.get('gemini-4-carbon').building.eligible, ['vibecode'])
 assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 2)
 const lensBest = awards(models, {}, defaultSelections, (m) =>
   awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best
-assert.deepEqual(lensBest, ['gemini-4-argon'])
+assert.deepEqual(lensBest, ['claude-fable-5-2'])
 assert.ok(!lensBest.includes('gpt-6-sol'))
 assert.equal(awardScore({ value: 90, coverage: 0.6 }), null)
 assert.equal(awardScore({ value: 90, coverage: 0.8 }), 90)

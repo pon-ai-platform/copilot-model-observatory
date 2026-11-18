@@ -190,6 +190,24 @@ export function expandCatalog(benchmarks, sources, models) {
       'Resolve real JavaScript issues reported with screenshots, graded by the upstream SWE-bench harness.',
       'Run by Vals AI with mini-SWE-agent and network access closed (agents with internet access were found copying the upstream fix). Uncertainties are standard errors. The official SWE-bench leaderboard has no current catalog-model rows.',
     ],
+    [
+      'frontierswe',
+      'Long-running agent work',
+      'FrontierSWE v2',
+      'v2 · 34 tasks · mean@5 · updated 2026-11-16',
+      'https://www.frontierswe.com/',
+      'Ultra-long-horizon engineering: 34 tasks of up to 20 hours each (implementation, performance optimisation, scientific computing, visual reasoning, AI research). Mean score over 5 trials, 0–100.',
+      'Run by Proximal at maximum reasoning effort in its own Proximus harness (mini-SWE-agent plus compaction, vision and a submit tool), with clean-room verification. The ± is as published on the leaderboard. Changelog dates record when a model was added, not when it was evaluated, so result dates stay empty.',
+    ],
+    [
+      'frontiercode',
+      'Complex code changes',
+      'FrontierCode-AA 2.0',
+      '132 private tasks · 3 attempts · Artificial Analysis',
+      'https://artificialanalysis.ai/evaluations/frontiercode-2-0',
+      'Changes to real open-source repositories, graded on whether a maintainer would merge them (tests plus a rubric of blocking and non-blocking checks). Mean score over three attempts per task.',
+      'Artificial Analysis runs Cognition’s FrontierCode 2.0 independently with its Stirrup harness (500-turn cap). Attempts that fail a blocking check or look up the solution score zero. The main value is each model’s highest reasoning effort; a better-scoring lower effort is kept as an alternative. No uncertainty or evaluation dates are published.',
+    ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
     sources[id] = url
@@ -865,4 +883,60 @@ export function expandCatalog(benchmarks, sources, models) {
       null,
       'LiveBench 2.0 · release 2026-10-25 · 18 tasks',
     )
+  for (const [name, value, uncertainty] of [
+    ['Claude Fable 5.2', 69.9, 8.6],
+    ['GPT-6 Astra', 65.5, 8.9],
+    ['Claude Opus 5.5', 62.3, 9.8],
+    ['Claude Sonnet 5.5', 61.9, 10.4],
+    ['Gemini 4 Carbon', 61.2, 5.3],
+    ['Claude Fable 5.1', 56.3, 11.1],
+    ['Gemini 4 Argon', 55.0, 9.9],
+    ['Gemini 4 Hydrogen', 53.1, 8.0],
+    ['Claude Fable 5', 47.0, 13.9],
+    ['Claude Haiku 5.5', 43.8, 9.1],
+    ['GPT-5.6 Sol', 32.2, 11.0],
+    ['Grok 4.7', 29.5, 12.6],
+    ['Kimi K3', 25.9, 11.8],
+    ['Grok 4.6', 25.3, 12.2],
+    ['Gemini 3.8 Flash', 19.6, 11.1],
+  ])
+    add(name, 'frontierswe', value, 'Proximus · max · 5 trials', null, { uncertainty })
+  for (const [name, value, effort] of [
+    ['Claude Fable 5.2', 48.8, 'max'],
+    ['Claude Opus 5.5', 46.4, 'max'],
+    ['GPT-6.2 Astra', 45.4, 'max'],
+    ['GPT-6.2 Sol', 44.4, 'max'],
+    ['GPT-6 Astra', 42.4, 'max'],
+    ['GPT-6.1 Terra', 42.3, 'max'],
+    ['Claude Sonnet 5.5', 41.7, 'max'],
+    ['GPT-6.1 Sol', 40.6, 'max'],
+    ['Gemini 4 Carbon', 40.6, 'high'],
+    ['Gemini 4 Hydrogen', 39.0, 'xhigh'],
+    ['GPT-6 Sol', 35.6, 'max'],
+    ['Claude Haiku 5.5', 34.9, 'max'],
+    ['Claude Fable 5.1', 31.6, 'max'],
+    ['Grok 4.7', 28.7, 'xhigh'],
+    ['Gemini 4 Argon', 25.7, 'high'],
+    ['GPT-6 Luna', 25.2, 'max'],
+    ['Grok 4.6', 19.8, 'xhigh'],
+    ['Gemini 3.8 Flash', 18.7, 'high'],
+    ['Claude Sonnet 5', 17.8, 'max'],
+    ['GPT-5.6 Luna', 17.6, 'max'],
+    ['Kimi K3', 10.9, 'low'],
+    ['Claude Haiku 4.5', 0.4],
+  ])
+    add(
+      name,
+      'frontiercode',
+      value,
+      effort ? `Stirrup · ${effort}` : 'Stirrup',
+      null,
+      effort === 'low' ? { context: 'Only the low-effort setting has been run.' } : {},
+    )
+  for (const [name, value, effort] of [
+    ['Claude Fable 5.2', 49.1, 'high'],
+    ['GPT-6.2 Astra', 49.0, 'xhigh'],
+    ['Claude Fable 5.1', 35.7, 'xhigh'],
+  ])
+    alt(name, 'frontiercode', value, undefined, `Stirrup · ${effort} (best-scoring effort)`)
 }

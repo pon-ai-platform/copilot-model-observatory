@@ -12,9 +12,9 @@ export const capabilities = [
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
   { id: 'program', short: 'Building programs', benchmarks: ['program'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal41'] },
-  { id: 'agentic', short: 'Long-running agent work', benchmarks: ['lbagentic'] },
+  { id: 'agentic', short: 'Long-running agent work', benchmarks: ['lbagentic', 'frontierswe'] },
   { id: 'verified', short: 'Fixing bugs', benchmarks: ['multimodal', 'verified'] },
-  { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench'] },
+  { id: 'pro', short: 'Complex code changes', benchmarks: ['pro2', 'rebench', 'frontiercode'] },
 ]
 export const defaults = Object.fromEntries(
   capabilities.map((c) => [c.id, c.id === 'coding' ? 100 : 0]),
@@ -125,7 +125,7 @@ export const topics = [
     short: 'Agents & issue fixing',
     description:
       'Working on its own for many steps: resolve real repository issues, terminal tasks, long-running agent jobs.',
-    benchmarks: ['terminal41', 'lbagentic', 'pro2', 'multimodal', 'rebench'],
+    benchmarks: ['terminal41', 'lbagentic', 'frontierswe', 'pro2', 'multimodal', 'rebench'],
   },
   {
     id: 'building',
@@ -138,8 +138,8 @@ export const topics = [
     id: 'codebase',
     short: 'Working in a codebase',
     description:
-      'Understanding existing code: answer questions about it, write tests for it, refactor it safely.',
-    benchmarks: ['qna', 'tests', 'refactor'],
+      'Understanding existing code: answer questions about it, write tests for it, refactor it safely, make changes a maintainer would merge.',
+    benchmarks: ['qna', 'tests', 'refactor', 'frontiercode'],
   },
   {
     id: 'quality',
@@ -197,7 +197,8 @@ export function topicScores(models) {
           const parts = eligible
             .filter((id) => table[id].has(m.id))
             .map((id) => ({ benchmark: id, ...table[id].get(m.id) }))
-          const enough = !m.utility && parts.length > 0 && parts.length * 2 >= eligible.length
+          // At least half of the counted benchmarks, rounded down (2 of 5, 1 of 3).
+          const enough = !m.utility && parts.length > 0 && parts.length * 2 >= eligible.length - 1
           return [
             t.id,
             {

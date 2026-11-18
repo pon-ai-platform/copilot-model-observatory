@@ -113,11 +113,11 @@ function weightControls() {
   )
 }
 const views = {
-  engineering: ['livebench2', 'qna', 'tests', 'refactor'],
+  engineering: ['livebench2', 'qna', 'tests', 'refactor', 'frontiercode'],
   coding: ['ioi', 'migration', 'multilingual'],
   building: ['vibecode', 'vcb100', 'features', 'program'],
   quality: ['cyber', 'review', 'optimization'],
-  issues: ['terminal41', 'lbagentic', 'pro2', 'multimodal', 'verified', 'rebench'],
+  issues: ['terminal41', 'lbagentic', 'frontierswe', 'pro2', 'multimodal', 'verified', 'rebench'],
   history: ['coding', 'livebench2old', 'lbagenticold', 'terminal', 'terminal4', 'pro', 'vcb100old'],
 }
 const topicTable = topicScores(models)
@@ -269,7 +269,7 @@ function render() {
   const columns = overview() ? [] : visibleBenchmarks()
   const showCompany = state.weighted
   $('viewNote').textContent = overview()
-    ? `Topic score = average standing (0–100) across the topic's benchmarks, relative to the other selectable Copilot models — not an absolute skill score. A benchmark counts once at least ${minTopicModels} models have a result; a topic needs results on at least half of its benchmarks. Click a score for the raw results.`
+    ? `Topic score = average standing (0–100) across the topic's benchmarks, relative to the other selectable Copilot models — not an absolute skill score. A benchmark counts once at least ${minTopicModels} models have a result; a topic needs results on at least half of its benchmarks, rounded down (2 of 5, 1 of 3). Click a score for the raw results.`
     : columns
         .map(
           (b) =>

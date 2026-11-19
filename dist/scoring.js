@@ -10,7 +10,7 @@ export const capabilities = [
   { id: 'algorithmic', short: 'Algorithmic coding', benchmarks: ['ioi'] },
   { id: 'security', short: 'Secure coding', benchmarks: ['cyber'] },
   { id: 'optimization', short: 'Making code faster', benchmarks: ['optimization'] },
-  { id: 'program', short: 'Building programs', benchmarks: ['program'] },
+  { id: 'program', short: 'Building programs', benchmarks: ['program', 'mirrorcode'] },
   { id: 'terminal', short: 'Terminal tasks', benchmarks: ['terminal41'] },
   { id: 'agentic', short: 'Long-running agent work', benchmarks: ['lbagentic', 'frontierswe'] },
   { id: 'verified', short: 'Fixing bugs', benchmarks: ['multimodal', 'verified'] },
@@ -132,7 +132,7 @@ export const topics = [
     short: 'Building software',
     description:
       'A whole product end to end: build a web app from a spec, extend it request by request, rebuild a program.',
-    benchmarks: ['vibecode', 'program', 'vcb100'],
+    benchmarks: ['vibecode', 'program', 'mirrorcode', 'vcb100'],
   },
   {
     id: 'codebase',

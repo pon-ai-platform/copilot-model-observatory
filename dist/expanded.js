@@ -208,6 +208,15 @@ export function expandCatalog(benchmarks, sources, models) {
       'Changes to real open-source repositories, graded on whether a maintainer would merge them (tests plus a rubric of blocking and non-blocking checks). Mean score over three attempts per task.',
       'Artificial Analysis runs Cognition’s FrontierCode 2.0 independently with its Stirrup harness (500-turn cap). Attempts that fail a blocking check or look up the solution score zero. The main value is each model’s highest reasoning effort; a better-scoring lower effort is kept as an alternative. No uncertainty or evaluation dates are published.',
     ],
+    [
+      'mirrorcode',
+      'Building programs',
+      'MirrorCode',
+      'ML · +Private · 2L · 30 tasks · updated 2026-11-17',
+      'https://epoch.ai/benchmarks/mirrorcode',
+      'Reimplement an entire command-line program (Unix utilities, interpreters, compression, cryptography…) without its source code, using only a black-box binary and docs. A task counts only when every end-to-end test passes, including held-out tests.',
+      'Run by Epoch AI (co-developed with METR) in an Inspect ReAct scaffold without internet: 15 Medium/Large programs, each in Go and Ada, 3 runs per task, 10B tokens and 7 days per attempt. Score = average rate of 100% solves; ± is the published standard error. The main value is each model’s highest reasoning effort. No per-result evaluation dates are shown.',
+    ],
   ]
   for (const [id, short, name, version, url, description, note] of additions) {
     sources[id] = url
@@ -941,4 +950,31 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Fable 5.1', 35.7, 'xhigh'],
   ])
     alt(name, 'frontiercode', value, undefined, `Stirrup · ${effort} (best-scoring effort)`)
+  for (const [name, value, uncertainty, effort] of [
+    ['Claude Sonnet 5.5', 97.8, 1.5, 'max'],
+    ['Claude Opus 5.5', 95.6, 2.6, 'max'],
+    ['Claude Fable 5.1', 93.3, 3.9, 'max'],
+    ['Claude Haiku 5.5', 78.9, 8.0, 'max'],
+    ['GPT-6.1 Terra', 76.7, 9.3, 'max'],
+    ['Claude Fable 5', 70.0, 10.4, 'max'],
+    ['GPT-6.2 Astra', 67.8, 11.7, 'max'],
+    ['Claude Opus 4.8', 65.6, 10.8, 'max'],
+    ['Claude Sonnet 5', 63.3, 10.7, 'max'],
+    ['GPT-6.1 Sol', 61.1, 11.3, 'max'],
+    ['GPT-6 Astra', 60.0, 11.8, 'max'],
+    ['Gemini 4 Argon', 58.9, 11.7, 'high'],
+    ['Grok 4.7', 54.4, 11.4, 'xhigh'],
+    ['Kimi K3', 54.4, 11.4, 'max'],
+    ['GPT-6 Sol', 48.9, 11.2, 'max'],
+    ['Grok 4.6', 41.1, 11.0, 'xhigh'],
+    ['Gemini 3.8 Flash', 38.9, 11.9, 'high'],
+    ['Grok 4.5', 32.2, 10.7, 'high'],
+    ['GPT-6 Luna', 26.7, 9.0, 'max'],
+    ['GPT-5.6 Luna', 21.1, 9.8, 'max'],
+    ['GPT-5.6 Sol', 20.0, 9.2, 'high'],
+  ])
+    add(name, 'mirrorcode', value, `Inspect ReAct · ${effort} · 3 runs`, null, {
+      uncertainty,
+      ...(name === 'GPT-5.6 Sol' ? { context: 'Only the high-effort setting has been run.' } : {}),
+    })
 }

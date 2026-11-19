@@ -115,7 +115,7 @@ function weightControls() {
 const views = {
   engineering: ['livebench2', 'qna', 'tests', 'refactor', 'frontiercode'],
   coding: ['ioi', 'migration', 'multilingual'],
-  building: ['vibecode', 'vcb100', 'features', 'program'],
+  building: ['vibecode', 'vcb100', 'features', 'program', 'mirrorcode'],
   quality: ['cyber', 'review', 'optimization'],
   issues: ['terminal41', 'lbagentic', 'frontierswe', 'pro2', 'multimodal', 'verified', 'rebench'],
   history: ['coding', 'livebench2old', 'lbagenticold', 'terminal', 'terminal4', 'pro', 'vcb100old'],

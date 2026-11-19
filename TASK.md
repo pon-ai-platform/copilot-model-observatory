@@ -97,7 +97,7 @@ Main-lens selection is one benchmark per capability (`dist/scoring.js`). Histori
 | pro2          | SWE-Bench Pro V2 Full (2026-09-22 split)              | Complex code changes  | ✅ (selected)          | % + CI                   | 10 models               |
 | rebench       | SWE-rebench (window 2026-05-15 → 2026-07-01)          | Complex code changes  | selectable (not lens)  | % + 95% CI               | 5 models                |
 | program       | ProgramBench (200 tasks · 2026-10-22)                 | Building programs     | ✅ new capability      | % resolved               | 7 models                |
-| mirrorcode    | MirrorCode (Epoch AI, ML +Private 2L, 30 tasks)       | Building programs     | ✅ default · topic     | % 100%-solves + SE       | 21 models               |
+| mirrorcode    | MirrorCode (Epoch AI, ML +Private 2L, 30 tasks)       | Building programs     | selectable · topic     | % 100%-solves + SE       | 21 models               |
 | features      | FeatureBench (Fast · v1.1 · 100 tasks · resolved)     | Implementing features | selectable             | whole-task %             | 2 models                |
 | vcb100        | Vibe Code Bench 1-100 v1.1 (Vals AI, 50 tasks)        | Implementing features | ✅ default             | %, ± published           | 5 models                |
 | vcb100old     | Vibe Code Bench 1-100 v1.0 (Vals AI, 50 tasks)        | Implementing features | historical             | %, ± published           | 11 models               |

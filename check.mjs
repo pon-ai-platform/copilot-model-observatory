@@ -50,11 +50,19 @@ assert.equal(
   ),
   false,
 )
-assert.equal(models.length, 37)
+assert.equal(models.length, 38)
 assert.equal(benchmarks.length, 30)
 assert.equal(new Set(benchmarks.map((b) => b.id)).size, 30)
 assert.equal(models.filter((m) => m.evidence.frontierswe).length, 15)
-assert.equal(models.filter((m) => m.evidence.frontiercode).length, 22)
+assert.equal(models.filter((m) => m.evidence.frontiercode).length, 23)
+{
+  const neon = models.find((m) => m.name === 'Gemini 4 Neon')
+  assert.deepEqual(Object.keys(neon.evidence).sort(), ['frontiercode', 'vibecode'])
+  assert.equal(neon.evidence.vibecode.value, 93.7)
+  assert.equal(neon.evidence.frontiercode.agent, 'Stirrup · xhigh')
+  assert.equal(neon.price.input, 3)
+  assert.ok(models.find((m) => m.name === 'Kimi K3').notes.some((n) => n.includes('December 14')))
+}
 {
   const fable = models.find((m) => m.name === 'Claude Fable 5.2')
   assert.equal(fable.evidence.frontierswe.value, 69.9)
@@ -66,7 +74,7 @@ assert.equal(models.filter((m) => m.evidence.frontiercode).length, 22)
   for (const name of ['MAI Code 2', 'MAI Code 2 Flash'])
     assert.equal(Object.keys(models.find((m) => m.name === name).evidence).length, 0)
 }
-assert.equal(models.filter((m) => Object.keys(m.evidence).length).length, 31)
+assert.equal(models.filter((m) => Object.keys(m.evidence).length).length, 32)
 assert.equal(models.filter((m) => score(m, defaults).value !== null).length, 18)
 assert.equal(benchmarks.find((b) => b.id === 'migration').name, 'Code Migration v1.1')
 assert.equal(benchmarks.find((b) => b.id === 'migrationold').name, 'Code Migration v1.0')
@@ -404,7 +412,8 @@ assert.equal(topicTable.get('gpt-6-2-astra').codebase.eligible.length, 3)
 assert.equal(topicTable.get('mai-code-2').agents.value, null)
 assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
 assert.deepEqual(topicTable.get('gemini-4-carbon').building.eligible, ['vibecode'])
-assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 2)
+assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 3)
+assert.equal(topicTable.get('gemini-4-neon').building.parts[0].rank, 2)
 const lensBest = awards(models, {}, defaultSelections, (m) =>
   awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best

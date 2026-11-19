@@ -104,7 +104,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-11-16',
+      'v1.1 · 50 apps · updated 2026-11-18',
       'https://www.vals.ai/benchmarks/vibe-code',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
       'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
@@ -504,6 +504,7 @@ export function expandCatalog(benchmarks, sources, models) {
     })
   vals('vibecode', 'OpenHands · Vals harness', [
     ['Claude Fable 5.2', 93.77, 1.15, null, 'high', '2026-11-08'],
+    ['Gemini 4 Neon', 93.7, 1.17, null, 'xhigh'],
     ['Claude Sonnet 5.5', 92.39, 1.26, null, 'max', '2026-09-25'],
     ['Gemini 4 Argon', 91.91, 1.9, null, 'high', '2026-09-24'],
     ['Claude Haiku 5.5', 90.44, 1.73, null, 'max', '2026-10-07'],
@@ -906,6 +907,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Opus 5.5', 46.4, 'max'],
     ['GPT-6.2 Astra', 45.4, 'max'],
     ['GPT-6.2 Sol', 44.4, 'max'],
+    ['Gemini 4 Neon', 44.4, 'xhigh'],
     ['GPT-6 Astra', 42.4, 'max'],
     ['GPT-6.1 Terra', 42.3, 'max'],
     ['Claude Sonnet 5.5', 41.7, 'max'],

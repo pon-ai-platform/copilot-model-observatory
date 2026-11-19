@@ -1,5 +1,5 @@
 import { expandCatalog } from './expanded.js'
-export const checked = '2026-11-18'
+export const checked = '2026-11-19'
 // Release stamp: set by `node release.mjs` — the date-time this exact commit was published.
 export const released = '2026-11-18T08:27:40Z'
 export const sources = {
@@ -110,6 +110,7 @@ const rows = [
   ['Gemini 4 Argon', 'Google', 2, 0.1, null, 10],
   ['Gemini 4 Carbon', 'Google', 2, 0.1, null, 10],
   ['Gemini 4 Hydrogen', 'Google', 1.5, 0.075, null, 7.5],
+  ['Gemini 4 Neon', 'Google', 3, 0.15, null, 15],
   ['MAI-Code-1.1-Flash', 'Microsoft', 0.2, 0.02, null, 1.2],
   ['MAI Code 2', 'Microsoft', 0.5, 0.025, null, 2.5],
   ['MAI Code 2 Flash', 'Microsoft', 0.05, 0.005, null, 0.25],
@@ -256,6 +257,10 @@ for (const m of models) {
     m.notes.push(
       'Promotional Copilot pricing until December 1, 2026; thereafter GitHub lists $4 input, $0.20 cached input and $20 output per 1M tokens.',
     )
+  if (m.name === 'Gemini 4 Neon')
+    m.notes.push(
+      'GitHub lists it as GA (Versatile), available on Copilot Pro+, Max, Business and Enterprise (not Copilot Pro). Google positions it as close to Gemini 4 Carbon quality at a lower token cost per task.',
+    )
   if (m.name === 'GPT-6.1 Terra')
     m.notes.push(
       'OpenAI’s launch post (openai.com/index/introducing-gpt-6-1-terra) reports 50.3% on Terminal-Bench 4.0 at max reasoning effort and Vals AI’s mini-SWE-agent rerun reports 49.49% ± 1.82%; the official Terminal-Bench 4.0 (51.8%) and 4.1 Codex results are listed separately.',
@@ -294,6 +299,19 @@ for (const m of models) {
     m.notes.push(
       'Promotional Copilot pricing until May 17, 2027; thereafter GitHub lists $0.10 input, $0.01 cached input and $0.50 output per 1M tokens.',
       'Microsoft’s launch post (microsoft.ai/news/introducing-mai-code-2-and-mai-code-2-flash) reports vendor-run results at max effort through Copilot CLI: DeepSWE 1.1 59.9, Terminal-Bench 2.1 78.3, SWE Atlas 44.8. Not independently published; not scored.',
+    )
+  const deprecation = {
+    'Claude Fable 5': ['December 14, 2026', 'Claude Fable 5.2'],
+    'Claude Haiku 4.5': ['December 14, 2026', 'Claude Haiku 5.5'],
+    'Gemini 3.8 Flash': ['December 14, 2026', 'Gemini 4 Hydrogen'],
+    'Gemini 4 Argon': ['December 14, 2026', 'Gemini 4 Carbon'],
+    'Grok 4.6': ['December 14, 2026', 'Grok 4.7'],
+    'Kimi K3': ['December 14, 2026', 'to be announced'],
+    'MAI-Code-1.1-Flash': ['December 18, 2026', 'MAI Code 2 Flash'],
+  }[m.name]
+  if (deprecation)
+    m.notes.push(
+      `GitHub will deprecate this model on ${deprecation[0]}; suggested alternative: ${deprecation[1]}.${m.name === 'Claude Haiku 4.5' ? ' It remains available to individual subscribers on annual plans.' : ''}`,
     )
   if (m.provider === 'Microsoft')
     m.notes.push(

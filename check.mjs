@@ -53,7 +53,7 @@ assert.equal(
 assert.equal(models.length, 38)
 assert.equal(benchmarks.length, 31)
 assert.equal(new Set(benchmarks.map((b) => b.id)).size, 31)
-assert.equal(models.filter((m) => m.evidence.frontierswe).length, 15)
+assert.equal(models.filter((m) => m.evidence.frontierswe).length, 16)
 assert.equal(models.filter((m) => m.evidence.frontiercode).length, 23)
 assert.equal(models.filter((m) => m.evidence.mirrorcode).length, 21)
 assert.equal(
@@ -62,9 +62,22 @@ assert.equal(
 )
 {
   const neon = models.find((m) => m.name === 'Gemini 4 Neon')
-  assert.deepEqual(Object.keys(neon.evidence).sort(), ['frontiercode', 'vibecode'])
+  assert.deepEqual(Object.keys(neon.evidence).sort(), [
+    'frontiercode',
+    'frontierswe',
+    'lbagentic',
+    'livebench2',
+    'vcb100',
+    'vibecode',
+  ])
   assert.equal(neon.evidence.vibecode.value, 93.7)
   assert.equal(neon.evidence.frontiercode.agent, 'Stirrup · xhigh')
+  assert.equal(neon.evidence.frontierswe.value, 62.4)
+  assert.equal(neon.evidence.frontierswe.uncertainty, 8.4)
+  assert.equal(neon.evidence.livebench2.value, 89.7)
+  assert.equal(neon.evidence.lbagentic.value, 82.6)
+  assert.equal(neon.evidence.vcb100.value, 42.3)
+  assert.equal(neon.evidence.vcb100.uncertainty, 4.99)
   assert.equal(neon.price.input, 3)
   assert.ok(models.find((m) => m.name === 'Kimi K3').notes.some((n) => n.includes('December 14')))
 }
@@ -80,7 +93,7 @@ assert.equal(
     assert.equal(Object.keys(models.find((m) => m.name === name).evidence).length, 0)
 }
 assert.equal(models.filter((m) => Object.keys(m.evidence).length).length, 32)
-assert.equal(models.filter((m) => score(m, defaults).value !== null).length, 18)
+assert.equal(models.filter((m) => score(m, defaults).value !== null).length, 19)
 assert.equal(benchmarks.find((b) => b.id === 'migration').name, 'Code Migration v1.1')
 assert.equal(benchmarks.find((b) => b.id === 'migrationold').name, 'Code Migration v1.0')
 assert.equal(sources.migration, 'https://www.vals.ai/benchmarks/code-migration-v1-1')
@@ -114,15 +127,16 @@ for (const [name, coding, agentic] of [
   ['Claude Fable 5.2', 79.2, 82.9],
   ['Claude Haiku 5.5', 77.6, 47.9],
   ['Claude Opus 5.5', 87.1, 72.8],
-  ['Claude Sonnet 5.5', 77.2, 63.4],
+  ['Claude Sonnet 5.5', 77.2, 62.5],
   ['Gemini 3.8 Flash', 73.3, 16.5],
   ['Gemini 4 Argon', 85.7, 58.5],
   ['Gemini 4 Carbon', 91, 72.7],
   ['Gemini 4 Hydrogen', 78.5, 61.8],
-  ['GPT-6 Astra', 87.5, 75.6],
+  ['Gemini 4 Neon', 89.7, 82.6],
+  ['GPT-6 Astra', 87.5, 74.7],
   ['GPT-6 Luna', 70.8, 24.7],
-  ['GPT-6.1 Sol', 82.1, 65.6],
-  ['GPT-6.1 Terra', 89.2, 56.2],
+  ['GPT-6.1 Sol', 82.1, 64.7],
+  ['GPT-6.1 Terra', 89.2, 55.3],
   ['GPT-6.2 Astra', 91.9, 70.8],
   ['GPT-6.2 Sol', 83.7, 63.6],
   ['Grok 4.6', 76.7, 18.7],
@@ -133,7 +147,7 @@ for (const [name, coding, agentic] of [
   assert.equal(byName(name).evidence.lbagentic.value, agentic, name)
 }
 for (const id of ['livebench2', 'lbagentic'])
-  assert.equal(models.filter((m) => m.evidence[id]).length, 18)
+  assert.equal(models.filter((m) => m.evidence[id]).length, 19)
 for (const id of ['livebench2old', 'lbagenticold']) {
   assert.equal(models.filter((m) => m.evidence[id]).length, 22)
   const alternatives = models.flatMap((m) => m.alternatives.filter((a) => a.benchmark === id))
@@ -241,7 +255,7 @@ assert.equal(byName('Claude Opus 5.5').evidence.vcb100old.value, 30.36)
 assert.equal(byName('Claude Opus 5.5').evidence.vcb100old.date, '2026-09-21')
 assert.equal(byName('Gemini 4 Carbon').evidence.vcb100.value, 49.73)
 assert.equal(byName('Gemini 4 Carbon').evidence.vcb100old, undefined)
-assert.equal(models.filter((m) => m.evidence.vcb100).length, 5)
+assert.equal(models.filter((m) => m.evidence.vcb100).length, 6)
 assert.equal(models.filter((m) => m.evidence.vcb100old).length, 11)
 assert.equal(byName('Gemini 4 Argon').evidence.multimodal.date, '2026-10-12')
 assert.equal(byName('Gemini 4 Argon').evidence.multimodal.uncertainty, 2.27)
@@ -364,7 +378,7 @@ assert.ok(
 const terra = models.find((m) => m.name === 'GPT-6.1 Terra')
 assert.equal(score(terra, defaults).value, 89.2)
 assert.equal(score(terra, { vibecode: 1 }).value, 84)
-assert.equal(score(terra, { agentic: 1 }).value, 56.2)
+assert.equal(score(terra, { agentic: 1 }).value, 55.3)
 assert.ok(
   terra.alternatives.some(
     (a) => a.benchmark === 'livebench2old' && a.value === 94.3 && a.agent.includes('2026-10-25'),
@@ -485,12 +499,16 @@ if (!pendingRelease) {
 }
 assert.ok(/^[0-9a-f]{40}$/.test(versionJson.commit), 'dist/version.json must carry a commit hash')
 const footer = fs.readFileSync('dist/index.html', 'utf8')
-const checkedAt = new Date(`${checked}T00:00:00Z`)
+const footerChecked = pendingRelease ? versionJson.checked : checked
+const footerReleased = pendingRelease ? versionJson.released : released
+const checkedAt = new Date(`${footerChecked}T00:00:00Z`)
 const dateFormat = (month) =>
   checkedAt.toLocaleDateString('en-GB', { day: 'numeric', month, year: 'numeric', timeZone: 'UTC' })
 assert.ok(footer.includes(`id="snapshotDate">${dateFormat('short')}`))
 assert.ok(
-  footer.includes(`sources checked ${dateFormat('long')} · released ${released.slice(11, 16)} UTC`),
+  footer.includes(
+    `sources checked ${dateFormat('long')} · released ${footerReleased.slice(11, 16)} UTC`,
+  ),
   'dist/index.html footer must match the checked date and release time',
 )
 for (const asset of ['style.css', 'app.js', './data.js', './scoring.js', './expanded.js'])

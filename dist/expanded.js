@@ -1,4 +1,4 @@
-// Curated primary-source results, checked 2026-11-18. No imputed model results.
+// Curated primary-source results, checked 2026-11-23. No imputed model results.
 export function expandCatalog(benchmarks, sources, models) {
   const additions = [
     [
@@ -89,7 +89,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-11-06 · 24 tasks',
       'https://livebench.ai/data/20261106/table.csv',
       'Fix a real bug, taken from a merged pull request, in a large production codebase frozen at a fixed snapshot. Mean task score 0–100.',
-      'Default General coding benchmark. Release 2026-11-06 replaces part of the task set and covers 18 catalog models, so scores from earlier releases are not mixed into this column. The 2026-10-14 edition and 2026-10-25 results remain in the historical view. Hidden tests check the fix; a fix that breaks existing behaviour scores 0.',
+      'Default General coding benchmark. Release 2026-11-06 replaces part of the task set and currently covers 19 catalog models, so scores from earlier releases are not mixed into this column. The 2026-10-14 edition and 2026-10-25 results remain in the historical view. Hidden tests check the fix; a fix that breaks existing behaviour scores 0.',
     ],
     [
       'livebench2old',
@@ -170,7 +170,7 @@ export function expandCatalog(benchmarks, sources, models) {
       'LiveBench 2.0 · release 2026-11-06 · 18 tasks',
       'https://livebench.ai/data/20261106/table.csv',
       'Long-running work where early decisions must hold up: extending apps through changing requirements, running a codebase through simulated months of operations, building a compiler, performance optimisation. Mean task score 0–100.',
-      'Current long-horizon suite with deterministic grading. Release 2026-11-06 covers 16 catalog models; the earlier 2026-10-14 suite and 2026-10-25 results are retained separately in the historical view. Agentic task composition changed after 2026-10-14.',
+      'Current long-horizon suite with deterministic grading. Release 2026-11-06 currently covers 19 catalog models; the earlier 2026-10-14 suite and 2026-10-25 results are retained separately in the historical view. Agentic task composition changed after 2026-10-14.',
     ],
     [
       'lbagenticold',
@@ -460,6 +460,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Gemini 4 Argon', 85.7],
     ['Gemini 4 Carbon', 91.0],
     ['Gemini 4 Hydrogen', 78.5, 'xhigh'],
+    ['Gemini 4 Neon', 89.7],
     ['GPT-6 Astra', 87.5],
     ['GPT-6 Luna', 70.8],
     ['GPT-6.1 Sol', 82.1],
@@ -718,6 +719,7 @@ export function expandCatalog(benchmarks, sources, models) {
   vals('vcb100', 'OpenHands · Vals harness', [
     ['GPT-6.2 Astra', 55.16, 5.78, null, 'max'],
     ['Gemini 4 Carbon', 49.73, 4.91, null, 'high'],
+    ['Gemini 4 Neon', 42.3, 4.99],
     [
       'Claude Opus 5.5',
       30.95,
@@ -820,15 +822,16 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Fable 5.2', 82.9, 'xhigh'],
     ['Claude Haiku 5.5', 47.9],
     ['Claude Opus 5.5', 72.8],
-    ['Claude Sonnet 5.5', 63.4],
+    ['Claude Sonnet 5.5', 62.5],
     ['Gemini 3.8 Flash', 16.5],
     ['Gemini 4 Argon', 58.5],
     ['Gemini 4 Carbon', 72.7],
     ['Gemini 4 Hydrogen', 61.8, 'xhigh'],
-    ['GPT-6 Astra', 75.6],
+    ['Gemini 4 Neon', 82.6],
+    ['GPT-6 Astra', 74.7],
     ['GPT-6 Luna', 24.7],
-    ['GPT-6.1 Sol', 65.6],
-    ['GPT-6.1 Terra', 56.2],
+    ['GPT-6.1 Sol', 64.7],
+    ['GPT-6.1 Terra', 55.3],
     ['GPT-6.2 Astra', 70.8],
     ['GPT-6.2 Sol', 63.6],
     ['Grok 4.6', 18.7],
@@ -902,6 +905,7 @@ export function expandCatalog(benchmarks, sources, models) {
     ['Claude Fable 5.1', 56.3, 11.1],
     ['Gemini 4 Argon', 55.0, 9.9],
     ['Gemini 4 Hydrogen', 53.1, 8.0],
+    ['Gemini 4 Neon', 62.4, 8.4],
     ['Claude Fable 5', 47.0, 13.9],
     ['Claude Haiku 5.5', 43.8, 9.1],
     ['GPT-5.6 Sol', 32.2, 11.0],

@@ -104,10 +104,19 @@ export function expandCatalog(benchmarks, sources, models) {
       'vibecode',
       'Building apps',
       'Vibe Code Bench',
-      'v1.1 · 50 apps · updated 2026-11-18',
-      'https://www.vals.ai/benchmarks/vibe-code',
+      'v1.1.1 · 50 apps · updated 2026-11-21',
+      'https://www.vals.ai/benchmarks/vibe-code-v1-1-1',
       'Build a complete web app from a one-page plain-language spec; automated browser tests click through each workflow.',
-      'Run by Vals AI on a private test set: the method is published, but results cannot be independently reproduced. The main column uses the common OpenHands harness; Claude Code, Codex and Factory runs are kept as alternative setups. Fallbacks to another model and provider refusals are flagged per result as published.',
+      'Current Vals AI edition re-grades the same OpenHands runs with a second judge reviewing failed checks and requires every test substep to pass. It is not a new model run. The private test set cannot be independently reproduced; fallbacks and provider refusals are flagged per result as published.',
+    ],
+    [
+      'vibecodeold',
+      'Building apps · v1.1',
+      'Vibe Code Bench v1.1 · historical',
+      'v1.1 · 50 apps · archived 2026-11-19',
+      'https://www.vals.ai/benchmarks/vibe-code',
+      'Historical Vals AI results for building a complete web app from a one-page plain-language specification.',
+      'Archived when v1.1.1 introduced a second judge for failed checks and raised the pass bar to every test substep. Results use the earlier grader and must not be compared as the same edition.',
     ],
     [
       'migration',
@@ -513,6 +522,35 @@ export function expandCatalog(benchmarks, sources, models) {
       ...(version ? { version } : {}),
     })
   vals('vibecode', 'OpenHands · Vals harness', [
+    ['Claude Fable 5.2', 83.52, 3.25, null, 'high', '2026-11-08'],
+    ['Claude Sonnet 5.5', 80.88, 3.27, null, 'max', '2026-09-25'],
+    ['Gemini 4 Neon', 80.23, 3.25, null, 'xhigh'],
+    ['GPT-6.2 Sol', 79.48, 3.66, null, 'max'],
+    ['Claude Fable 5.1', 78.73, 3.45, null, 'max', '2026-08-29'],
+    ['GPT-6.2 Astra', 78.57, 3.47, null, 'max'],
+    [
+      'Claude Opus 5.5',
+      78.49,
+      3.33,
+      '4 fallbacks to another model on 50 tasks (8.00%).',
+      'max',
+      '2026-09-18',
+    ],
+    ['GPT-6 Astra', 77.54, 3.81, null, 'max', '2026-09-03'],
+    ['Claude Haiku 5.5', 76.59, 3.44, null, 'max', '2026-10-07'],
+    ['Gemini 4 Hydrogen', 76.16, 3.76, null, 'xhigh'],
+    ['Gemini 4 Carbon', 75.77, 3.6, null, 'high', '2026-10-24'],
+    ['GPT-6.1 Terra', 75.52, 4.11, null, 'max', '2026-10-26'],
+    ['Gemini 4 Argon', 75.37, 3.76, null, 'high', '2026-09-24'],
+    ['Claude Fable 5', 75.3, 3.92, null, 'max'],
+    ['GPT-6.1 Sol', 75.1, 3.47, null, 'max', '2026-09-29'],
+    ['GPT-6 Sol', 71.6, 4.15, null, 'max', '2026-09-22'],
+    ['Grok 4.7', 69.07, 4.61, null, 'xhigh', '2026-09-21'],
+    ['Kimi K3', 68.5, 3.97, null, 'max', '2026-10-01'],
+    ['GPT-6 Luna', 65.31, 4.63, null, 'max', '2026-09-22'],
+    ['Gemini 3.8 Flash', 58.89, 5.02, null, 'high', '2026-08-27'],
+  ])
+  vals('vibecodeold', 'OpenHands · Vals harness', [
     ['Claude Fable 5.2', 93.77, 1.15, null, 'high', '2026-11-08'],
     ['Gemini 4 Neon', 93.7, 1.17, null, 'xhigh'],
     ['Claude Sonnet 5.5', 92.39, 1.26, null, 'max', '2026-09-25'],
@@ -551,8 +589,8 @@ export function expandCatalog(benchmarks, sources, models) {
     ['GPT-5.4 nano', 26.1, 5.08, null, 'high · model 2026-03-17'],
     ['Claude Haiku 4.5', 11.39, 3.13, null, 'thinking · model 2025-10-01'],
   ])
-  alt('Claude Opus 4.8', 'vibecode', 77.48, 3.74, 'Claude Code · Vals harness')
-  alt('Claude Sonnet 4.6', 'vibecode', 55.77, 4.68, 'Claude Code · Vals harness')
+  alt('Claude Opus 4.8', 'vibecodeold', 77.48, 3.74, 'Claude Code · Vals harness')
+  alt('Claude Sonnet 4.6', 'vibecodeold', 55.77, 4.68, 'Claude Code · Vals harness')
   vals('migrationold', 'Vals harness', [
     ['Claude Sonnet 5.5', 69.83, 4.26, null, 'max', '2026-09-25'],
     ['Gemini 4 Argon', 68.17, 4.35, null, 'high', '2026-09-24'],

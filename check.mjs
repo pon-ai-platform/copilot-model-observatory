@@ -51,8 +51,18 @@ assert.equal(
   false,
 )
 assert.equal(models.length, 38)
-assert.equal(benchmarks.length, 31)
-assert.equal(new Set(benchmarks.map((b) => b.id)).size, 31)
+assert.equal(benchmarks.length, 32)
+assert.equal(new Set(benchmarks.map((b) => b.id)).size, 32)
+assert.equal(models.filter((m) => m.evidence.vibecode).length, 20)
+assert.equal(models.filter((m) => m.evidence.vibecodeold).length, 30)
+assert.equal(
+  benchmarks.find((b) => b.id === 'vibecode').version,
+  'v1.1.1 · 50 apps · updated 2026-11-21',
+)
+assert.equal(
+  benchmarks.find((b) => b.id === 'vibecodeold').name,
+  'Vibe Code Bench v1.1 · historical',
+)
 assert.equal(models.filter((m) => m.evidence.frontierswe).length, 16)
 assert.equal(models.filter((m) => m.evidence.frontiercode).length, 23)
 assert.equal(models.filter((m) => m.evidence.mirrorcode).length, 21)
@@ -69,8 +79,10 @@ assert.equal(
     'livebench2',
     'vcb100',
     'vibecode',
+    'vibecodeold',
   ])
-  assert.equal(neon.evidence.vibecode.value, 93.7)
+  assert.equal(neon.evidence.vibecode.value, 80.23)
+  assert.equal(neon.evidence.vibecodeold.value, 93.7)
   assert.equal(neon.evidence.frontiercode.agent, 'Stirrup · xhigh')
   assert.equal(neon.evidence.frontierswe.value, 62.4)
   assert.equal(neon.evidence.frontierswe.uncertainty, 8.4)
@@ -213,13 +225,19 @@ assert.deepEqual(byName('Gemini 4 Hydrogen').price, {
   write: null,
   output: 7.5,
 })
-assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecode.value, 87.78)
-assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecode.uncertainty, 2.29)
+assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecode.value, 76.16)
+assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecode.uncertainty, 3.76)
 assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecode.date, null)
+assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecodeold.value, 87.78)
+assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecodeold.uncertainty, 2.29)
+assert.equal(byName('Gemini 4 Hydrogen').evidence.vibecodeold.date, null)
 assert.ok(byName('Gemini 4 Hydrogen').evidence.terminal41.agent.includes('Antigravity CLI'))
-assert.equal(byName('Claude Fable 5.2').evidence.vibecode.value, 93.77)
-assert.equal(byName('Claude Fable 5.2').evidence.vibecode.uncertainty, 1.15)
+assert.equal(byName('Claude Fable 5.2').evidence.vibecode.value, 83.52)
+assert.equal(byName('Claude Fable 5.2').evidence.vibecode.uncertainty, 3.25)
 assert.equal(byName('Claude Fable 5.2').evidence.vibecode.date, '2026-11-08')
+assert.equal(byName('Claude Fable 5.2').evidence.vibecodeold.value, 93.77)
+assert.equal(byName('Claude Fable 5.2').evidence.vibecodeold.uncertainty, 1.15)
+assert.equal(byName('Claude Fable 5.2').evidence.vibecodeold.date, '2026-11-08')
 assert.equal(byName('Claude Fable 5.2').evidence.multimodal.value, 62.29)
 assert.equal(byName('Claude Fable 5.2').evidence.migration.value, 83.27)
 assert.equal(byName('Claude Fable 5.2').evidence.migration.uncertainty, 3.12)
@@ -240,7 +258,7 @@ assert.deepEqual(byName('MAI Code 2 Flash').price, {
 assert.deepEqual(Object.keys(byName('MAI Code 2').evidence), [])
 assert.equal(byName('GPT-6.2 Astra').long.output, 60)
 assert.equal(byName('GPT-6.2 Astra').evidence.vcb100.value, 55.16)
-assert.equal(byName('GPT-6.2 Sol').evidence.vibecode.uncertainty, 2.2)
+assert.equal(byName('GPT-6.2 Sol').evidence.vibecodeold.uncertainty, 2.2)
 assert.equal(byName('Claude Fable 5.2').evidence.migrationold, undefined)
 assert.equal(models.filter((m) => m.evidence.migration).length, 11)
 assert.equal(models.filter((m) => m.evidence.migrationold).length, 22)
@@ -262,13 +280,15 @@ assert.equal(byName('Gemini 4 Argon').evidence.multimodal.uncertainty, 2.27)
 assert.equal(byName('GPT-6 Astra').evidence.multimodal.uncertainty, 2.26)
 assert.equal(byName('Claude Opus 5.5').evidence.multimodal.uncertainty, 2.09)
 assert.equal(byName('Claude Fable 5.2').evidence.multimodal.uncertainty, 2.21)
-assert.equal(byName('Grok 4.5').evidence.vibecode.date, null)
+assert.equal(byName('Grok 4.5').evidence.vibecodeold.date, null)
 assert.equal(byName('Claude Sonnet 5.5').evidence.migration.value, 86.88)
 assert.equal(byName('Claude Sonnet 5.5').evidence.migration.source, sources.migration)
 assert.ok(byName('Claude Sonnet 5.5').evidence.migration.agent.includes('Pi agent'))
 assert.equal(byName('Claude Sonnet 5.5').evidence.migrationold.value, 69.83)
-assert.equal(byName('Gemini 4 Carbon').evidence.vibecode.value, 89.06)
+assert.equal(byName('Gemini 4 Carbon').evidence.vibecode.value, 75.77)
 assert.equal(byName('Gemini 4 Carbon').evidence.vibecode.date, '2026-10-24')
+assert.equal(byName('Gemini 4 Carbon').evidence.vibecodeold.value, 89.06)
+assert.equal(byName('Gemini 4 Carbon').evidence.vibecodeold.date, '2026-10-24')
 assert.equal(byName('Claude Fable 5.1').evidence.vcb100old.refusals, undefined)
 assert.equal(byName('Claude Fable 5').evidence.migrationold.context, undefined)
 assert.deepEqual(
@@ -377,7 +397,8 @@ assert.ok(
 )
 const terra = models.find((m) => m.name === 'GPT-6.1 Terra')
 assert.equal(score(terra, defaults).value, 89.2)
-assert.equal(score(terra, { vibecode: 1 }).value, 84)
+assert.equal(score(terra, { vibecode: 1 }).value, 75.52)
+assert.equal(score(terra, { vibecodeold: 1 }).value, 84)
 assert.equal(score(terra, { agentic: 1 }).value, 55.3)
 assert.ok(
   terra.alternatives.some(
@@ -432,8 +453,8 @@ assert.equal(topicTable.get('mai-code-2').agents.value, null)
 assert.ok(!topicTable.get('gemini-4-argon').agents.eligible.includes('rebench'))
 assert.deepEqual(topicTable.get('gemini-4-carbon').building.eligible, ['vibecode', 'mirrorcode'])
 assert.ok(topicTable.get('gemini-4-carbon').building.value !== null)
-assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 3)
-assert.equal(topicTable.get('gemini-4-neon').building.parts[0].rank, 2)
+assert.equal(topicTable.get('claude-sonnet-5-5').building.parts[0].rank, 2)
+assert.equal(topicTable.get('gemini-4-neon').building.parts[0].rank, 3)
 const lensBest = awards(models, {}, defaultSelections, (m) =>
   awardScore(topicLens(topicTable.get(m.id), topicDefaults)),
 ).best
